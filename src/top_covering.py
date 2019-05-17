@@ -2,7 +2,16 @@ from graph_tool.all import *
 
 
 def top_cover(pref):
-    build_graph(pref)
+    graph, vlabel_to_index = build_graph(pref)
+    smallest_cc = None
+    smallest_cc_size = len(pref)
+    for v in graph.vertices():
+        cc = graph_tool.topology.label_out_component(graph, v)
+        cc_size = sum(cc.a)
+        if cc_size < smallest_cc_size:
+            smallest_cc_size = cc_size
+            smallest_cc = cc
+    print(smallest_cc.a)
 
 
 # in: dict of player to a list of sets, each value is a player's choice set preference in descending order
@@ -32,11 +41,11 @@ def build_graph(pref):
                 continue
             g.add_edge(vlist[vlabel_to_index[k]], vlist[vlabel_to_index[agent]])
 
-    # visualize sample graph
-    graph_draw(g, vertex_text=vlabels, vertex_font_size=18,
-               output_size=(200, 200), output="sample.png")
+    # # visualize sample graph
+    # graph_draw(g, vertex_text=vlabels, vertex_font_size=18,
+    #            output_size=(200, 200), output="sample.png")
 
-    return g
+    return g, vlabel_to_index
 
 
 def generate_preferences():
