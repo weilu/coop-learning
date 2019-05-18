@@ -73,6 +73,7 @@ def build_graph(pref):
                 continue
             g.add_edge(vlist[vlabel_to_index[k]], vlist[vlabel_to_index[agent]])
 
+    # TODO: produce debug graphs for every iteration
     # # visualize sample graph
     # graph_draw(g, vertex_text=vlabels, vertex_font_size=18,
     #            output_size=(200, 200), output="sample.png")
@@ -85,3 +86,7 @@ def freeze(pref):
     for k, v in pref.items():
         frozen[k] = [frozenset(neighbors) for neighbors in v]
     return frozen
+
+if __name__ == '__main__':
+    # TODO: command line interface support
+    pass
