@@ -32,6 +32,7 @@ def update_preferences(pref, smallest_cc):
 
 
 def top_cover(pref):
+    pref = freeze(pref) # prevent choice sets in pref from being modified
     stable_partition = []
     while len(pref) > 1:
         graph, vlabel_to_index = build_graph(pref)
@@ -40,7 +41,7 @@ def top_cover(pref):
         pref = update_preferences(pref, smallest_cc)
     if len(pref) == 1:
         stable_partition.append(list(pref.values())[0][0])
-    print(stable_partition)
+    return stable_partition
 
 
 # in: dict of player to a list of sets, each value is a player's choice set preference in descending order
@@ -83,17 +84,3 @@ def freeze(pref):
     for k, v in pref.items():
         frozen[k] = [frozenset(neighbors) for neighbors in v]
     return frozen
-
-
-def generate_preferences():
-    sample = {
-        1: [{1, 2}, {1, 2, 3}, {1, 2, 4}, {1, 2, 3, 4}, {1, 3}, {1, 3, 4}, {1, 4}, {1}],
-        2: [{2, 3}, {2, 3, 4}, {1, 2, 3}, {1, 2, 3, 4}, {2, 4}, {1, 2, 4}, {1, 2}, {2}],
-        3: [{1, 3}, {1, 2, 3}, {1, 3, 4}, {1, 2, 3, 4}, {2, 3}, {2, 3, 4}, {3, 4}, {3}],
-        4: [{3, 4}, {2, 3, 4}, {1, 3, 4}, {1, 2, 3, 4}, {2, 4}, {1, 2, 4}, {1, 4}, {4}]
-    }
-    return freeze(sample)
-
-
-if __name__ == "__main__":
-    top_cover(generate_preferences())
