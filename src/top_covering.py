@@ -1,6 +1,25 @@
 from graph_tool.all import *
 
 
+# in: dict of player to a list of sets, each value is a player's choice set preference in descending order
+# e.g. {
+#        1: [{1, 2}, {1, 2, 3}, {1, 2, 4}, {1, 2, 3, 4}, {1, 3}, {1, 3, 4}, {1, 4}, {1}],
+#        2: [{2, 3}, {2, 3, 4}, {1, 2, 3}, {1, 2, 3, 4}, {2, 4}, {1, 2, 4}, {1, 2}, {2}],
+#        3: [{1, 3}, {1, 2, 3}, {1, 3, 4}, {1, 2, 3, 4}, {2, 3}, {2, 3, 4}, {3, 4}, {3}],
+#        4: [{3, 4}, {2, 3, 4}, {1, 3, 4}, {1, 2, 3, 4}, {2, 4}, {1, 2, 4}, {1, 4}, {4}]
+#      }
+def top_cover(pref):
+    pref = freeze(pref) # prevent choice sets in pref from being modified
+    stable_partition = []
+    while len(pref) > 0:
+        graph, vlabel_to_index = build_graph(pref)
+        smallest_cc = find_smallest_cc(graph)
+        # print('samllest_cc:', smallest_cc)
+        stable_partition.append(smallest_cc)
+        pref = update_preferences(pref, smallest_cc)
+    return stable_partition
+
+
 def find_smallest_cc(graph):
     smallest_cc = None
     smallest_cc_size = graph.num_vertices() + 1
@@ -28,25 +47,6 @@ def update_preferences(pref, smallest_cc):
     return new_pref
 
 
-def top_cover(pref):
-    pref = freeze(pref) # prevent choice sets in pref from being modified
-    stable_partition = []
-    while len(pref) > 0:
-        graph, vlabel_to_index = build_graph(pref)
-        smallest_cc = find_smallest_cc(graph)
-        # print('samllest_cc:', smallest_cc)
-        stable_partition.append(smallest_cc)
-        pref = update_preferences(pref, smallest_cc)
-    return stable_partition
-
-
-# in: dict of player to a list of sets, each value is a player's choice set preference in descending order
-# e.g. {
-#        1: [{1, 2}, {1, 2, 3}, {1, 2, 4}, {1, 2, 3, 4}, {1, 3}, {1, 3, 4}, {1, 4}, {1}],
-#        2: [{2, 3}, {2, 3, 4}, {1, 2, 3}, {1, 2, 3, 4}, {2, 4}, {1, 2, 4}, {1, 2}, {2}],
-#        3: [{1, 3}, {1, 2, 3}, {1, 3, 4}, {1, 2, 3, 4}, {2, 3}, {2, 3, 4}, {3, 4}, {3}],
-#        4: [{3, 4}, {2, 3, 4}, {1, 3, 4}, {1, 2, 3, 4}, {2, 4}, {1, 2, 4}, {1, 4}, {4}]
-#      }
 def build_graph(pref):
     g = Graph()
     if len(pref) > 1:
@@ -86,6 +86,7 @@ def freeze(pref):
     for k, v in pref.items():
         frozen[k] = [frozenset(neighbors) for neighbors in v]
     return frozen
+
 
 if __name__ == '__main__':
     # TODO: command line interface support
