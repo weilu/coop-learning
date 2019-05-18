@@ -3,7 +3,7 @@ from graph_tool.all import *
 
 def find_smallest_cc(graph):
     smallest_cc = None
-    smallest_cc_size = graph.num_vertices()
+    smallest_cc_size = graph.num_vertices() + 1
     for v in graph.vertices():
         cc = graph_tool.topology.label_out_component(graph, v)
         cc_size = sum(cc.a)
@@ -18,16 +18,13 @@ def update_preferences(pref, smallest_cc):
     for k, v in pref.items():
         if k in smallest_cc:
             continue
-        choice_set_set = set() # for deduplication
         choice_set = []
-        num_choice_sets = len(choice_set_set)
         for n in v:
             new_n = frozenset(n - smallest_cc)
-            choice_set_set.add(new_n)
-            if num_choice_sets < len(choice_set_set):
-                num_choice_sets = len(choice_set_set)
-                choice_set.append(new_n)
+            if new_n == n:
+                choice_set.append(n)
         new_pref[k] = choice_set
+    # print('new_pref:', new_pref)
     return new_pref
 
 
@@ -37,10 +34,11 @@ def top_cover(pref):
     while len(pref) > 1:
         graph, vlabel_to_index = build_graph(pref)
         smallest_cc = find_smallest_cc(graph)
+        # print('samllest_cc:', smallest_cc)
         stable_partition.append(smallest_cc)
         pref = update_preferences(pref, smallest_cc)
     if len(pref) == 1:
-        stable_partition.append(list(pref.values())[0][0])
+        stable_partition.append({list(pref.keys())[0]})
     return stable_partition
 
 
