@@ -1,14 +1,26 @@
 from graph_tool.all import *
 
 
-# in: dict of player to a list of sets, each value is a player's choice set preference in descending order
-# e.g. {
-#        1: [{1, 2}, {1, 2, 3}, {1, 2, 4}, {1, 2, 3, 4}, {1, 3}, {1, 3, 4}, {1, 4}, {1}],
-#        2: [{2, 3}, {2, 3, 4}, {1, 2, 3}, {1, 2, 3, 4}, {2, 4}, {1, 2, 4}, {1, 2}, {2}],
-#        3: [{1, 3}, {1, 2, 3}, {1, 3, 4}, {1, 2, 3, 4}, {2, 3}, {2, 3, 4}, {3, 4}, {3}],
-#        4: [{3, 4}, {2, 3, 4}, {1, 3, 4}, {1, 2, 3, 4}, {2, 4}, {1, 2, 4}, {1, 4}, {4}]
-#      }
 def top_cover(pref):
+    """Top covering algorithm as described in Handbook of Computational Social Choice, p371
+
+    Parameters
+    ----------
+    pref : dict of player to a list of sets
+        Describes every players preferences of choice sets
+        e.g.
+        {
+           1: [{1, 2}, {1, 2, 3}, {1, 2, 4}, {1, 2, 3, 4}, {1, 3}, {1, 3, 4}, {1, 4}, {1}],
+           2: [{2, 3}, {2, 3, 4}, {1, 2, 3}, {1, 2, 3, 4}, {2, 4}, {1, 2, 4}, {1, 2}, {2}],
+           3: [{1, 3}, {1, 2, 3}, {1, 3, 4}, {1, 2, 3, 4}, {2, 3}, {2, 3, 4}, {3, 4}, {3}],
+           4: [{3, 4}, {2, 3, 4}, {1, 3, 4}, {1, 2, 3, 4}, {2, 4}, {1, 2, 4}, {1, 4}, {4}]
+         }
+
+    Returns
+    -------
+    list
+        a list of sets representing the resulting stable partition
+    """
     pref = freeze(pref) # prevent choice sets in pref from being modified
     stable_partition = []
     while len(pref) > 0:
