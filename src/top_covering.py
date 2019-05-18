@@ -31,14 +31,12 @@ def update_preferences(pref, smallest_cc):
 def top_cover(pref):
     pref = freeze(pref) # prevent choice sets in pref from being modified
     stable_partition = []
-    while len(pref) > 1:
+    while len(pref) > 0:
         graph, vlabel_to_index = build_graph(pref)
         smallest_cc = find_smallest_cc(graph)
         # print('samllest_cc:', smallest_cc)
         stable_partition.append(smallest_cc)
         pref = update_preferences(pref, smallest_cc)
-    if len(pref) == 1:
-        stable_partition.append({list(pref.keys())[0]})
     return stable_partition
 
 
@@ -51,7 +49,12 @@ def top_cover(pref):
 #      }
 def build_graph(pref):
     g = Graph()
-    vlist = list(g.add_vertex(len(pref)))
+    if len(pref) > 1:
+        vlist = list(g.add_vertex(len(pref)))
+    elif len(pref) == 1:
+        vlist = [g.add_vertex()]
+    else:
+        return g, {}
 
     # create vertex label-to-index, and index-to-label map
     vlabel_to_index = {}
