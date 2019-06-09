@@ -40,7 +40,7 @@ def get_all_subsets(available_players):
     return all_subsets
 
 
-def check_stable(game, partition):
+def check_core_stable(game, partition):
     for i, preferences in game.items():
         coalition = get_coalition(i, partition)
         for better_coalition_index in range(0, preferences.index(coalition)):

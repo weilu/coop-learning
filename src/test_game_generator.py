@@ -1,6 +1,6 @@
 import unittest
 from game_generator import get_all_subsets, get_choice_set,\
-        check_top_responsive, generate_b_hedonic_game, check_stable
+        check_top_responsive, generate_b_hedonic_game, check_core_stable
 
 
 class TestGameGenerator(unittest.TestCase):
@@ -52,7 +52,7 @@ class TestGameGenerator(unittest.TestCase):
             game = generate_b_hedonic_game(i)
             check_top_responsive(game)
 
-    def test_check_stable(self):
+    def test_check_core_stable(self):
         game = {
             1: [{1, 2}, {1, 2, 3}, {1, 2, 4}, {1, 2, 3, 4}, {1, 3}, {1, 3, 4}, {1, 4}, {1}],
             2: [{2, 3}, {2, 3, 4}, {1, 2, 3}, {1, 2, 3, 4}, {2, 4}, {1, 2, 4}, {1, 2}, {2}],
@@ -60,10 +60,10 @@ class TestGameGenerator(unittest.TestCase):
             4: [{3, 4}, {2, 3, 4}, {1, 3, 4}, {1, 2, 3, 4}, {2, 4}, {1, 2, 4}, {1, 4}, {4}]
         }
         pi = [{1, 2, 3}, {4}]
-        self.assertTrue(check_stable(game, pi))
+        self.assertTrue(check_core_stable(game, pi))
 
         pi = [{1, 2}, {3, 4}]
-        self.assertFalse(check_stable(game, pi))
+        self.assertFalse(check_core_stable(game, pi))
 
         game = {
             1: [{1, 2}, {1, 3}, {1}, {1, 2, 3}],
@@ -71,10 +71,10 @@ class TestGameGenerator(unittest.TestCase):
             3: [{1, 3}, {2, 3}, {3}, {1, 2, 3}]
         }
         pi = [{1}, {2}, {3}]
-        self.assertFalse(check_stable(game, pi))
+        self.assertFalse(check_core_stable(game, pi))
 
         pi = [{1, 2}, {3}]
-        self.assertFalse(check_stable(game, pi))
+        self.assertFalse(check_core_stable(game, pi))
 
 
 if __name__ == '__main__':
