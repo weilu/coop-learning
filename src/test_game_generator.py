@@ -1,5 +1,6 @@
 import unittest
-from game_generator import get_all_subsets, get_choice_set, check_top_responsive
+from game_generator import get_all_subsets, get_choice_set,\
+        check_top_responsive, generate_b_hedonic_game
 
 
 class TestGameGenerator(unittest.TestCase):
@@ -45,6 +46,11 @@ class TestGameGenerator(unittest.TestCase):
             3: [{1, 3}, {1, 2, 3}, {2, 3}, {3}]
         }
         self.assertRaises(AssertionError, check_top_responsive, game)
+
+    def test_generate_b_hedonic_game_top_responsive(self):
+        for i in range(2, 7):
+            game = generate_b_hedonic_game(i)
+            check_top_responsive(game)
 
 
 if __name__ == '__main__':

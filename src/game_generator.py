@@ -15,17 +15,17 @@ def check_top_responsive(game):
 
                 if preferences.index(cs_s) < preferences.index(cs_t):
                     assert preferences.index(s) < preferences.index(t), \
-                            f'Player {i}, CS_S: {cs_s} > CS_T: {cs_t}, expect S: {s} > T: {t}, but not the case'
+                            f'Player {i}, CS_S: {cs_s} > CS_T: {cs_t}, expect S: {s} > T: {t}, but not the case.\n Game: {game}'
                 elif preferences.index(cs_t) < preferences.index(cs_s):
                     assert preferences.index(t) < preferences.index(s), \
-                            f'Player {i}, CS_S: {cs_s} < CS_T: {cs_t}, expect S: {s} < T: {t}, but not the case'
+                            f'Player {i}, CS_S: {cs_s} < CS_T: {cs_t}, expect S: {s} < T: {t}, but not the case.\n Game: {game}'
                 else:
                     if s < t:
                         assert preferences.index(s) < preferences.index(t), \
-                            f'Player {i}, CS_S: {cs_s} = CS_T: {cs_t}, s in t, expect S: {s} > T: {t}, but not the case'
+                            f'Player {i}, CS_S: {cs_s} = CS_T: {cs_t}, s in t, expect S: {s} > T: {t}, but not the case.\n Game: {game}'
                     elif t < s:
                         assert preferences.index(t) < preferences.index(s), \
-                            f'Player {i}, CS_S: {cs_s} = CS_T: {cs_t}, t in s, expect S: {t} > T: {s}, but not the case'
+                            f'Player {i}, CS_S: {cs_s} = CS_T: {cs_t}, t in s, expect S: {t} > T: {s}, but not the case.\n Game: {game}'
 
 def get_choice_set(preferences, available_players):
     for players in preferences:
@@ -83,5 +83,4 @@ def extend_ranking(i, ranking):
 
 if __name__ == '__main__':
     game = generate_b_hedonic_game(4)
-    print(game)
     check_top_responsive(game)
