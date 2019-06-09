@@ -41,21 +41,23 @@ def get_all_subsets(available_players):
 
 
 def check_core_stable(game, partition):
+    coalition_map = partition_to_coalition_map(partition)
     for i, preferences in game.items():
-        coalition = get_coalition(i, partition)
+        coalition = coalition_map[i]
         for better_coalition_index in range(0, preferences.index(coalition)):
             better_coalition = preferences[better_coalition_index]
             other_players = better_coalition - {i}
-            better_for_all = all(better_off(game[j], better_coalition, get_coalition(j, partition)) for j in other_players)
+            better_for_all = all(better_off(game[j], better_coalition, coalition_map[j]) for j in other_players)
             if better_for_all:
                 return False
     return True
 
-# can be optimized to avoid repeatedly finding containing coalition
-def get_coalition(i, partition):
-    for subset in partition:
-        if i in subset:
-            return subset
+def partition_to_coalition_map(partition):
+    coalition_map = {}
+    for part in partition:
+        for player in part:
+            coalition_map[player] = part
+    return coalition_map
 
 def better_off(preferences, better_coalition, coalition):
     return preferences.index(better_coalition) < preferences.index(coalition)
