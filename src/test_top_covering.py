@@ -1,5 +1,6 @@
 import unittest
 from top_covering import top_cover
+from game_generator import generate_b_hedonic_game, check_core_stable
 
 
 class TestTopCovering(unittest.TestCase):
@@ -59,6 +60,12 @@ class TestTopCovering(unittest.TestCase):
         self.assertEqual(pi[1], frozenset({4, 5}))
         self.assertEqual(pi[2], frozenset({6}))
 
+    def test_generated_b_games(self):
+        for size in range(2, 7):
+            for seed in range(10):
+                game = generate_b_hedonic_game(size, seed)
+                pi = top_cover(game)
+                self.assertTrue(check_core_stable(game, pi))
 
 if __name__ == '__main__':
     unittest.main()
