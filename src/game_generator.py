@@ -3,7 +3,42 @@ import itertools
 
 
 def check_top_responsive(game):
-    pass #TODO
+    all_subsets = get_all_subsets(game.keys())
+    for i, preferences in game.items():
+        subsets_with_i = list(filter(lambda s: i in s, all_subsets))
+        for si in range(0, len(subsets_with_i)-1):
+            s = subsets_with_i[si]
+            cs_s = get_choice_set(preferences, s)
+            for ti in range(si+1, len(subsets_with_i)):
+                t = subsets_with_i[ti]
+                cs_t = get_choice_set(preferences, t)
+
+                if preferences.index(cs_s) < preferences.index(cs_t):
+                    assert preferences.index(s) < preferences.index(t), \
+                            f'Player {i}, CS_S: {cs_s} > CS_T: {cs_t}, expect S: {s} > T: {t}, but not the case'
+                elif preferences.index(cs_t) < preferences.index(cs_s):
+                    assert preferences.index(t) < preferences.index(s), \
+                            f'Player {i}, CS_S: {cs_s} < CS_T: {cs_t}, expect S: {s} < T: {t}, but not the case'
+                else:
+                    if s < t:
+                        assert preferences.index(s) < preferences.index(t), \
+                            f'Player {i}, CS_S: {cs_s} = CS_T: {cs_t}, s in t, expect S: {s} > T: {t}, but not the case'
+                    elif t < s:
+                        assert preferences.index(t) < preferences.index(s), \
+                            f'Player {i}, CS_S: {cs_s} = CS_T: {cs_t}, t in s, expect S: {t} > T: {s}, but not the case'
+
+def get_choice_set(preferences, available_players):
+    for players in preferences:
+        if all(j in available_players for j in players):
+            return players
+
+def get_all_subsets(available_players):
+    all_subsets = set()
+    for size in range(1, len(available_players)+1):
+        for subset in itertools.combinations(available_players, size):
+            all_subsets.add(frozenset(subset))
+    return all_subsets
+
 
 def check_stable(game, partition):
     pass #TODO
@@ -14,15 +49,18 @@ def generate_preference_ranking(i, num_players):
     ranking.append(i) # TODO: Does a player have to prefer him/herself last?
     return ranking
 
-def generate_b_hedonic_game(num_players, seed):
-    random.seed(seed)
+def generate_b_hedonic_game(num_players, seed=None):
+    if seed:
+        random.seed(seed)
+
+    game = {}
     for i in range(1, num_players+1):
         ranking = generate_preference_ranking(i, num_players)
-        print(ranking)
         extended_ranking = []
         for j in range(0, len(ranking)):
             extended_ranking += extend_ranking(i, ranking[j:])
-        print(extended_ranking)
+        game[i] = extended_ranking
+    return game
 
 def extend_ranking(i, ranking):
     if ranking[0] == i: # top preference is self
@@ -44,4 +82,6 @@ def extend_ranking(i, ranking):
 
 
 if __name__ == '__main__':
-    generate_b_hedonic_game(4, 1337)
+    game = generate_b_hedonic_game(4)
+    print(game)
+    check_top_responsive(game)
