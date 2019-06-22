@@ -1,5 +1,5 @@
 import unittest
-from votes_to_game import majority, value_function
+from votes_to_game import majority, value_function, get_coalition
 
 
 class TestVotesToGame(unittest.TestCase):
@@ -30,6 +30,15 @@ class TestVotesToGame(unittest.TestCase):
         x = [1, 1, 0]
         self.assertEqual(value_function(0, x), 1.5)
 
+    def test_get_coalition(self):
+        x = [1, 1, 1]
+        self.assertEqual(get_coalition(0, x), {0, 1, 2})
+
+        x = [0, 1, 1]
+        self.assertEqual(get_coalition(0, x), {0})
+
+        x = [1, 1, 0]
+        self.assertEqual(get_coalition(0, x), {0, 1})
 
 if __name__ == '__main__':
     unittest.main()

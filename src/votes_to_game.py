@@ -16,5 +16,14 @@ def value_function(i, votes):
     winning_vote = majority(votes)
     if votes[i] != winning_vote:
         return 0
-    coalition = [i for i in votes if i == winning_vote]
+    coalition = [j for j in votes if j == winning_vote]
     return 1 + 1/len(coalition)
+
+def get_coalition(i, votes):
+    #TODO: clarify how to handle when i is never in a winning coalition?
+    # A: {i} or B: randomly pick a losing coalition
+    # option A makes more sense to me as the coalition size is smallest
+    winning_vote = majority(votes)
+    if votes[i] != winning_vote:
+        return {i}
+    return set([index for index, j in enumerate(votes) if j == votes[i]])
