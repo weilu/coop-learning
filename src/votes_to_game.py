@@ -10,3 +10,11 @@ def majority(votes):
         return 1
     else:
         return 2
+
+def value_function(i, votes):
+    #TODO: clarify if this is the value to group or player
+    winning_vote = majority(votes)
+    if votes[i] != winning_vote:
+        return 0
+    coalition = [i for i in votes if i == winning_vote]
+    return 1 + 1/len(coalition)

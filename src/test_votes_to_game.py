@@ -1,5 +1,5 @@
 import unittest
-from votes_to_game import majority
+from votes_to_game import majority, value_function
 
 
 class TestVotesToGame(unittest.TestCase):
@@ -19,6 +19,16 @@ class TestVotesToGame(unittest.TestCase):
 
         x = [1, 2]
         self.assertEqual(majority(x), 2)
+
+    def test_value_function(self):
+        x = [1, 1, 1]
+        self.assertEqual(value_function(0, x), 1 + 1/3)
+
+        x = [0, 1, 1]
+        self.assertEqual(value_function(0, x), 0)
+
+        x = [1, 1, 0]
+        self.assertEqual(value_function(0, x), 1.5)
 
 
 if __name__ == '__main__':
