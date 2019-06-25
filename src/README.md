@@ -10,3 +10,9 @@ Note that graph-tool requires using system default python/python3 as it is a wra
 `top_covering.py#top_cover` implements the top covering algorithm as described in Handbook of Computational Social Choice, p371.
 
 Test cases to verify correctness can be found in `test_top_covering.py`. To run tests: `python test_top_covering.py`
+
+## PAC Top Covering Algorithm
+
+`top_covering.py#top_cover` implements Algorithm 1 as described in Learning Hedonic Games by Jakub Sliwinski and Yair Zick
+
+To execute `test_knesset` in `test_pac_top_covering.py` requires symlinking/copying `votes.csv` to the `data/` directory
