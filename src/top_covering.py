@@ -79,6 +79,8 @@ def build_graph(pref):
     for k, v in pref.items():
         if len(v) < 1:
             continue
+        if type(v) is not list:
+            v = [v]
         top_ch = v[0]
         for agent in top_ch:
             if agent == k: # ignore self
