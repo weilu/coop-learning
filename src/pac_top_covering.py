@@ -7,25 +7,14 @@ def pac_top_cover(players, S):
     stable_partition = set()
     w = len(S) # TODO: Proper calculation
     while players:
-        S_prime = random.choices(S, k=w) # with replacement
-        # S_prime = S
-        # print(S_prime)
         B = {}
-        for i in players:
-            max_value = 0
-            max_arg = None
-            for T in S_prime:
-                value = value_function(i, T)
-                print(i, value, T)
-                if value > max_value:
-                    max_value = value
-                    max_arg = T
-            if not max_arg:
-                B[i] = {i}
-            else:
-                B[i] = get_coalition(i, max_arg)
-        # print(B)
-        #TODO: successive restriction loop
+        approximate_preferences(players, S, B)
+
+        # successive restriction loop
+        for _ in range(len(players)):
+            approximate_preferences(players, S, B)
+
+        # perform top covering
         graph, vlabel_to_index = build_graph(B)
         smallest_cc = find_smallest_cc(graph)
         stable_partition.add(smallest_cc)
@@ -34,6 +23,26 @@ def pac_top_cover(players, S):
             for index, el in enumerate(row):
                 if index in smallest_cc:
                     row[index] = None
-    print(stable_partition)
+
     return stable_partition
 
+
+def approximate_preferences(players, S, B):
+    # S_prime = random.choices(S, k=w) # with replacement
+    S_prime = S # TODO: stub this for testing
+    for i in players:
+        max_value = 0
+        max_arg = None
+        for T in S_prime:
+            value = value_function(i, T)
+            if value > max_value:
+                max_value = value
+                max_arg = T
+        if not max_arg:
+            B[i] = {i}
+        else:
+            coalition = get_coalition(i, max_arg)
+            if i not in B: # initialization round
+                B[i] = coalition
+            else:
+                B[i] &= coalition
