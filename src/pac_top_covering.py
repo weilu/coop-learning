@@ -3,7 +3,8 @@ from top_covering import build_graph, find_smallest_cc
 from votes_to_game import value_function, get_coalition
 
 
-def pac_top_cover(players, S):
+def pac_top_cover(num_players, S):
+    players = set(range(num_players))
     stable_partition = set()
     w = len(S) # TODO: Proper calculation
     while players:
