@@ -44,6 +44,8 @@ def check_core_stable(game, partition):
     coalition_map = partition_to_coalition_map(partition)
     for i, preferences in game.items():
         coalition = coalition_map[i]
+        if coalition not in preferences:
+            continue
         for better_coalition_index in range(0, preferences.index(coalition)):
             better_coalition = preferences[better_coalition_index]
             other_players = better_coalition - {i}
@@ -60,13 +62,15 @@ def partition_to_coalition_map(partition):
     return coalition_map
 
 def better_off(preferences, better_coalition, coalition):
-    return preferences.index(better_coalition) < preferences.index(coalition)
+    if better_coalition in preferences and coalition in preferences:
+        return preferences.index(better_coalition) < preferences.index(coalition)
+    return False # when preference isn't fully complete simply return false
 
 
 def generate_preference_ranking(i, num_players):
     ranking = [j for j in range(1, i)] + [j for j in range(i+1, num_players+1)]
     random.shuffle(ranking)
-    ranking.append(i) # TODO: Does a player have to prefer him/herself last?
+    ranking.append(i) # A player prefer him/herself last. It's not a requirement of B hedonic games
     return ranking
 
 def generate_b_hedonic_game(num_players, seed=None):
