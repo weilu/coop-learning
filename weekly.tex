@@ -10,7 +10,73 @@
 \begin{document}
 \maketitle
 
-\section*{Week: June 10th - 16th}
+\section*{2 Weeks: June 26th - July 11th}
+
+\subsection*{Goals}
+
+\begin{enumerate}
+  \item Coding and experimentation: increase size of average coalitin for Knesset output
+  \begin{itemize}
+    \item Fix value function to calculate majority only once per bill
+    \item Tweak sample size and value function
+    \begin{enumerate}
+      \item change value function to account for participation
+      \item change value function to account for how close the victory was
+      \item give losing coalition some small value
+    \end{enumerate}
+  \end{itemize}
+\end{enumerate}
+
+\subsection*{Activities}
+
+\begin{enumerate}
+  \item Pre-calculated valuations and coalition for every player and every bill
+  \item Programmatically verified core stability of Knesset output
+  \item Tried smaller sample size and the output average coalition size is still small - 1
+\end{enumerate}
+
+\subsection*{Meeting Agenda: July 12th}
+
+\begin{enumerate}
+  \item How to use additional data?
+  \item More tweaks?
+  \item How to measure output partition's closeness to party affiliation?
+\end{enumerate}
+
+\section*{Week: June 20th - 25th}
+
+\subsection*{Goals}
+
+\begin{enumerate}
+  \item Coding:
+  \begin{itemize}
+    \item Implement PAC top covering algorithm (algorithm 1)
+  \end{itemize}
+\end{enumerate}
+
+\subsection*{Activities}
+
+\begin{enumerate}
+  \item Completed first implementation of PAC top covering algorithm
+  \item Executed the algorithm on knesset data
+\end{enumerate}
+
+\subsection*{Meeting Agenda: June 26th}
+
+\begin{enumerate}
+  \item Clarification:
+  \begin{itemize}
+    \item All preferences ranked after self is solely depends on size? Yes
+    \item How to treat missing preferences? They are worse than known options
+    \item If total for votes is more than against, but less than half the parliment, does the bill pass? Yes
+    \item Do we need to recalculate majority each time any player is removed? No
+  \end{itemize}
+  \item Most output coalitions are of size 1
+  \item Construct more test cases
+  \item How to deal with uncertainty in testing?
+\end{enumerate}
+
+\section*{Week: June 10th - 20th}
 
 \subsection*{Goals}
 
@@ -26,9 +92,11 @@
 \subsection*{Activities}
 
 \begin{enumerate}
+  \item Added additional manual test cases provided by Alan
+  \item Evaluated program efficiency: game with 142 players generated in: 14s; top covering algo completed in: 18s.
 \end{enumerate}
 
-\subsection*{Meeting Agenda: June 17th}
+\subsection*{Meeting Agenda: June 21th}
 
 \begin{enumerate}
   \item Clarify PAC top covering algorithm
