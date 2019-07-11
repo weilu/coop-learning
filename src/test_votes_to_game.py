@@ -1,5 +1,5 @@
 import unittest
-from votes_to_game import majority, value_function, get_coalition
+from votes_to_game import majority, value_function, get_coalition, value_matrix_to_preferences
 
 
 class TestVotesToGame(unittest.TestCase):
@@ -39,6 +39,18 @@ class TestVotesToGame(unittest.TestCase):
 
         x = [1, 1, 0]
         self.assertEqual(get_coalition(0, x, 1), {0, 1})
+
+    def test_value_matrix_to_preferences(self):
+        # generated from S = [[1, 1, 2, 2], [1, 1, 1, 1], ]
+        value_matrix = [[0, 0, 1.5, 1.5],
+                        [1.25, 1.25, 1.25, 1.25]]
+        coalition_matrix = [[{0}, {1}, {2, 3}, {2, 3}],
+                            [{0, 1, 2, 3}, {0, 1, 2, 3}, {0, 1, 2, 3}, {0, 1, 2, 3}]]
+        game = value_matrix_to_preferences(value_matrix, coalition_matrix)
+        self.assertEqual(game[0], [{0, 1, 2, 3}, {0}])
+        self.assertEqual(game[1], [{0, 1, 2, 3}, {1}])
+        self.assertEqual(game[2], [{2, 3}, {0, 1, 2, 3}])
+        self.assertEqual(game[3], [{2, 3}, {0, 1, 2, 3}])
 
 
 if __name__ == '__main__':
