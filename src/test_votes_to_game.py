@@ -22,23 +22,24 @@ class TestVotesToGame(unittest.TestCase):
 
     def test_value_function(self):
         x = [1, 1, 1]
-        self.assertEqual(value_function(0, x), 1 + 1/3)
+        self.assertEqual(value_function(0, x, 1), 1 + 1/3)
 
         x = [0, 1, 1]
-        self.assertEqual(value_function(0, x), 0)
+        self.assertEqual(value_function(0, x, 1), 0)
 
         x = [1, 1, 0]
-        self.assertEqual(value_function(0, x), 1.5)
+        self.assertEqual(value_function(0, x, 1), 1.5)
 
     def test_get_coalition(self):
         x = [1, 1, 1]
-        self.assertEqual(get_coalition(0, x), {0, 1, 2})
+        self.assertEqual(get_coalition(0, x, 1), {0, 1, 2})
 
         x = [0, 1, 1]
-        self.assertEqual(get_coalition(0, x), {0})
+        self.assertEqual(get_coalition(0, x, 1), {0})
 
         x = [1, 1, 0]
-        self.assertEqual(get_coalition(0, x), {0, 1})
+        self.assertEqual(get_coalition(0, x, 1), {0, 1})
+
 
 if __name__ == '__main__':
     unittest.main()
