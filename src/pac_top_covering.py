@@ -40,13 +40,13 @@ def pac_top_cover(num_players, S):
         # # successive restriction loop
         # for _ in range(len(players)):
         #     approximate_preferences(players, S, B, value_matrix, coalition_matrix)
-        logging.info(f'done approximating preferences')
+        logging.debug(f'done approximating preferences')
 
         # perform top covering
         graph, vlabel_to_index = build_graph(B)
         smallest_cc = find_smallest_cc(graph)
         stable_partition.add(smallest_cc)
-        logging.info(f'done finding smallest cc')
+        logging.debug(f'done finding smallest cc')
 
         players = players - smallest_cc
 
