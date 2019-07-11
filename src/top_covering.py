@@ -87,10 +87,10 @@ def build_graph(pref):
                 continue
             g.add_edge(vlist[vlabel_to_index[k]], vlist[vlabel_to_index[agent]])
 
-    # TODO: produce debug graphs for every iteration
+    # # TODO: produce debug graphs for every iteration
     # # visualize sample graph
-    # graph_draw(g, vertex_text=vlabels, vertex_font_size=18,
-    #            output_size=(200, 200), output="sample.png")
+    # pos = arf_layout(g, max_iter=0)
+    # graph_draw(g, pos=pos, vertex_text=vlabels, output="sample.png")
 
     return g, vlabel_to_index
 
