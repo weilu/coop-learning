@@ -1,24 +1,45 @@
 import random
 import logging
 from top_covering import build_graph, find_smallest_cc
-from votes_to_game import value_function, get_coalition
+from votes_to_game import value_function, get_coalition, majority
 
 
 logging.basicConfig(format='%(asctime)s [%(levelname)s] %(message)s',
                     level=logging.INFO)
 
 
+def precalculate_valuations_and_coalitions(S):
+    winning_votes = list(map(majority, S))
+    value_matrix = []
+    coalition_matrix = []
+    for row_index, row in enumerate(S):
+        winning_vote = winning_votes[row_index]
+        values = []
+        coalitions = []
+        for col_index, vote in enumerate(row):
+            values.append(value_function(col_index, row, winning_vote))
+            coalitions.append(get_coalition(col_index, row, winning_vote))
+        value_matrix.append(values)
+        coalition_matrix.append(coalitions)
+    return value_matrix, coalition_matrix
+
+
 def pac_top_cover(num_players, S):
     players = set(range(num_players))
     stable_partition = set()
+
+    logging.info(f'Start calculating valuations & coalitions')
+    value_matrix, coalition_matrix = precalculate_valuations_and_coalitions(S)
+    logging.info(f'Done calculating valuations & coalitions')
+
     while players:
         logging.info(f'{len(players)} players left')
         B = {}
-        approximate_preferences(players, S, B)
+        approximate_preferences(players, S, B, value_matrix, coalition_matrix)
 
         # # successive restriction loop
         # for _ in range(len(players)):
-        #     approximate_preferences(players, S, B)
+        #     approximate_preferences(players, S, B, value_matrix, coalition_matrix)
         logging.info(f'done approximating preferences')
 
         # perform top covering
@@ -28,32 +49,29 @@ def pac_top_cover(num_players, S):
         logging.info(f'done finding smallest cc')
 
         players = players - smallest_cc
-        for row in S:
-            for index, el in enumerate(row):
-                if index in smallest_cc:
-                    row[index] = None
 
     return stable_partition
 
 
-def approximate_preferences(players, S, B):
+def approximate_preferences(players, S, B, value_matrix, coalition_matrix):
     # w = len(S) # TODO: Proper calculation
-    # S_prime = random.choices(S, k=w) # with replacement
-    S_prime = S # TODO: stub this for testing
+    # S_prime_indexes = random.choices(range(len(S)), k=w) # with replacement
+    S_prime_indexes = range(len(S)) # TODO: stub this for testing
     for i in players:
         max_value = 0
         max_arg = None
-        for T in S_prime:
-            value = value_function(i, T)
+        for row_index in S_prime_indexes:
+            value = value_matrix[row_index][i]
             if value > max_value:
                 max_value = value
-                max_arg = T
-        if not max_arg:
+                max_arg = row_index
+        if max_arg == None:
             B[i] = {i}
         else:
-            coalition = get_coalition(i, max_arg)
+            coalition = coalition_matrix[max_arg][i]
+            coalition &= players # coalition_matrix always contains the full set of players
             if i not in B: # initialization round
                 B[i] = coalition
             else:
                 B[i] &= coalition
-        logging.debug(i, max_value, B[i])
+        logging.debug(f'{i}, {max_value}, {B[i]}')

@@ -11,19 +11,14 @@ def majority(votes):
     else:
         return 2
 
-def value_function(i, votes):
-    #TODO: clarify if this is the value to group or player
-    winning_vote = majority(votes)
+# how happy an individual player is
+def value_function(i, votes, winning_vote):
     if votes[i] != winning_vote:
         return 0
     coalition = [j for j in votes if j == winning_vote]
     return 1 + 1/len(coalition)
 
-def get_coalition(i, votes):
-    #TODO: clarify how to handle when i is never in a winning coalition?
-    # A: {i} or B: randomly pick a losing coalition
-    # option A makes more sense to me as the coalition size is smallest
-    winning_vote = majority(votes)
+def get_coalition(i, votes, winning_vote):
     if votes[i] != winning_vote:
         return {i}
     return set([index for index, j in enumerate(votes) if j == votes[i]])
