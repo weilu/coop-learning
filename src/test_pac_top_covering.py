@@ -2,7 +2,9 @@ import unittest
 import csv
 import statistics
 import random
-from pac_top_covering import pac_top_cover
+from pac_top_covering import pac_top_cover, precalculate_valuations_and_coalitions
+from game_generator import check_core_stable
+from votes_to_game import value_matrix_to_preferences
 
 
 class TestPacTopCovering(unittest.TestCase):
@@ -32,6 +34,10 @@ class TestPacTopCovering(unittest.TestCase):
             print(pi)
             print_partition_stats(pi)
             # print(index_to_label(player_labels, pi))
+
+            value_matrix, coalition_matrix = precalculate_valuations_and_coalitions(votes)
+            game = value_matrix_to_preferences(value_matrix, coalition_matrix)
+            self.assertTrue(check_core_stable(game, pi))
 
 
 def index_to_label(player_labels, pi):
