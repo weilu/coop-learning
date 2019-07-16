@@ -39,7 +39,7 @@ def fetch_bill_results():
 
 
 def count_vote(vote_value, votes):
-    counted_votes = [1 for i in votes if int(i) == vote_value]
+    counted_votes = [1 for i in votes if i != '' and int(i) == vote_value]
     return sum(counted_votes)
 
 
