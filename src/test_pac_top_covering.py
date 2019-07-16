@@ -29,7 +29,7 @@ class TestPacTopCovering(unittest.TestCase):
             reader = csv.reader(f)
             player_labels = next(reader, None)
             player_labels = player_labels[1:]
-            votes = [[int(i) for i in row[1:]] for row in reader]
+            votes = [[int(i) if i != '' else '' for i in row[1:]] for row in reader]
             pi = pac_top_cover(len(player_labels), votes)
             print(pi)
             print_partition_stats(pi)
