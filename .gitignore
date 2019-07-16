@@ -3,5 +3,4 @@
 *.blg
 *.log
 *.pdf
-src/data/*.csv
 *.pyc
