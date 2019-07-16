@@ -13,11 +13,15 @@ def majority(votes):
         return 2
 
 # how happy an individual player is
-def value_function(i, votes, winning_vote):
+def value_function(i, votes, winning_vote, participation=False):
     if votes[i] != winning_vote:
         return 0
     coalition = [j for j in votes if j == winning_vote]
-    return 1 + 1/len(coalition)
+    value = 1 + 1/len(coalition)
+    if participation:
+        valid_votes = sum([1 for j in votes if j in (1, 2)])
+        value += valid_votes/len(votes)
+    return value
 
 def get_coalition(i, votes, winning_vote):
     if votes[i] != winning_vote:

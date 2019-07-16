@@ -17,7 +17,7 @@ def precalculate_valuations_and_coalitions(S):
         values = []
         coalitions = []
         for col_index, vote in enumerate(row):
-            values.append(value_function(col_index, row, winning_vote))
+            values.append(value_function(col_index, row, winning_vote, participation=True))
             coalitions.append(get_coalition(col_index, row, winning_vote))
         value_matrix.append(values)
         coalition_matrix.append(coalitions)
