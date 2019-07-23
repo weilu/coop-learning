@@ -12,6 +12,7 @@ BILL_RESULT_FILE = 'data/voting_results.csv'
 BILL_RESULT_HEADERS = [
         'vote_id',
         'sess_item_dscr',
+        'vote_item_dscr',
         'vote_date',
         'vote_time',
         'is_elctrnc_vote',
@@ -26,16 +27,16 @@ BILL_RESULT_HEADERS = [
 
 def fetch_bill_results():
     c = Client('http://knesset.gov.il/Odata/Votes.svc/')
-    res = c.feeds['View_vote_rslts_hdr_Approved'].open()
-    filter = core.CommonExpression.from_str("knesset_num eq 20")
-    res.set_filter(filter)
+    with c.feeds['View_vote_rslts_hdr_Approved'].open() as res:
+        filter = core.CommonExpression.from_str("knesset_num eq 20")
+        res.set_filter(filter)
 
-    with open(BILL_RESULT_FILE, 'w') as f:
-        csv_writer = csv.writer(f)
-        csv_writer.writerow(BILL_RESULT_HEADERS)
+        with open(BILL_RESULT_FILE, 'w') as f:
+            csv_writer = csv.writer(f)
+            csv_writer.writerow(BILL_RESULT_HEADERS)
 
-        for p in res.itervalues():
-            csv_writer.writerow([p[key].value for key in BILL_RESULT_HEADERS])
+            for p in res.itervalues():
+                csv_writer.writerow([p[key].value for key in BILL_RESULT_HEADERS])
 
 
 def count_vote(vote_value, votes):
@@ -88,7 +89,10 @@ if __name__ == '__main__':
             if passed != int(result['is_accepted']):
                 consistent = False
                 num_pass_inconsistent += 1
-                logging.warning(f"{bill_id} total for count mismatch - expected: {result['is_accepted']}, actual {passed}")
+                # print(f"{bill_id}: {result['sess_item_dscr']}, {result['vote_item_dscr']}")
+                print(f"{bill_id} total passed count mismatch - expected: {result['is_accepted']}, actual {passed}, "
+                                f"expected for: {result['total_for']}, actual for: {num_for}, "
+                                f"expected against: {result['total_against']}, actual against: {num_against}")
             if num_for != int(result['total_for']):
                 consistent = False
                 num_for_inconsistent += 1
