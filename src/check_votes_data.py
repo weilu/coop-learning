@@ -66,7 +66,7 @@ if __name__ == '__main__':
     num_against_inconsistent = 0
     num_abstained_inconsistent = 0
 
-    with open('data/votes.csv') as f:
+    with open('data/votes_names.csv') as f:
         csv_reader = csv.reader(f)
         next(csv_reader, None) # skip header
 

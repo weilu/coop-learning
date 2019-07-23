@@ -25,7 +25,7 @@ class TestPacTopCovering(unittest.TestCase):
 
     def test_knesset(self):
         random.seed(42)
-        with open('data/votes.csv') as f:
+        with open('data/votes_names.csv') as f:
             reader = csv.reader(f)
             player_labels = next(reader, None)
             player_labels = player_labels[1:]
@@ -33,7 +33,7 @@ class TestPacTopCovering(unittest.TestCase):
             pi = pac_top_cover(len(player_labels), votes)
             print(pi)
             print_partition_stats(pi)
-            # print(index_to_label(player_labels, pi))
+            print(index_to_label(player_labels, pi))
 
             value_matrix, coalition_matrix = precalculate_valuations_and_coalitions(votes)
             game = value_matrix_to_preferences(value_matrix, coalition_matrix)
