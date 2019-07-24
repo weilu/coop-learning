@@ -1,3 +1,5 @@
+import numpy as np
+from scipy.optimize import linear_sum_assignment
 from operator import itemgetter
 
 def majority(votes):
@@ -37,4 +39,29 @@ def value_matrix_to_preferences(value_matrix, coalition_matrix):
         sorted_zipped = sorted(zipped, key=itemgetter(0), reverse=True)
         game[col] = [pair[1] for pair in sorted_zipped]
     return game
+
+
+def partition_edit_distance(part1, part2):
+    max_num_parts = max(len(part1), len(part2))
+    max_coal_size = max(max(len(col) for col in part1),
+                        max(len(col) for col in part2))
+    cost_matrix = np.full((max_num_parts, max_num_parts), max_coal_size)
+
+    part1 = list(part1)
+    part2 = list(part2)
+    for i in range(max_num_parts):
+        for j in range(max_num_parts):
+            cost = max_coal_size
+            if i >= len(part1) and j < len(part2):
+                cost = len(part2[j])
+            elif i < len(part1) and j >= len(part2):
+                cost = len(part1[i])
+            else: # both present
+                num_common = len(part1[i] & part2[j])
+                cost = len(part1[i] | part2[j]) - num_common
+            cost_matrix[i, j] = cost
+
+    row_ind, col_ind = linear_sum_assignment(cost_matrix)
+    # divide by 2 because each cost is accounted for twice
+    return cost_matrix[row_ind, col_ind].sum() / 2
 

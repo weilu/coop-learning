@@ -1,5 +1,5 @@
 import unittest
-from votes_to_game import majority, value_function, get_coalition, value_matrix_to_preferences
+from votes_to_game import majority, value_function, get_coalition, value_matrix_to_preferences, partition_edit_distance
 
 
 class TestVotesToGame(unittest.TestCase):
@@ -51,6 +51,22 @@ class TestVotesToGame(unittest.TestCase):
         self.assertEqual(game[1], [{0, 1, 2, 3}, {1}])
         self.assertEqual(game[2], [{2, 3}, {0, 1, 2, 3}])
         self.assertEqual(game[3], [{2, 3}, {0, 1, 2, 3}])
+
+    def test_partition_edit_distance(self):
+        dist = partition_edit_distance(
+                {frozenset({1, 2}), frozenset({3})},
+                {frozenset({1, 2}), frozenset({3})})
+        self.assertEqual(dist, 0)
+
+        dist = partition_edit_distance(
+                {frozenset({1, 2}), frozenset({3})},
+                {frozenset({1, 2, 3})})
+        self.assertEqual(dist, 1)
+
+        dist = partition_edit_distance(
+                {frozenset({1, 2}), frozenset({3, 4}), frozenset({5})},
+                {frozenset({1}), frozenset({2}), frozenset({3, 4, 5})})
+        self.assertEqual(dist, 2)
 
 
 if __name__ == '__main__':
