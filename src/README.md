@@ -2,8 +2,22 @@
 
 - python3
 - [graph-tool](https://git.skewed.de/count0/graph-tool/wikis/installation-instructions)
+- virtualenvwraper (optional but good for your sanity)
 
-Note that graph-tool requires using system default python/python3 as it is a wrapper around a C++ implementation, so if you are using virtualenv/virtualenvwraper remember to run `deactivate`.
+Note that graph-tool requires using system default python/python3 as it is a wrapper around a C++ implementation, so if you are using virtualenv/virtualenvwraper see https://jolo.xyz/blog/2018/12/07/installing-graph-tool-with-virtualenv
+
+```bash
+mkvirtualenv knesset
+workon knesset
+pip install -r requirements.txt
+```
+
+To verify setup, run all tests:
+
+```bash
+python -m unittest discover .
+```
+
 
 ## Top Covering Algorithm
 
