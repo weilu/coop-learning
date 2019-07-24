@@ -24,7 +24,7 @@ def precalculate_valuations_and_coalitions(S):
     return value_matrix, coalition_matrix
 
 
-def pac_top_cover(num_players, S):
+def pac_top_cover(num_players, S, w=None):
     players = set(range(num_players))
     stable_partition = set()
 
@@ -35,11 +35,12 @@ def pac_top_cover(num_players, S):
     while players:
         logging.info(f'{len(players)} players left')
         B = {}
-        approximate_preferences(players, S, B, value_matrix, coalition_matrix)
+        approximate_preferences(players, S, B, value_matrix, coalition_matrix, w)
 
-        # # successive restriction loop
-        # for _ in range(len(players)):
-        #     approximate_preferences(players, S, B, value_matrix, coalition_matrix)
+        # if w != None: # w = None means no sampling
+        #     # successive restriction loop
+        #     for _ in range(len(players)):
+        #         approximate_preferences(players, S, B, value_matrix, coalition_matrix, w)
         logging.debug(f'done approximating preferences')
 
         # perform top covering
@@ -53,10 +54,12 @@ def pac_top_cover(num_players, S):
     return stable_partition
 
 
-def approximate_preferences(players, S, B, value_matrix, coalition_matrix):
-    # w = len(S) # TODO: Proper calculation
-    # S_prime_indexes = random.choices(range(len(S)), k=w) # with replacement
-    S_prime_indexes = range(len(S)) # TODO: stub this for testing
+def approximate_preferences(players, S, B, value_matrix, coalition_matrix, w):
+    if w == None: # no sampling, useful for testing
+        w = len(S)
+        S_prime_indexes = range(len(S))
+    else:
+        S_prime_indexes = random.choices(range(len(S)), k=w) # with replacement
     for i in players:
         max_value = 0
         max_arg = None
