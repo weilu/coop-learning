@@ -29,4 +29,4 @@ Test cases to verify correctness can be found in `test_top_covering.py`. To run 
 
 `top_covering.py#top_cover` implements Algorithm 1 as described in Learning Hedonic Games by Jakub Sliwinski and Yair Zick
 
-To execute `test_knesset` in `test_pac_top_covering.py` requires symlinking/copying `votes.csv` to the `data/` directory
+To execute the PAC top covering algorithm on the knesset dataset, run test cases in `knesset_test_pac_top_covering.py`: `python knesset_test_pac_top_covering.py`. `test_knesset` is slow (~1min) due to core stability check. `test_knesset_sampling` is extra slow (~35min) due to executing the algorithm 100 times.
