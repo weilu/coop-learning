@@ -69,7 +69,7 @@ def approximate_preferences(players, S, B, value_matrix, coalition_matrix, w):
                 max_value = value
                 max_arg = row_index
         if max_arg == None:
-            B[i] = {i}
+            B[i] = {i} # checking if i in B doesn't seem to make a difference with the knesset dataset
         else:
             coalition = coalition_matrix[max_arg][i]
             coalition &= players # coalition_matrix always contains the full set of players
