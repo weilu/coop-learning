@@ -53,20 +53,27 @@ class TestVotesToGame(unittest.TestCase):
         self.assertEqual(game[3], [{2, 3}, {0, 1, 2, 3}])
 
     def test_partition_edit_distance(self):
-        dist = partition_edit_distance(
+        dist, _ = partition_edit_distance(
                 {frozenset({1, 2}), frozenset({3})},
                 {frozenset({1, 2}), frozenset({3})})
         self.assertEqual(dist, 0)
 
-        dist = partition_edit_distance(
+        dist, pairs = partition_edit_distance(
                 {frozenset({1, 2}), frozenset({3})},
                 {frozenset({1, 2, 3})})
         self.assertEqual(dist, 1)
+        self.assertEqual(pairs[1], (frozenset({1, 2}), frozenset({1, 2, 3})))
+        self.assertEqual(pairs[0], (frozenset({3}), frozenset({})))
 
-        dist = partition_edit_distance(
+        dist, pairs = partition_edit_distance(
                 {frozenset({1, 2}), frozenset({3, 4}), frozenset({5})},
                 {frozenset({1}), frozenset({2}), frozenset({3, 4, 5})})
         self.assertEqual(dist, 2)
+
+        dist, pairs = partition_edit_distance(
+                {frozenset({1, 2}), frozenset({3, 4}), frozenset({5}), frozenset({6})},
+                {frozenset({1}), frozenset({2}), frozenset({3, 4, 5, 6})})
+        self.assertEqual(dist, 3)
 
 
 if __name__ == '__main__':

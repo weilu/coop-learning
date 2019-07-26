@@ -2,6 +2,7 @@ import unittest
 import csv
 import statistics
 import random
+from top_covering import top_cover
 from pac_top_covering import pac_top_cover, precalculate_valuations_and_coalitions
 from game_generator import check_core_stable
 from votes_to_game import value_matrix_to_preferences, partition_edit_distance
@@ -10,14 +11,23 @@ from votes_to_game import value_matrix_to_preferences, partition_edit_distance
 class KnessetTestPacTopCovering(unittest.TestCase):
 
     def test_knesset(self):
+        # run pac top cover
         votes, player_labels = knesset_votes_to_game()
-        pi = pac_top_cover(len(player_labels), votes)
-        print_partition_stats(pi)
-        # print(pi)
-        # print(index_to_label(player_labels, pi))
+        pi_pac = pac_top_cover(len(player_labels), votes)
+        print_partition_stats(pi_pac)
 
+        # run top cover
         value_matrix, coalition_matrix = precalculate_valuations_and_coalitions(votes)
         game = value_matrix_to_preferences(value_matrix, coalition_matrix)
+        pi = top_cover(game)
+        print_partition_stats(pi)
+
+        edit_distance, paired_partitions = partition_edit_distance(pi, pi_pac)
+        print(f'\nEdit distance between pac and original top covering output: {edit_distance}')
+        print(paired_partitions)
+
+        # check both partitions are stable
+        self.assertTrue(check_core_stable(game, pi_pac))
         self.assertTrue(check_core_stable(game, pi))
 
 
@@ -42,23 +52,11 @@ class KnessetTestPacTopCovering(unittest.TestCase):
             for p2 in partitions:
                 if p1 == p2:
                     continue
-                distances.append(partition_edit_distance(p1, p2))
+                distances.append(partition_edit_distance(p1, p2)[0])
         print_partition_stability_stats(distances)
 
 
 def knesset_votes_to_game():
-    def test_knesset_top_cover(self):
-        votes, player_labels = knesset_votes_to_game()
-        value_matrix, coalition_matrix = precalculate_valuations_and_coalitions(votes)
-        game = value_matrix_to_preferences(value_matrix, coalition_matrix)
-        pi = top_cover(game)
-        print_partition_stats(pi)
-        print(pi)
-        # print(index_to_label(player_labels, pi))
-
-        self.assertTrue(check_core_stable(game, pi))
-
-
     with open('data/votes_names.csv') as f:
         reader = csv.reader(f)
         player_labels = next(reader, None)

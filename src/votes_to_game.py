@@ -62,6 +62,19 @@ def partition_edit_distance(part1, part2):
             cost_matrix[i, j] = cost
 
     row_ind, col_ind = linear_sum_assignment(cost_matrix)
+    ordered_part1 = to_ordered_partition(part1, row_ind)
+    ordered_part2 = to_ordered_partition(part2, col_ind)
     # divide by 2 because each cost is accounted for twice
-    return cost_matrix[row_ind, col_ind].sum() / 2
+    return cost_matrix[row_ind, col_ind].sum() / 2, list(zip(ordered_part1, ordered_part2))
+
+
+def to_ordered_partition(partition, indexes):
+    ordered_part = []
+    for i in indexes:
+        if i < len(partition):
+            ordered_part.append(partition[i])
+        else:
+            ordered_part.append(frozenset())
+    return ordered_part
+
 
