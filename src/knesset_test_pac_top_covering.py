@@ -47,6 +47,18 @@ class KnessetTestPacTopCovering(unittest.TestCase):
 
 
 def knesset_votes_to_game():
+    def test_knesset_top_cover(self):
+        votes, player_labels = knesset_votes_to_game()
+        value_matrix, coalition_matrix = precalculate_valuations_and_coalitions(votes)
+        game = value_matrix_to_preferences(value_matrix, coalition_matrix)
+        pi = top_cover(game)
+        print_partition_stats(pi)
+        print(pi)
+        # print(index_to_label(player_labels, pi))
+
+        self.assertTrue(check_core_stable(game, pi))
+
+
     with open('data/votes_names.csv') as f:
         reader = csv.reader(f)
         player_labels = next(reader, None)
