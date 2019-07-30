@@ -3,9 +3,9 @@ import csv
 import statistics
 import random
 from top_covering import top_cover
-from pac_top_covering import pac_top_cover, precalculate_valuations_and_coalitions
+from pac_top_covering import pac_top_cover
 from game_generator import check_core_stable
-from votes_to_game import value_matrix_to_preferences, partition_edit_distance
+from votes_to_game import value_matrix_to_preferences, partition_edit_distance, precalculate_valuations_and_coalitions
 
 
 class KnessetTestPacTopCovering(unittest.TestCase):

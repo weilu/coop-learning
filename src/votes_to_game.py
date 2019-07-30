@@ -83,3 +83,17 @@ def to_ordered_partition(partition, indexes):
     return ordered_part
 
 
+def precalculate_valuations_and_coalitions(S):
+    winning_votes = list(map(majority, S))
+    value_matrix = []
+    coalition_matrix = []
+    for row_index, row in enumerate(S):
+        winning_vote = winning_votes[row_index]
+        values = []
+        coalitions = []
+        for col_index, vote in enumerate(row):
+            values.append(value_function(col_index, row, winning_vote, participation=True))
+            coalitions.append(get_coalition(col_index, row, winning_vote))
+        value_matrix.append(values)
+        coalition_matrix.append(coalitions)
+    return value_matrix, coalition_matrix

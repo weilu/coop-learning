@@ -1,27 +1,11 @@
 import random
 import logging
 from top_covering import build_graph, find_smallest_cc
-from votes_to_game import value_function, get_coalition, majority
+from votes_to_game import value_function, get_coalition, majority, precalculate_valuations_and_coalitions
 
 
 logging.basicConfig(format='%(asctime)s [%(levelname)s] %(message)s',
                     level=logging.INFO)
-
-
-def precalculate_valuations_and_coalitions(S):
-    winning_votes = list(map(majority, S))
-    value_matrix = []
-    coalition_matrix = []
-    for row_index, row in enumerate(S):
-        winning_vote = winning_votes[row_index]
-        values = []
-        coalitions = []
-        for col_index, vote in enumerate(row):
-            values.append(value_function(col_index, row, winning_vote, participation=True))
-            coalitions.append(get_coalition(col_index, row, winning_vote))
-        value_matrix.append(values)
-        coalition_matrix.append(coalitions)
-    return value_matrix, coalition_matrix
 
 
 def pac_top_cover(num_players, S, w=None):
