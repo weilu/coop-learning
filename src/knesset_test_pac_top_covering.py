@@ -4,7 +4,7 @@ import statistics
 import random
 from top_covering import top_cover
 from pac_top_covering import pac_top_cover
-from game_generator import check_core_stable
+from game_generator import check_core_stable, search_stable_partition
 from votes_to_game import value_matrix_to_preferences, partition_edit_distance, precalculate_valuations_and_coalitions
 
 
@@ -54,6 +54,20 @@ class KnessetTestPacTopCovering(unittest.TestCase):
                     continue
                 distances.append(partition_edit_distance(p1, p2)[0])
         print_partition_stability_stats(distances)
+
+
+    def test_knesset_search(self):
+        votes, player_labels = knesset_votes_to_game()
+        value_matrix, coalition_matrix = precalculate_valuations_and_coalitions(votes)
+        max_len = 0
+        for row in coalition_matrix:
+            for el in row:
+                if len(el) > max_len:
+                    max_len = len(el)
+        game = value_matrix_to_preferences(value_matrix, coalition_matrix)
+        pi = search_stable_partition(game)
+        print_partition_stats(pi)
+        print(pi)
 
 
 def knesset_votes_to_game():
