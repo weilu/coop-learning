@@ -47,9 +47,16 @@ class TestVotesToGame(unittest.TestCase):
         coalition_matrix = [[{0}, {1}, {2, 3}, {2, 3}],
                             [{0, 1, 2, 3}, {0, 1, 2, 3}, {0, 1, 2, 3}, {0, 1, 2, 3}]]
         game = value_matrix_to_preferences(value_matrix, coalition_matrix)
-        self.assertEqual(game[0], [{0, 1, 2, 3}, {0}])
-        self.assertEqual(game[1], [{0, 1, 2, 3}, {1}])
+        self.assertEqual(game[0], [{0, 1, 2, 3}])
+        self.assertEqual(game[1], [{0, 1, 2, 3}])
         self.assertEqual(game[2], [{2, 3}, {0, 1, 2, 3}])
+        self.assertEqual(game[3], [{2, 3}, {0, 1, 2, 3}])
+
+        # check that duplicates and 0 values are dropped
+        value_matrix.append(value_matrix[0])
+        coalition_matrix.append(coalition_matrix[0])
+        game = value_matrix_to_preferences(value_matrix, coalition_matrix)
+        self.assertEqual(game[0], [{0, 1, 2, 3}])
         self.assertEqual(game[3], [{2, 3}, {0, 1, 2, 3}])
 
     def test_partition_edit_distance(self):

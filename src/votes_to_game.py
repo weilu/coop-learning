@@ -28,13 +28,18 @@ def value_function(i, votes, winning_vote, participation=False):
 def get_coalition(i, votes, winning_vote):
     if votes[i] != winning_vote:
         return {i}
-    return set([index for index, j in enumerate(votes) if j == votes[i]])
+    return frozenset([index for index, j in enumerate(votes) if j == votes[i]])
 
 def value_matrix_to_preferences(value_matrix, coalition_matrix):
     game = {}
     for col in range(len(value_matrix[0])):
-        values = [row[col] for row in value_matrix]
-        coalitions = [row[col] for row in coalition_matrix]
+        values = []
+        coalitions = []
+        for i, row in enumerate(coalition_matrix):
+            value = value_matrix[i][col]
+            if row[col] not in coalitions and value > 0:
+                coalitions.append(row[col])
+                values.append(value)
         zipped = zip(values, coalitions)
         sorted_zipped = sorted(zipped, key=itemgetter(0), reverse=True)
         game[col] = [pair[1] for pair in sorted_zipped]
