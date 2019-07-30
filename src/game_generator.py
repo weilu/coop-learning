@@ -63,7 +63,10 @@ def partition_to_coalition_map(partition):
 def better_off(preferences, better_coalition, coalition):
     if better_coalition in preferences and coalition in preferences:
         return preferences.index(better_coalition) < preferences.index(coalition)
-    return False # when preference isn't fully complete simply return false
+    elif better_coalition in preferences:
+        return True
+    else:
+        return False
 
 
 def generate_preference_ranking(i, num_players):
