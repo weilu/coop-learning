@@ -1,6 +1,7 @@
 import unittest
 from game_generator import get_all_subsets, get_choice_set,\
-        check_top_responsive, generate_b_hedonic_game, check_core_stable
+        check_top_responsive, generate_b_hedonic_game, check_core_stable,\
+        search_stable_partition
 
 
 class TestGameGenerator(unittest.TestCase):
@@ -65,6 +66,9 @@ class TestGameGenerator(unittest.TestCase):
         pi = [{1, 2}, {3, 4}]
         self.assertFalse(check_core_stable(game, pi))
 
+        better_coalition = check_core_stable(game, pi, return_better=True)[1]
+        self.assertEqual(better_coalition, {2, 3})
+
         game = {
             1: [{1, 2}, {1, 3}, {1}, {1, 2, 3}],
             2: [{2, 3}, {1, 2}, {2}, {1, 2, 3}],
@@ -75,7 +79,6 @@ class TestGameGenerator(unittest.TestCase):
 
         pi = [{1, 2}, {3}]
         self.assertFalse(check_core_stable(game, pi))
-
 
         game = {
             1: [{1, 2}, {1, 2, 3}],
@@ -95,6 +98,16 @@ class TestGameGenerator(unittest.TestCase):
         }
         pi = [{1, 3}, {2}] #blocked by {1, 2, 3}
         self.assertFalse(check_core_stable(game, pi))
+
+    def test_check_core_stable_iterative(self):
+        game = {
+            1: [{1, 2}, {1, 2, 3}, {1, 2, 4}, {1, 2, 3, 4}, {1, 3}, {1, 3, 4}, {1, 4}, {1}],
+            2: [{2, 3}, {2, 3, 4}, {1, 2, 3}, {1, 2, 3, 4}, {2, 4}, {1, 2, 4}, {1, 2}, {2}],
+            3: [{1, 3}, {1, 2, 3}, {1, 3, 4}, {1, 2, 3, 4}, {2, 3}, {2, 3, 4}, {3, 4}, {3}],
+            4: [{3, 4}, {2, 3, 4}, {1, 3, 4}, {1, 2, 3, 4}, {2, 4}, {1, 2, 4}, {1, 4}, {4}]
+        }
+        self.assertEqual(search_stable_partition(game),
+                         [frozenset({1, 2, 3}), frozenset({4})])
 
 
 if __name__ == '__main__':

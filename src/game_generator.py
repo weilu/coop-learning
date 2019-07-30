@@ -40,7 +40,7 @@ def get_all_subsets(available_players):
     return all_subsets
 
 
-def check_core_stable(game, partition):
+def check_core_stable(game, partition, return_better=False):
     coalition_map = partition_to_coalition_map(partition)
     for i, preferences in game.items():
         coalition = coalition_map[i]
@@ -50,8 +50,14 @@ def check_core_stable(game, partition):
             other_players = better_coalition - {i}
             better_for_all = all(better_off(game[j], better_coalition, coalition_map[j]) for j in other_players)
             if better_for_all:
-                return False
-    return True
+                if return_better:
+                    return False, better_coalition
+                else:
+                    return False
+    if return_better:
+        return True, {}
+    else:
+        return True
 
 def partition_to_coalition_map(partition):
     coalition_map = {}
@@ -67,6 +73,24 @@ def better_off(preferences, better_coalition, coalition):
         return True
     else:
         return False
+
+def search_stable_partition(game):
+    pi = [frozenset(game.keys())]
+    is_stable = False
+    while not is_stable:
+        is_stable, better_coalition = check_core_stable(game, pi, return_better=True)
+        if is_stable:
+            break
+        new_pi = [frozenset(better_coalition)]
+        for coal in pi:
+            if coal & better_coalition:
+                remain = coal - better_coalition
+                if remain:
+                    new_pi.append(frozenset(remain))
+            else:
+                new_pi.append(coal)
+        pi = new_pi
+    return pi
 
 
 def generate_preference_ranking(i, num_players):
