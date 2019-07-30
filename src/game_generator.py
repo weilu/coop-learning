@@ -44,9 +44,8 @@ def check_core_stable(game, partition):
     coalition_map = partition_to_coalition_map(partition)
     for i, preferences in game.items():
         coalition = coalition_map[i]
-        if coalition not in preferences:
-            continue
-        for better_coalition_index in range(0, preferences.index(coalition)):
+        end_index = len(preferences) if coalition not in preferences else preferences.index(coalition)
+        for better_coalition_index in range(0, end_index):
             better_coalition = preferences[better_coalition_index]
             other_players = better_coalition - {i}
             better_for_all = all(better_off(game[j], better_coalition, coalition_map[j]) for j in other_players)

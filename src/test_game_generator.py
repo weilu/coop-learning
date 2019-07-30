@@ -77,5 +77,14 @@ class TestGameGenerator(unittest.TestCase):
         self.assertFalse(check_core_stable(game, pi))
 
 
+        game = {
+            1: [{1, 2}, {1, 2, 3}],
+            2: [{2, 3}, {2}],
+            3: [{1, 2, 3}, {2, 3}]
+        }
+        pi = [{1, 2}, {3}] # blocked by {2, 3}
+        self.assertFalse(check_core_stable(game, pi))
+
+
 if __name__ == '__main__':
     unittest.main()
