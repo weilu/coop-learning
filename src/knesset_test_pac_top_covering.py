@@ -69,6 +69,18 @@ class KnessetTestPacTopCovering(unittest.TestCase):
         print_partition_stats(pi)
         print(pi)
 
+    def test_count_missing_votes(self):
+        with open('data/votes_names.csv') as f:
+            reader = csv.reader(f)
+            next(reader, None)
+            total_missing = 0
+            total = 0
+            for row in reader:
+                missing = sum(1 if vote == '' else 0 for vote in row[1:])
+                total_missing += missing
+                total += sum(1 for vote in row[1:])
+        print(f'missing vote value: {total_missing}, total number of votes: {total}, missing percentage: {round(total_missing/total * 100, 2)}%')
+
 
 def knesset_votes_to_game():
     with open('data/votes_names.csv') as f:
