@@ -46,19 +46,20 @@ def approximate_preferences(players, S, B, value_matrix, coalition_matrix, w):
         S_prime_indexes = random.choices(range(len(S)), k=w) # with replacement
     for i in players:
         max_value = 0
-        max_arg = None
+        max_coalition = None
         for row_index in S_prime_indexes:
+            coalition = coalition_matrix[row_index][i]
+            if coalition - players:
+                continue
             value = value_matrix[row_index][i]
             if value > max_value:
                 max_value = value
-                max_arg = row_index
-        if max_arg == None:
+                max_coalition = coalition
+        if max_coalition == None:
             B[i] = {i} # checking if i in B doesn't seem to make a difference with the knesset dataset
         else:
-            coalition = coalition_matrix[max_arg][i]
-            coalition &= players # coalition_matrix always contains the full set of players
             if i not in B: # initialization round
-                B[i] = coalition
+                B[i] = max_coalition
             else:
-                B[i] &= coalition
+                B[i] &= max_coalition
         logging.debug(f'{i}, {max_value}, {B[i]}')
