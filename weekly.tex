@@ -10,12 +10,99 @@
 \begin{document}
 \maketitle
 
+\section*{Week: July 28th - Aug 1st}
+
+\subsection*{Goals}
+
+\begin{enumerate}
+  \item Find out why PAC without sampling and original top covering are producing different results
+  \item Implement brute force search and split algorithm to discover stable parition
+  \item More writing
+\end{enumerate}
+
+\subsection*{Activities}
+
+\begin{enumerate}
+  \item Two algorithm outputs are different because PAC implementation is buggy - it shouldn't consider coalitions containing players that have already been removed. Fixed.
+  \item Implemented a search and split algorithm to find stable partition
+  \item Fixed core stability check - the ``better-off'' check was too weak, it completely ignored unknown coalition for a player, it should have checked through the complete preference list instead
+  \item Make top responsive check more efficient by only checking known coalitions
+  \item Discovered that the derived Knesset game isn't top responsive
+  \item Report: 1 page
+\end{enumerate}
+
+\subsection*{Meeting Agenda: Aug 2nd}
+
+\begin{enumerate}
+  \item How to make Knesset game top responsive?
+  \item Does top covering algorithm work on non-top responsive games too?
+  \item Discuss search split algo results
+  \item Is it meaningful to find solution that maximizes social welfare in our case?
+\end{enumerate}
+
+\section*{Week: July 17th - July 28th}
+
+\subsection*{Goals}
+
+\begin{enumerate}
+  \item Get the latest data: redownload data in case data has been updated since last download
+  \item Evaluate data quality: find out which endpoint provide more consistent data within itself
+  \item Literature review: Coalition structure generation: A survey https://www.sciencedirect.com/science/article/abs/pii/S0004370215001198
+  \item Run 100 times on 3/4 and participations accounted see if the generated structure is stable
+  \item Start writing
+\end{enumerate}
+
+\subsection*{Activities}
+
+\begin{enumerate}
+  \item Redownloaded data - the votes data indeed have been updated since last download
+  \item Inconclusive which endpoint has higher quality data as they both are consistent within
+  \item Read paper: Coalition structure generation: A survey
+  \item Executed PAC algo with sampling of 3/4 of bills - the output structures are stable, but full of singletons when restriction loop is activated (not sure why)
+  \item Wrote one paragraph about our data set
+\end{enumerate}
+
+\subsection*{Meeting Agenda: July 29th}
+
+\begin{enumerate}
+  \item What to do with data inconsistency?
+  \item What could have caused the singletons when sampling with restrictive loop enabled?
+  \item Clarify optimized dynamic programming algorithm in the survey paper
+  \item Is it meaningful to find solution that maximizes social welfare in our case?
+\end{enumerate}
+
+\section*{Week: July 12th - July 16th}
+
+\subsection*{Goals}
+
+\begin{enumerate}
+  \item Verify data pre-processing
+  \item Tweak value function to count abstained as paritcipation and observe result change
+  \item literature review: Coalition structure generation: A survey https://www.sciencedirect.com/science/article/abs/pii/S0004370215001198
+  \item run 100 times on 3/4 and participations accounted see if the generated structure is stable
+\end{enumerate}
+
+\subsection*{Activities}
+
+\begin{enumerate}
+  \item Went through data download and preprocessing code; fixed bug that produced excessive number of 0s in votes.csv
+  \item Download additional data from bill summary endpoint to check sanity of member-bill vote data - inconsistency discovered
+  \item Count ``abstained'' as participation - the results are mostly the same
+\end{enumerate}
+
+\subsection*{Meeting Agenda: July 17th}
+
+\begin{enumerate}
+  \item How to resolve data inconsistency?
+  \item More agorithms to implement?
+\end{enumerate}
+
 \section*{2 Weeks: June 26th - July 11th}
 
 \subsection*{Goals}
 
 \begin{enumerate}
-  \item Coding and experimentation: increase size of average coalitin for Knesset output
+  \item Coding and experimentation: increase size of average coalitipn for Knesset output
   \begin{itemize}
     \item Fix value function to calculate majority only once per bill
     \item Tweak sample size and value function
