@@ -26,17 +26,20 @@
   \item Two algorithm outputs are different because PAC implementation is buggy - it shouldn't consider coalitions containing players that have already been removed. Fixed.
   \item Implemented a search and split algorithm to find stable partition
   \item Fixed core stability check - the ``better-off'' check was too weak, it completely ignored unknown coalition for a player, it should have checked through the complete preference list instead
-  \item Make top responsive check more efficient by only checking known coalitions
-  \item Discovered that the derived Knesset game isn't top responsive
+  \item Make top responsive check more efficient by only checking known coalitions.
+  \item Discovered that the derived Knesset game isn't top responsive. Removing the participation term from the value function didn't help.
+  \item Read paper - Simple priorities and core stability in hedonic games: http://fmwww.bc.edu/repec/esNASM04/up.9919.1074605860.pdf
   \item Report: 1 page
 \end{enumerate}
 
 \subsection*{Meeting Agenda: Aug 2nd}
 
 \begin{enumerate}
+  \item After fixes with restrictive loop still many singletons and slow. Since the 100-run results are already stable, can we ditch restrictive loop for good for our case?
   \item How to make Knesset game top responsive?
-  \item Does top covering algorithm work on non-top responsive games too?
+  \item Suspecion: top covering algorithm work on some non-top responsive games too?
   \item Discuss search split algo results
+  \item Suspecion: search split algo may not always terminate
   \item Is it meaningful to find solution that maximizes social welfare in our case?
 \end{enumerate}
 
