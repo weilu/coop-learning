@@ -1,4 +1,5 @@
 from graph_tool.all import *
+from game_generator import freeze
 
 
 def top_cover(pref):
@@ -93,13 +94,6 @@ def build_graph(pref):
     # graph_draw(g, pos=pos, vertex_text=vlabels, output="sample.png")
 
     return g, vlabel_to_index
-
-
-def freeze(pref):
-    frozen = {}
-    for k, v in pref.items():
-        frozen[k] = [frozenset(neighbors) for neighbors in v]
-    return frozen
 
 
 if __name__ == '__main__':

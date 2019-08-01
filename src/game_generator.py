@@ -3,7 +3,13 @@ import itertools
 
 
 def check_top_responsive(game):
-    all_subsets = get_all_subsets(game.keys())
+    # only check known subsets, as the all-subset space could be very big
+    game = freeze(game)
+    all_subsets = set()
+    for row in game.values():
+        for subset in row:
+            all_subsets.add(subset)
+
     for i, preferences in game.items():
         subsets_with_i = list(filter(lambda s: i in s, all_subsets))
         for si in range(0, len(subsets_with_i)-1):
@@ -26,18 +32,13 @@ def check_top_responsive(game):
                     elif t < s:
                         assert preferences.index(t) < preferences.index(s), \
                             f'Player {i}, CS_S: {cs_s} = CS_T: {cs_t}, t in s, expect S: {t} > T: {s}, but not the case.\n Game: {game}'
+    return True
+
 
 def get_choice_set(preferences, available_players):
     for players in preferences:
         if all(j in available_players for j in players):
             return players
-
-def get_all_subsets(available_players):
-    all_subsets = set()
-    for size in range(1, len(available_players)+1):
-        for subset in itertools.combinations(available_players, size):
-            all_subsets.add(frozenset(subset))
-    return all_subsets
 
 
 def check_core_stable(game, partition, return_better=False):
@@ -129,6 +130,13 @@ def extend_ranking(i, ranking):
             extended_ranking.append(subset | set(filler))
 
     return extended_ranking
+
+
+def freeze(pref):
+    frozen = {}
+    for k, v in pref.items():
+        frozen[k] = [frozenset(neighbors) for neighbors in v]
+    return frozen
 
 
 if __name__ == '__main__':

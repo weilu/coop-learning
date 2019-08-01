@@ -1,18 +1,9 @@
 import unittest
-from game_generator import get_all_subsets, get_choice_set,\
-        check_top_responsive, generate_b_hedonic_game, check_core_stable,\
-        search_stable_partition
+from game_generator import get_choice_set, check_top_responsive,\
+        generate_b_hedonic_game, check_core_stable, search_stable_partition
 
 
 class TestGameGenerator(unittest.TestCase):
-
-    def test_get_all_subsets(self):
-        subsets = get_all_subsets({1, 2, 3, 4})
-        self.assertEqual(len(subsets), 15)
-        self.assertEqual(len(list(filter(lambda s: len(s) == 1, subsets))), 4)
-        self.assertEqual(len(list(filter(lambda s: len(s) == 2, subsets))), 6)
-        self.assertEqual(len(list(filter(lambda s: len(s) == 3, subsets))), 4)
-        self.assertEqual(len(list(filter(lambda s: len(s) == 4, subsets))), 1)
 
     def test_get_choice_set(self):
         cs = get_choice_set([{1}, {1, 2}, {1, 3}, {1, 2, 3}], {1, 2, 3})
