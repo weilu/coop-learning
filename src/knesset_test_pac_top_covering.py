@@ -32,6 +32,8 @@ class KnessetTestPacTopCovering(unittest.TestCase):
 
         print_partition_stats(pi)
         print(pi)
+        pi_labelled = index_to_label(self.player_labels, pi)
+        print(pi_labelled)
 
 
     def test_knesset_sampling(self):
