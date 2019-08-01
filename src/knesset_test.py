@@ -8,7 +8,7 @@ from game_generator import check_core_stable, search_stable_partition, check_top
 from votes_to_game import value_matrix_to_preferences, partition_edit_distance, precalculate_valuations_and_coalitions
 
 
-class KnessetTestPacTopCovering(unittest.TestCase):
+class KnessetTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -21,7 +21,7 @@ class KnessetTestPacTopCovering(unittest.TestCase):
         self.assertTrue(check_top_responsive(self.game))
 
 
-    def test_knesset(self):
+    def test_original_and_pac_top_covering(self):
         pi = top_cover(self.game)
         pi_pac = pac_top_cover(len(self.player_labels), self.votes)
 
@@ -36,7 +36,7 @@ class KnessetTestPacTopCovering(unittest.TestCase):
         print(pi_labelled)
 
 
-    def test_knesset_sampling(self):
+    def test_pac_with_sampling(self):
         random.seed(42)
         sample_size = int(0.75 * len(self.votes))
         partitions = []
@@ -60,7 +60,7 @@ class KnessetTestPacTopCovering(unittest.TestCase):
         print_partition_stability_stats(distances)
 
 
-    def test_knesset_search(self):
+    def test_search_and_split(self):
         max_len = 0
         for row in self.coalition_matrix:
             for el in row:
