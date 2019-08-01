@@ -4,45 +4,47 @@ import statistics
 import random
 from top_covering import top_cover
 from pac_top_covering import pac_top_cover
-from game_generator import check_core_stable, search_stable_partition
+from game_generator import check_core_stable, search_stable_partition, check_top_responsive
 from votes_to_game import value_matrix_to_preferences, partition_edit_distance, precalculate_valuations_and_coalitions
 
 
 class KnessetTestPacTopCovering(unittest.TestCase):
 
+    @classmethod
+    def setUpClass(cls):
+        cls.votes, cls.player_labels = knesset_votes_to_game()
+        cls.value_matrix, cls.coalition_matrix = precalculate_valuations_and_coalitions(cls.votes)
+        cls.game = value_matrix_to_preferences(cls.value_matrix, cls.coalition_matrix)
+
+
+    def test_top_responsive(self):
+        self.assertTrue(check_top_responsive(self.game))
+
+
     def test_knesset(self):
-        # run pac top cover
-        votes, player_labels = knesset_votes_to_game()
-        pi_pac = pac_top_cover(len(player_labels), votes)
-        print_partition_stats(pi_pac)
+        pi = top_cover(self.game)
+        pi_pac = pac_top_cover(len(self.player_labels), self.votes)
 
-        # run top cover
-        value_matrix, coalition_matrix = precalculate_valuations_and_coalitions(votes)
-        game = value_matrix_to_preferences(value_matrix, coalition_matrix)
-        pi = top_cover(game)
+        self.assertEqual(pi, pi_pac)
+
+        # check partition is stable
+        self.assertTrue(check_core_stable(self.game, pi))
+
         print_partition_stats(pi)
-
-        edit_distance, paired_partitions = partition_edit_distance(pi, pi_pac)
-        print(f'\nEdit distance between pac and original top covering output: {edit_distance}')
-        print(paired_partitions)
-
-        # check both partitions are stable
-        self.assertTrue(check_core_stable(game, pi_pac))
-        self.assertTrue(check_core_stable(game, pi))
+        print(pi)
 
 
     def test_knesset_sampling(self):
         random.seed(42)
-        votes, player_labels = knesset_votes_to_game()
-        sample_size = int(0.75 * len(votes))
+        sample_size = int(0.75 * len(self.votes))
         partitions = []
 
         with open('data/partitions_with_sampling_without_restriction_loop.csv', 'w') as f:
             csv_writer = csv.writer(f)
             for _ in range(100):
-                pi = pac_top_cover(len(player_labels), votes, w=sample_size)
+                pi = pac_top_cover(len(self.player_labels), self.votes, w=sample_size)
                 print_partition_stats(pi)
-                pi_labelled = index_to_label(player_labels, pi)
+                pi_labelled = index_to_label(self.player_labels, pi)
                 row = [', '.join(coal) for coal in sorted(pi_labelled, key=len, reverse=True)]
                 csv_writer.writerow(row)
                 partitions.append(pi)
@@ -57,17 +59,15 @@ class KnessetTestPacTopCovering(unittest.TestCase):
 
 
     def test_knesset_search(self):
-        votes, player_labels = knesset_votes_to_game()
-        value_matrix, coalition_matrix = precalculate_valuations_and_coalitions(votes)
         max_len = 0
-        for row in coalition_matrix:
+        for row in self.coalition_matrix:
             for el in row:
                 if len(el) > max_len:
                     max_len = len(el)
-        game = value_matrix_to_preferences(value_matrix, coalition_matrix)
-        pi = search_stable_partition(game)
+        pi = search_stable_partition(self.game)
         print_partition_stats(pi)
         print(pi)
+
 
     def test_count_missing_votes(self):
         with open('data/votes_names.csv') as f:
