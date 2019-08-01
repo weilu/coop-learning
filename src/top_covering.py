@@ -23,12 +23,12 @@ def top_cover(pref):
         a list of sets representing the resulting stable partition
     """
     pref = freeze(pref) # prevent choice sets in pref from being modified
-    stable_partition = []
+    stable_partition = set()
     while len(pref) > 0:
         graph, vlabel_to_index = build_graph(pref)
         smallest_cc = find_smallest_cc(graph)
         # print('samllest_cc:', smallest_cc)
-        stable_partition.append(smallest_cc)
+        stable_partition.add(smallest_cc)
         pref = update_preferences(pref, smallest_cc)
     return stable_partition
 

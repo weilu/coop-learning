@@ -1,10 +1,13 @@
 import unittest
 import itertools
-from top_covering import top_cover
+from top_covering import top_cover, find_smallest_cc
 from game_generator import generate_b_hedonic_game, check_core_stable
 
 
 class TestTopCovering(unittest.TestCase):
+
+    def test_find_smallest_cc(self):
+        pass
 
     # Example 15.5, Handbook of Computational Social Choice, p365
     # https://doi.org/10.1017/CBO9781107446984.016
@@ -17,8 +20,8 @@ class TestTopCovering(unittest.TestCase):
         }
         pi = top_cover(sample)
         self.assertEqual(len(pi), 2)
-        self.assertEqual(pi[0], frozenset({1, 2, 3}))
-        self.assertEqual(pi[1], frozenset({4}))
+        self.assertTrue(frozenset({1, 2, 3}) in pi)
+        self.assertTrue(frozenset({4}) in pi)
 
     def test_simple_modified(self):
         sample = {
@@ -30,8 +33,8 @@ class TestTopCovering(unittest.TestCase):
         }
         pi = top_cover(sample)
         self.assertEqual(len(pi), 2)
-        self.assertEqual(pi[0], frozenset({1, 2, 3}))
-        self.assertEqual(pi[1], frozenset({4, 5}))
+        self.assertTrue(frozenset({1, 2, 3}) in pi)
+        self.assertTrue(frozenset({4, 5}) in pi)
 
     def test_all_in_one(self):
         sample = {
@@ -44,7 +47,7 @@ class TestTopCovering(unittest.TestCase):
         }
         pi = top_cover(sample)
         self.assertEqual(len(pi), 1)
-        self.assertEqual(pi[0], frozenset({1, 2, 3, 4, 5, 6}))
+        self.assertTrue(frozenset({1, 2, 3, 4, 5, 6}) in pi)
 
     def test_multiple_iteration(self):
         sample = {
@@ -57,9 +60,9 @@ class TestTopCovering(unittest.TestCase):
         }
         pi = top_cover(sample)
         self.assertEqual(len(pi), 3)
-        self.assertEqual(pi[0], frozenset({1, 2, 3}))
-        self.assertEqual(pi[1], frozenset({4, 5}))
-        self.assertEqual(pi[2], frozenset({6}))
+        self.assertTrue(frozenset({1, 2, 3}) in pi)
+        self.assertTrue(frozenset({4, 5}) in pi)
+        self.assertTrue(frozenset({6}) in pi)
 
     def test_generated_b_games(self):
         for size in range(2, 7):
@@ -76,7 +79,7 @@ class TestTopCovering(unittest.TestCase):
         }
         pi = top_cover(sample)
         self.assertEqual(len(pi), 1)
-        self.assertEqual(pi[0], frozenset({1, 2, 3}))
+        self.assertTrue(frozenset({1, 2, 3}) in pi)
 
     def test_seven_players(self):
         all_players = {1, 2, 3, 4, 5, 6, 7}
@@ -116,9 +119,9 @@ class TestTopCovering(unittest.TestCase):
 
         pi = top_cover(sample)
         self.assertEqual(len(pi), 3)
-        self.assertEqual(pi[0], frozenset({1, 2, 3}))
-        self.assertEqual(pi[1], frozenset({4, 5, 6}))
-        self.assertEqual(pi[2], frozenset({7}))
+        self.assertTrue(frozenset({1, 2, 3}) in pi)
+        self.assertTrue(frozenset({4, 5, 6}) in pi)
+        self.assertTrue(frozenset({7}) in pi)
 
     def test_multiple_player_top_sets(self):
         all_players = {1, 2, 3, 4}
@@ -144,7 +147,7 @@ class TestTopCovering(unittest.TestCase):
 
         pi = top_cover(sample)
         self.assertEqual(len(pi), 1)
-        self.assertEqual(pi[0], frozenset({1, 2, 3, 4}))
+        self.assertTrue(frozenset({1, 2, 3, 4}) in pi)
 
 
 def expand_preferences(fixed_players, all_players, current_preferences):
