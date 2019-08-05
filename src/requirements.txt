@@ -3,7 +3,6 @@ kiwisolver==1.1.0
 matplotlib==3.1.1
 numpy==1.16.4
 pycairo==1.18.0
-PyGObject==3.32.0
 pyparsing==2.4.0
 pyslet==0.7.20170805
 python-dateutil==2.8.0
