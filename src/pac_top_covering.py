@@ -51,6 +51,8 @@ def approximate_preferences(players, S, B, value_matrix, coalition_matrix, w):
     else:
         S_prime_indexes = random.choices(range(len(S)), k=w) # with replacement
     for i in players:
+        if i in B and B[i] == {i}: # already singleton, no need to check further
+            continue
         max_value = 0
         max_coalition = None
         for row_index in S_prime_indexes:
