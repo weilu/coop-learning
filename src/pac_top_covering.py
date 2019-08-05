@@ -34,6 +34,12 @@ def pac_top_cover(num_players, S, w=None):
         logging.debug(f'done finding smallest cc')
 
         players = players - smallest_cc
+        # remove coalitions with removed players
+        for i, row in enumerate(coalition_matrix):
+            for j, coalition in enumerate(row):
+                if coalition is not None and (coalition - players):
+                    coalition_matrix[i][j] = None
+                    value_matrix[i][j] = 0
 
     return stable_partition
 
@@ -49,7 +55,7 @@ def approximate_preferences(players, S, B, value_matrix, coalition_matrix, w):
         max_coalition = None
         for row_index in S_prime_indexes:
             coalition = coalition_matrix[row_index][i]
-            if coalition - players:
+            if coalition is None:
                 continue
             value = value_matrix[row_index][i]
             if value > max_value:
