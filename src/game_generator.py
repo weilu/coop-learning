@@ -1,8 +1,12 @@
 import random
 import itertools
+import logging
+
+logging.basicConfig(format='%(asctime)s [%(levelname)s] %(message)s',
+                    level=logging.INFO)
 
 
-def check_top_responsive(game):
+def check_top_responsive(game, return_violations=False):
     # only check known subsets, as the all-subset space could be very big
     game = freeze(game)
     all_subsets = set()
@@ -10,7 +14,9 @@ def check_top_responsive(game):
         for subset in row:
             all_subsets.add(subset)
 
+    violations = []
     for i, preferences in game.items():
+        logging.info(f'checking player {i}')
         subsets_with_i = list(filter(lambda s: i in s, all_subsets))
         for si in range(0, len(subsets_with_i)-1):
             s = subsets_with_i[si]
@@ -20,19 +26,28 @@ def check_top_responsive(game):
                 cs_t = get_choice_set(preferences, t)
 
                 if preferences.index(cs_s) < preferences.index(cs_t):
-                    assert preferences.index(s) < preferences.index(t), \
-                            f'Player {i}, CS_S: {cs_s} > CS_T: {cs_t}, expect S: {s} > T: {t}, but not the case.\n Game: {game}'
+                    if not preferences.index(s) < preferences.index(t):
+                        violations.append(f'Player {i}, CS_S: {cs_s} > CS_T: {cs_t}, expect S: {s} > T: {t}, but not the case.\n Game: {game}')
                 elif preferences.index(cs_t) < preferences.index(cs_s):
-                    assert preferences.index(t) < preferences.index(s), \
-                            f'Player {i}, CS_S: {cs_s} < CS_T: {cs_t}, expect S: {s} < T: {t}, but not the case.\n Game: {game}'
+                    if not preferences.index(t) < preferences.index(s):
+                        violations.append(f'Player {i}, CS_S: {cs_s} < CS_T: {cs_t}, expect S: {s} < T: {t}, but not the case.\n Game: {game}')
                 else:
                     if s < t:
-                        assert preferences.index(s) < preferences.index(t), \
-                            f'Player {i}, CS_S: {cs_s} = CS_T: {cs_t}, s in t, expect S: {s} > T: {t}, but not the case.\n Game: {game}'
+                        if not preferences.index(s) < preferences.index(t):
+                            violations.append(f'Player {i}, CS_S: {cs_s} = CS_T: {cs_t}, s in t, expect S: {s} > T: {t}, but not the case.\n Game: {game}')
                     elif t < s:
-                        assert preferences.index(t) < preferences.index(s), \
-                            f'Player {i}, CS_S: {cs_s} = CS_T: {cs_t}, t in s, expect S: {t} > T: {s}, but not the case.\n Game: {game}'
-    return True
+                        if not preferences.index(t) < preferences.index(s):
+                            violations.append(f'Player {i}, CS_S: {cs_s} = CS_T: {cs_t}, t in s, expect S: {t} > T: {s}, but not the case.\n Game: {game}')
+
+                if not return_violations and violations:
+                    assert False, violations[0]
+
+        logging.info(f'found {len(violations)} violations')
+
+    if return_violations:
+        return (len(violations) == 0), violations
+    else:
+        return True
 
 
 def get_choice_set(preferences, available_players):
