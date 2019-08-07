@@ -1,0 +1,179 @@
+\def\year{2020}\relax
+%File: formatting-instruction.tex
+\documentclass[letterpaper]{article} % DO NOT CHANGE THIS
+\usepackage{aaai20}  % DO NOT CHANGE THIS
+\usepackage{times}  % DO NOT CHANGE THIS
+\usepackage{helvet} % DO NOT CHANGE THIS
+\usepackage{courier}  % DO NOT CHANGE THIS
+\usepackage[hyphens]{url}  % DO NOT CHANGE THIS
+\usepackage{graphicx} % DO NOT CHANGE THIS
+\urlstyle{rm} % DO NOT CHANGE THIS
+\def\UrlFont{\rm}  % DO NOT CHANGE THIS
+\usepackage{graphicx}  % DO NOT CHANGE THIS
+\frenchspacing  % DO NOT CHANGE THIS
+\setlength{\pdfpagewidth}{8.5in}  % DO NOT CHANGE THIS
+\setlength{\pdfpageheight}{11in}  % DO NOT CHANGE THIS
+
+\usepackage{mathtools}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+%\nocopyright
+%PDF Info Is REQUIRED.
+% For /Author, add all authors within the parentheses, separated by commas. No accents or commands.
+% For /Title, add Title in Mixed Case. No accents or commands. Retain the parentheses.
+ \pdfinfo{
+/Title (Learning Cooperative Solution Concepts from Data)
+/Author (Wei Lu, Alan Tsang, Yair Zick)
+/Keywords (Game Theory)
+} %Leave this	
+% /Title ()
+% Put your actual complete title (no codes, scripts, shortcuts, or LaTeX commands) within the parentheses in mixed case
+% Leave the space between \Title and the beginning parenthesis alone
+% /Author ()
+% Put your actual complete list of authors (no codes, scripts, shortcuts, or LaTeX commands) within the parentheses in mixed case. 
+% Each author should be only by a comma. If the name contains accents, remove them. If there are any LaTeX commands, 
+% remove them. 
+
+% DISALLOWED PACKAGES
+% \usepackage{authblk} -- This package is specifically forbidden
+% \usepackage{balance} -- This package is specifically forbidden
+% \usepackage{caption} -- This package is specifically forbidden
+% \usepackage{color (if used in text)
+% \usepackage{CJK} -- This package is specifically forbidden
+% \usepackage{float} -- This package is specifically forbidden
+% \usepackage{flushend} -- This package is specifically forbidden
+% \usepackage{fontenc} -- This package is specifically forbidden
+% \usepackage{fullpage} -- This package is specifically forbidden
+% \usepackage{geometry} -- This package is specifically forbidden
+% \usepackage{grffile} -- This package is specifically forbidden
+% \usepackage{hyperref} -- This package is specifically forbidden
+% \usepackage{navigator} -- This package is specifically forbidden
+% (or any other package that embeds links such as navigator or hyperref)
+% \indentfirst} -- This package is specifically forbidden
+% \layout} -- This package is specifically forbidden
+% \multicol} -- This package is specifically forbidden
+% \nameref} -- This package is specifically forbidden
+% \natbib} -- This package is specifically forbidden -- use the following workaround:
+% \usepackage{savetrees} -- This package is specifically forbidden
+% \usepackage{setspace} -- This package is specifically forbidden
+% \usepackage{stfloats} -- This package is specifically forbidden
+% \usepackage{tabu} -- This package is specifically forbidden
+% \usepackage{titlesec} -- This package is specifically forbidden
+% \usepackage{tocbibind} -- This package is specifically forbidden
+% \usepackage{ulem} -- This package is specifically forbidden
+% \usepackage{wrapfig} -- This package is specifically forbidden
+% DISALLOWED COMMANDS
+% \nocopyright -- Your paper will not be published if you use this command
+% \addtolength -- This command may not be used
+% \balance -- This command may not be used
+% \baselinestretch -- Your paper will not be published if you use this command
+% \clearpage -- No page breaks of any kind may be used for the final version of your paper
+% \columnsep -- This command may not be used
+% \newpage -- No page breaks of any kind may be used for the final version of your paper
+% \pagebreak -- No page breaks of any kind may be used for the final version of your paperr
+% \pagestyle -- This command may not be used
+% \tiny -- This is not an acceptable font size.
+% \vspace{- -- No negative value may be used in proximity of a caption, figure, table, section, subsection, subsubsection, or reference
+% \vskip{- -- No negative value may be used to alter spacing above or below a caption, figure, table, section, subsection, subsubsection, or reference
+
+\setcounter{secnumdepth}{0} %May be changed to 1 or 2 if section numbers are desired.
+
+% The file aaai20.sty is the style file for AAAI Press 
+% proceedings, working notes, and technical reports.
+%
+\setlength\titlebox{2.5in} % If your paper contains an overfull \vbox too high warning at the beginning of the document, use this
+% command to correct it. You may not alter the value below 2.5 in
+\title{Learning Cooperative Solution Concepts from Data}
+%Your title must be in mixed case, not sentence case. 
+% That means all verbs (including short verbs like be, is, using,and go), 
+% nouns, adverbs, adjectives should be capitalized, including both words in hyphenated terms, while
+% articles, conjunctions, and prepositions are lower case unless they
+% directly follow a colon or long dash
+\author{Wei Lu,\\
+School of Computing\\
+National University of Singapore\\
+weilu@u.nus.edu
+\And
+Alan Tsang,\\
+School of Computing\\
+National University of Singapore\\
+akhtsang@nus.edu.sg
+\And
+Yair Zick\\
+School of Computing\\
+National University of Singapore\\
+dcsyaz@nus.edu.sg
+}
+
+ \begin{document}
+
+\maketitle
+
+\begin{abstract}
+TODO
+\end{abstract}
+
+\noindent Introduction TODO
+
+\section{Data}
+Knesset is the national legislative branch of the Israeli government. Knesset website provides data access through Open Data Protocol (OData) on all its parliament members, laws, and every member's votes on every law. We limit our dataset to the 20th Knesset (2015-2019), which is the last Knesset preseeding the current one. We downloaded all 147 parliament members' information including id, name, faction id, faction name and their votes for all 7515 bills deliberated. A vote can take on one of the following values 0 (vote canceled), 1 (vote for), 2 (vote against), 3 (abstained), 4 (did not attend). We programmatically transformed the downloaded data into comma separated values (CSV), with each row representing a bill and each column representing a parliament member, so a cell value corresponds to the vote of a given parliament member for a given bill.
+
+\subsection{Data Preprocessing}
+During data processing, we noticed that more than half of all the vote values are missing despite the presence of value 4 for ``did not attend''. It raises questions regarding the data quality. We discovered another API endpoint which provides summary information for every bill, including total number of for votes, against votes, abstained votes, and if the bill is accepted. We downloaded bill summary data set for the 20th Knesset and used it to check against the tallied vote numbers from the individual vote data. We ended up discovering more inconsistencies:
+
+\begin{itemize}
+  \item Total bills checked: 7513,
+  \item Missing bills in the summary dataset: 2,
+  \item Number of bills with pass/reject status inconsistent: 26,
+  \item Number of bills with for count inconsistent : 273,
+  \item Number of bills with against count inconsistent : 402,
+  \item Number of bills with abstain count inconsistent : 2
+\end{itemize}
+
+We reached out to Knesset regarding the data inconsistency between two API endpoints, as well as the missing value issue. The Knesset data management team stated that the inconsistency is likely a result of manual vote entries instead of votes recorded as a result of pressing the electronic button. Such manual vote entries are captured by the bill summary data set but not individual member's vote data set.
+
+For the purpose of our research, we treat the data with individual member's votes on every bill as the ground truth since it has the level of granularity required for modeling.  We removed the 26 bills whose pass/reject status is inconsistent between the summary and invidual data sets, since it's most likely that the individual data is wrong. (coding TODO)
+
+\section{Preliminaries}
+
+\subsection{Hedonic Games}
+Hedonic games are a sub-class of nontransferable utility cooperative games. A hedonic game is a coalition formation game with hedonic preferences. A coalition formation game aims to divide the set of all players $N$ into disjoint coalitions, formally known as a coalition structure, often denoted as $\pi$. Hedonic preferenfes means that every player only cares about the coalition they belong to, which implies that the inter-coalitional dependencies are completely ignored. The description of a hedonic game could be exponentially large in the number of players, as each player needs to rank all possible coalitions they may belong to.
+
+A hedonic game is core stable when there is no strongly blocking coalition. A coalition $S \subseteq N$ strongly blocks a coalition structure $\pi$ if every player $i \in S$ strictly prefers $S$ over its current coalition $\pi(i)$. Similarly, a hedonic game is strictly core stable when there is no weakly blocking coalition. A coalition $S \subseteq N$ weakly blocks a coalition structure $\pi$ if every player $i \in S$ weakly prefers $S$ over its current coalition $\pi(i)$ and there exists at least one player $j \in S$ who strictly prefers $S$ over $\pi(j)$. Core stable and strictly core stable are solution concepts useful for modeling real world scenarios because they represent a stable state where no subset of players can be better off by deviating from.
+
+\subsection{PAC Learnable and PAC Stabilizable}
+TODO
+
+\section{Experiments}
+
+\subsection{Top Responsive Game Model}
+The intuition behind top responsiveness is that every player derives their utility from the most preferred subset players of the coalition they belong. If two coalitions yield the same utility for a player, the tie is broken in favor of the smaller coalition. In the context of legislature, it captures that politicians care about whose votes they stand with – they want to vote with other politicians they like. Top responsiveness guarantees a core stable partition, which can be computed in polynomial time using the top covering algorithm. It makes this model desirable for our research, and we can compare the resulting partition to party affiliations to assess the quality of our model.
+
+One way to model Knesset as a coalition formation game is to first learn every member's preference profile, then find a stable coalition structure from the preference profiles. This approach is impractical because the size of complete preference profiles is exponential in the number of players. Sliwinski and Zick have shown that the preference profiles of a top responsive game are not even PAC learnable; however a top responsive game's core stable partition can be PAC approaximated. They offered an algorithm which takes an alternative approach of assuming top responsive preferences and learning a PAC stable partition directly from samples, where every sample consists of a coalition $S_j \subseteq N$, and the values assigned to $S_j$ by each of its memeber $\vec{v}(S_j) = (v_i(S_j))_{i \in S_j}$.
+
+In our experiment, we implemented the said algorithm. For each bill there are two natural coalitions: one formed by parliament members who voted ``for'', and the other formed by parliament members who voted ``against''. Note that the values assigned by members to their respective coalitions are not immediately well defined, so we define the player $i$'s value function for coalition $S$ as below:
+
+\[
+  v_i(S) = 
+  \begin{dcases}
+      1 + \frac{1}{|S|} + \frac{|S_p|}{|N|},& \text{if S is the winning majority}\\
+      0,              & \text{otherwise}
+  \end{dcases}
+\]
+
+$S$ can take on one of the two values $\{S_f, S_a\}$, where $S_f$ is the set of members who voted ``for'' and $S_a$ is the set of members who voted ``against''. $S_p$ denotes the set of parliament members who participated $S_p = S_f \cup S_a$. $S_f$ is the winning majority if $|S_f| > |S_a|$, vice versa. When $|S_f| = |S_a|$, $S_a$ is considered to be the winning majority.
+
+The conditional value function captures that a winning coalition, being successfully passing a bill or successfully blocking a bill, is always worth more than a losing coalition. $\frac{1}{|S|}$ reflects that a win is considered more valuable when it's achieved with fewer members, which is also conceptually consistent with top responsive game's preference for smaller coalitions. The partition term $\frac{|S_p|}{|N|}$ gives a win more value when more parliament members voted for or against the bill. For simplicity, we assume every member in a given coalition assigns equal value to their coalition.
+
+The original algorithm requires $m = (2n^4 + 2n^3)\ceil{\frac{1}{\epsilon}\log{\frac{2n^3}{\delta}}}$ samples. In our data set, $n = 147$ which mean $m$ is in the order of at least $10^8$ while we only have $7515$ bills in total, so even if we use the entire data set as samples it's still far from sufficient theoratically. We experimented with two approaches:
+
+\begin{enumerate}
+  \item use full data set without sampling
+  \item sample $\frac{3}{4}$ of the bills with replacement, repeat 100 times
+\end{enumerate}
+
+TODO: experiment results
+
+% \bibliography{references}\\
+% \bibliographystyle{aaai}\\
+\end{document}
+
