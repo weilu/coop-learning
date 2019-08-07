@@ -41,10 +41,11 @@ class KnessetTest(unittest.TestCase):
         sample_size = int(0.75 * len(self.votes))
         partitions = []
 
-        with open('data/partitions_with_sampling_without_restriction_loop.csv', 'w') as f:
+        with open('data/partitions_with_sampling.csv', 'w') as f:
             csv_writer = csv.writer(f)
             for _ in range(100):
                 pi = pac_top_cover(len(self.player_labels), self.votes, w=sample_size)
+                print(pi)
                 print_partition_stats(pi)
                 pi_labelled = index_to_label(self.player_labels, pi)
                 row = [', '.join(coal) for coal in sorted(pi_labelled, key=len, reverse=True)]

@@ -21,10 +21,10 @@ def pac_top_cover(num_players, S, w=None):
         B = {}
         approximate_preferences(players, S, B, value_matrix, coalition_matrix, w)
 
-        # if w != None: # w = None means no sampling
-        #     # successive restriction loop
-        #     for _ in range(len(players)):
-        #         approximate_preferences(players, S, B, value_matrix, coalition_matrix, w)
+        if w != None: # w = None means no sampling
+            # successive restriction loop
+            for _ in range(len(players)):
+                approximate_preferences(players, S, B, value_matrix, coalition_matrix, w)
         logging.debug(f'done approximating preferences')
 
         # perform top covering
