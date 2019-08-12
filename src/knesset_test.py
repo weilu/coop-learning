@@ -18,7 +18,9 @@ class KnessetTest(unittest.TestCase):
 
 
     def test_top_responsive(self):
-        self.assertTrue(check_top_responsive(self.game))
+        is_tr, violations = check_top_responsive(self.game, return_violations=True)
+        print(f'Game generated from Knesset data is top responsive: {is_tr}')
+        print(violations)
 
 
     def test_original_and_pac_top_covering(self):
