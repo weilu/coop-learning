@@ -56,6 +56,7 @@ def get_choice_set(preferences, available_players):
             return players
 
 
+# incomplete core stability check – only checking against known coalitions explicitly listed in preferences
 def check_core_stable(game, partition, return_better=False):
     coalition_map = partition_to_coalition_map(partition)
     for i, preferences in game.items():
