@@ -56,6 +56,12 @@ class TestFriendsAndEnemies(unittest.TestCase):
         self.assertTrue(frozenset({0, 1}) in pi)
         self.assertTrue(frozenset({2}) in pi)
 
+        friend_matrix = [{1}, {}, {0, 1}]
+        pi = stable_friends(friend_matrix)
+        self.assertEqual(len(pi), 3)
+        self.assertTrue(frozenset({0}) in pi)
+        self.assertTrue(frozenset({1}) in pi)
+        self.assertTrue(frozenset({2}) in pi)
 
 if __name__ == '__main__':
     unittest.main()

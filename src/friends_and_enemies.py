@@ -2,35 +2,21 @@ from graph_tool.all import *
 
 def stable_friends(friend_matrix):
     stable_partition = set()
-    while(not friend_matrix_is_empty(friend_matrix)):
-        graph = build_graph(friend_matrix)
+    graph = build_graph(friend_matrix)
+    vertex_indexes = graph.vertex_index.copy()
+    while(list(graph.vertices())):
         largest_cc = find_largest_cc(graph)
-        # print(largest_cc)
-        stable_partition.add(largest_cc)
-        friend_matrix = update_friend_matrix(friend_matrix, largest_cc)
-
-    singleton_players = get_singleton_players(friend_matrix)
-    if singleton_players:
-        for player in singleton_players:
-            stable_partition.add(frozenset({player}))
+        largest_cc_indexes = frozenset(vertex_indexes[v] for v in largest_cc)
+        stable_partition.add(largest_cc_indexes)
+        friend_matrix = update_friend_matrix(friend_matrix, largest_cc_indexes)
+        graph.remove_vertex(largest_cc)
 
     return stable_partition
 
 
-def friend_matrix_is_empty(friend_matrix):
-    for row in friend_matrix:
-        if row:
-            return False
-    return True
-
-
-def get_singleton_players(friend_matrix):
-    return set(i for i, friends in enumerate(friend_matrix) if friends == set())
-
-
 def build_graph(friend_matrix):
     g = Graph()
-    vlist = list(g.add_vertex(len(friend_matrix)))
+    g.add_vertex(len(friend_matrix))
     for i, friends in enumerate(friend_matrix):
         if friends is None:
             continue
@@ -41,15 +27,8 @@ def build_graph(friend_matrix):
 
 
 def find_largest_cc(graph):
-    largest_cc = None
-    largest_cc_size = 0
-    for v in graph.vertices():
-        cc = graph_tool.topology.label_out_component(graph, v)
-        cc_size = sum(cc.a)
-        if cc_size > largest_cc_size:
-            largest_cc_size = cc_size
-            largest_cc = cc
-    return frozenset([i for i, v in enumerate(largest_cc.a) if v == 1])
+    cc_graph = graph_tool.topology.extract_largest_component(graph)
+    return list(cc_graph.vertices())
 
 
 def update_friend_matrix(friend_matrix, to_remove):
