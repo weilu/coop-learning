@@ -1,7 +1,7 @@
 ## Development Setup
 
 - python3
-- [graph-tool](https://git.skewed.de/count0/graph-tool/wikis/installation-instructions)
+- [graph-tool 2.29](https://git.skewed.de/count0/graph-tool/wikis/installation-instructions)
 - virtualenvwraper (optional but good for your sanity)
 
 Note that graph-tool requires using system default python/python3 as it is a wrapper around a C++ implementation, so if you are using virtualenv/virtualenvwraper see https://jolo.xyz/blog/2018/12/07/installing-graph-tool-with-virtualenv
