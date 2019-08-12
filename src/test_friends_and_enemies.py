@@ -1,5 +1,5 @@
 import unittest
-from knesset_test import read_votes_and_player_data
+from knesset_test import read_votes_and_player_data, print_partition_stats
 from friends_and_enemies import stable_friends, find_friends
 
 
@@ -10,6 +10,8 @@ class TestFriendsAndEnemies(unittest.TestCase):
         friend_matrix = find_friends(votes)
         pi = stable_friends(friend_matrix)
         print(pi)
+        print_partition_stats(pi)
+        # TODO: verify core stable
 
     def test_find_friends(self):
         friend_matrix = find_friends([[1, 1, 2]])
