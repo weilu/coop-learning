@@ -12,7 +12,7 @@ class KnessetTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.votes, cls.player_labels = knesset_votes_to_game()
+        cls.votes, cls.player_labels = read_votes_and_player_data()
         cls.value_matrix, cls.coalition_matrix = precalculate_valuations_and_coalitions(cls.votes)
         cls.game = value_matrix_to_preferences(cls.value_matrix, cls.coalition_matrix)
 
@@ -91,13 +91,13 @@ class KnessetTest(unittest.TestCase):
         print(f'missing vote value: {total_missing}, total number of votes: {total}, missing percentage: {round(total_missing/total * 100, 2)}%')
 
 
-def knesset_votes_to_game():
+def read_votes_and_player_data():
     with open('data/votes_names.csv') as f:
         reader = csv.reader(f)
         player_labels = next(reader, None)
         player_labels = player_labels[1:]
-        game = [[int(i) if i != '' else '' for i in row[1:]] for row in reader]
-        return game, player_labels
+        votes = [[int(i) if i != '' else '' for i in row[1:]] for row in reader]
+        return votes, player_labels
 
 
 def index_to_label(player_labels, pi):
