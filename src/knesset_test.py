@@ -60,7 +60,10 @@ class KnessetTest(unittest.TestCase):
                 if p1 == p2:
                     continue
                 distances.append(partition_edit_distance(p1, p2)[0])
-        print_partition_stability_stats(distances)
+        if not distances:
+            print('All partitions are identical')
+        else:
+            print_partition_stability_stats(distances)
 
 
     def test_search_and_split(self):
