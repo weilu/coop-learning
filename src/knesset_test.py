@@ -49,6 +49,7 @@ class KnessetTest(unittest.TestCase):
                 pi = pac_top_cover(len(self.player_labels), self.votes, w=sample_size)
                 print(pi)
                 print_partition_stats(pi)
+                print(f'core stable: {check_core_stable(self.game, pi)}')
                 pi_labelled = index_to_label(self.player_labels, pi)
                 row = [', '.join(coal) for coal in sorted(pi_labelled, key=len, reverse=True)]
                 csv_writer.writerow(row)
