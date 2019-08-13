@@ -1,0 +1,96 @@
+2. check weakly better off edge case [DONE]
+3. check how efficient the top covering impl is [DONE]
+4. understand how algo 1 works [DONE]
+1. payoff: 1 + 1/|s| smaller the coalition the better [DONE]
+
+
+game with 142 players generated in: 14.116243839263916s
+top covering algo completed in: 18.29806089401245s
+
+
+Questions:
+all preferences ranked after self is solely depends on size?
+does it discover full preferences? how to treat missing preferences?
+walk through algo 1 preference discovery
+
+
+Questions:
+If total for votes is more than against, but less than half the parliment, does the bill pass?
+
+failed bill value?
+
+TO-TRY:
+- change value function to account for participation
+- change value function to account for how close the victory was
+- give losing coalition some small value
+
+TODO:
+- why so many 0s in votes.csv? Yair
+- how to match member ID to votes.csv col name? Yair
+- consistent bib hack. Alan
+
+TODO:
+- check though data preprocessing code [DONE]
+- account abstained as participation [DONE]
+- run 100 times on 3/4 and participations accounted see if the generated structure is stable
+- Maybe: initiator gets more value on passing bill?
+- paper: https://www.sciencedirect.com/science/article/abs/pii/S0004370215001198
+- send photo [DONE]
+- community/social network approach/Inducing graph relations what result does it produce?
+- search/split algo that produces outcome that's consistent (ilp solver)
+
+Goal:
+5-page write-up:
+- Data description: what are the data records we have, what do they mean etc.
+- Algorithms implemented
+
+TODO (17 Jul):
+- 8 pass/reject inconsitent cases: which dataset is wrong [DONE]
+- redownload data [DONE]
+  - save law stats raw data
+- run 100 times on 3/4 and participations accounted see if the generated structure is stable [DONE]
+- paper: https://www.sciencedirect.com/science/article/abs/pii/S0004370215001198
+- search/split algo that produces outcome that's consistent (ilp solver): start with grant coalition, split until stable
+- community detection
+- visualize party lines & those in the government: https://en.wikipedia.org/wiki/Thirty-fourth_government_of_Israel
+
+TODO (29 Jul)
+- why are the two algorithms (pac & original) not producing something more similar?
+- reference 16 proposition 2.21
+- email Yair about social welfare max vs core solution
+
+2 Aug
+- social welfare max not meaningful [DONE]
+
+TODO (2 Aug)
+- run with loop 100 times with sampling p1 [DONE]
+- writing p2
+- how many cases of violation in preferrence profile p4
+- implement friends & enemy model p3
+- check out Haris Aziz research
+- include data -> pref -> solution vs data -> solution approach in writing [DONE]
+  - theory basis for why data -> solution works: https://www.comp.nus.edu.sg/~zick/papers/learning.Sols.2019.pdf 1.4.1 theorem 2.4, theorem 3.2
+  - VC dimension, how hard it is to learn a hypothesis class of functions for binary classification => solution dimension (similiar to graph dimension) for game theory solution concept
+
+Questions (for 8 Aug meeting)
+- instead of take and remove w samples, we sample w = 3/4 n with replacement and without removal. How does it change the formal bound?
+- 3/4 sample 100 runs outputs identical
+- 3/4 sample output not core stable
+- author order?
+
+TODO (8 Aug)
+- meet with Yair before presenting [DONE]
+- why 100% loop vs without loop diff results?
+  - ordering of full dataset [YES]
+  - look at member indexed 27 and 133, see if it's tie breaking mechanism that caused the slight diff
+- example bills and look at output of valuation function
+- B game instead of top responsive
+
+Questions (for 16 Aug)
+frenemy:
+  - appreciation of friends (has strict core) => top responsive, if symmetric => SSNS (strict strong nash stability): https://arxiv.org/pdf/1201.4754.pdf
+  - aversion of enemies (has core) => bottom responsive, if symmetric => (strong nash stable)
+update value function based on AoF see if top cover generates same results as AoF
+implement bottom avoiding algorithm: https://papers.ssrn.com/sol3/papers.cfm?abstract_id=1700921
+top covering algo guarantees strict core: On top responsiveness and strict core stability
+partition as a result of top covering algo is individually artional: Top responsiveness and nash stability in coalition formation games
