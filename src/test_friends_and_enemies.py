@@ -1,6 +1,6 @@
 import unittest
 from knesset_test import read_votes_and_player_data, print_partition_stats
-from friends_and_enemies import stable_friends, find_friends, top_cover, friend_matrix_has_item
+from friends_and_enemies import stable_friends, find_friends, top_cover
 
 
 class TestFriendsAndEnemies(unittest.TestCase):
@@ -72,13 +72,6 @@ class TestFriendsAndEnemies(unittest.TestCase):
         pi_tc = top_cover(friend_matrix)
         self.assertEqual(pi, pi_tc)
 
-
-    def test_friend_matrix_has_item(self):
-        friend_matrix = [None, None, None]
-        self.assertFalse(friend_matrix_has_item(friend_matrix))
-
-        friend_matrix = [None, None, set()]
-        self.assertTrue(friend_matrix_has_item(friend_matrix))
 
 if __name__ == '__main__':
     unittest.main()

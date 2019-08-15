@@ -72,19 +72,13 @@ def find_friends(votes):
 # top cover needs to be re-implemented to avoid having to expand the full preference profile
 def top_cover(friend_matrix):
     stable_partition = set()
-    while friend_matrix_has_item(friend_matrix):
-        pref = to_choice_sets(friend_matrix)
+    pref = to_choice_sets(friend_matrix)
+    while pref.keys():
         smallest_cc = smallest_cc_from_pref(pref)
         stable_partition.add(smallest_cc)
         friend_matrix = update_friend_matrix(friend_matrix, smallest_cc)
+        pref = to_choice_sets(friend_matrix)
     return stable_partition
-
-
-def friend_matrix_has_item(friend_matrix):
-    for friends in friend_matrix:
-        if friends is not None:
-            return True
-    return False
 
 
 def to_choice_sets(friend_matrix):
