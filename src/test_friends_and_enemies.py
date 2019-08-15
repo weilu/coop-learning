@@ -16,6 +16,11 @@ class TestFriendsAndEnemies(unittest.TestCase):
         self.assertEqual(pi, pi_tc)
         # TODO: verify core stable
 
+        pi_ba = bottom_avoid(friend_matrix)
+        print(pi_ba)
+        print_partition_stats(pi_ba)
+        # TODO: verify core stable
+
     def test_find_friends(self):
         friend_matrix = find_friends([[1, 1, 2]])
         self.assertEqual(len(friend_matrix), 3)
