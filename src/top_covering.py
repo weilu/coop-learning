@@ -2,7 +2,7 @@ from graph_tool.all import *
 from game_generator import freeze
 
 
-def top_cover(pref, allow_pref_substraction=False):
+def top_cover(pref):
     """Top covering algorithm as described in Handbook of Computational Social Choice, p371
 
     Parameters
@@ -25,13 +25,17 @@ def top_cover(pref, allow_pref_substraction=False):
     pref = freeze(pref) # prevent choice sets in pref from being modified
     stable_partition = set()
     while len(pref) > 0:
-        graph, vlabel_to_index = build_graph(pref)
-        smallest_cc = find_smallest_cc(graph)
-        # smallest_cc = find_largest_scc(graph)
-        # print('samllest_cc:', smallest_cc)
+        smallest_cc = smallest_cc_from_pref(pref)
         stable_partition.add(smallest_cc)
-        pref = update_preferences(pref, smallest_cc, allow_pref_substraction)
+        pref = update_preferences(pref, smallest_cc)
     return stable_partition
+
+def smallest_cc_from_pref(pref):
+    graph, _ = build_graph(pref)
+    smallest_cc = find_smallest_cc(graph)
+    # smallest_cc = find_largest_scc(graph)
+    # print('samllest_cc:', smallest_cc)
+    return smallest_cc
 
 def find_largest_scc(graph):
     cc = graph_tool.topology.label_largest_component(graph)
@@ -49,7 +53,7 @@ def find_smallest_cc(graph):
     return frozenset([graph.vp.label[i] for i, v in enumerate(smallest_cc.a) if v == 1])
 
 
-def update_preferences(pref, smallest_cc, allow_substraction):
+def update_preferences(pref, smallest_cc):
     new_pref = {}
     for k, v in pref.items():
         if k in smallest_cc:
@@ -57,11 +61,8 @@ def update_preferences(pref, smallest_cc, allow_substraction):
         choice_set = []
         for n in v:
             new_n = frozenset(n - smallest_cc)
-            if allow_substraction:
-                choice_set.append(new_n)
-            else:
-                if new_n == n:
-                    choice_set.append(n)
+            if new_n == n:
+                choice_set.append(n)
         new_pref[k] = choice_set
     # print('new_pref:', new_pref)
     return new_pref
@@ -85,7 +86,7 @@ def build_graph(pref):
     g.vertex_properties['label'] = vlabels
 
     for k, v in pref.items():
-        if len(v) < 1:
+        if v == [None] or len(v) < 1:
             continue
         if type(v) is not list:
             v = [v]

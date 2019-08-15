@@ -1,4 +1,5 @@
 from graph_tool.all import *
+from top_covering import smallest_cc_from_pref
 
 def stable_friends(friend_matrix):
     stable_partition = set()
@@ -67,3 +68,28 @@ def find_friends(votes):
         friend_matrix.append(friends)
     return friend_matrix
 
+
+# top cover needs to be re-implemented to avoid having to expand the full preference profile
+def top_cover(friend_matrix):
+    stable_partition = set()
+    while friend_matrix_has_item(friend_matrix):
+        pref = to_choice_sets(friend_matrix)
+        smallest_cc = smallest_cc_from_pref(pref)
+        stable_partition.add(smallest_cc)
+        friend_matrix = update_friend_matrix(friend_matrix, smallest_cc)
+    return stable_partition
+
+
+def friend_matrix_has_item(friend_matrix):
+    for friends in friend_matrix:
+        if friends is not None:
+            return True
+    return False
+
+
+def to_choice_sets(friend_matrix):
+    choice_sets = {}
+    for i, friends in enumerate(friend_matrix):
+        if friends is not None:
+            choice_sets[i] = [friends]
+    return choice_sets

@@ -1,13 +1,10 @@
 import unittest
 import itertools
-from top_covering import top_cover, find_smallest_cc
+from top_covering import top_cover
 from game_generator import generate_b_hedonic_game, check_core_stable
 
 
 class TestTopCovering(unittest.TestCase):
-
-    def test_find_smallest_cc(self):
-        pass
 
     # Example 15.5, Handbook of Computational Social Choice, p365
     # https://doi.org/10.1017/CBO9781107446984.016
