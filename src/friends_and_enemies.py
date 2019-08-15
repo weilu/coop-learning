@@ -87,3 +87,16 @@ def to_choice_sets(friend_matrix):
         if friends is not None:
             choice_sets[i] = [friends]
     return choice_sets
+
+
+def to_avoid_sets(friend_matrix):
+    active_players = set()
+    for i, friends in enumerate(friend_matrix):
+        if friends is not None:
+            active_players.add(i)
+
+    avoid_sets = {}
+    for i, friends in enumerate(friend_matrix):
+        if friends is not None:
+            avoid_sets[i] = active_players - friends
+    return avoid_sets

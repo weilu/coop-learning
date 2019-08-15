@@ -1,6 +1,6 @@
 import unittest
 from knesset_test import read_votes_and_player_data, print_partition_stats
-from friends_and_enemies import stable_friends, find_friends, top_cover
+from friends_and_enemies import stable_friends, find_friends, top_cover, to_avoid_sets
 
 
 class TestFriendsAndEnemies(unittest.TestCase):
@@ -71,6 +71,37 @@ class TestFriendsAndEnemies(unittest.TestCase):
         self.assertTrue(frozenset({2}) in pi)
         pi_tc = top_cover(friend_matrix)
         self.assertEqual(pi, pi_tc)
+
+
+    def test_to_avoid_sets(self):
+        friend_matrix = [{1, 2}, {0}, {0}]
+        avoid_sets = to_avoid_sets(friend_matrix)
+        self.assertEqual(len(avoid_sets), 3)
+        self.assertEqual(avoid_sets[0], {0})
+        self.assertEqual(avoid_sets[1], {1, 2})
+        self.assertEqual(avoid_sets[2], {1, 2})
+
+        friend_matrix = [None, {0}, {0}]
+        avoid_sets = to_avoid_sets(friend_matrix)
+        self.assertEqual(len(avoid_sets), 2)
+        self.assertEqual(avoid_sets[1], {1, 2})
+        self.assertEqual(avoid_sets[2], {1, 2})
+
+        friend_matrix = [None, {2}, {0}]
+        avoid_sets = to_avoid_sets(friend_matrix)
+        self.assertEqual(len(avoid_sets), 2)
+        self.assertEqual(avoid_sets[1], {1})
+        self.assertEqual(avoid_sets[2], {1, 2})
+
+        friend_matrix = [None, None, {0}]
+        avoid_sets = to_avoid_sets(friend_matrix)
+        self.assertEqual(len(avoid_sets), 1)
+        self.assertEqual(avoid_sets[2], {2})
+
+        friend_matrix = [None, None, set()]
+        avoid_sets = to_avoid_sets(friend_matrix)
+        self.assertEqual(len(avoid_sets), 1)
+        self.assertEqual(avoid_sets[2], {2})
 
 
 if __name__ == '__main__':
