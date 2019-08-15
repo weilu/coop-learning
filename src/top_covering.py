@@ -86,7 +86,7 @@ def build_graph(pref):
     g.vertex_properties['label'] = vlabels
 
     for k, v in pref.items():
-        if v == [None] or len(v) < 1:
+        if len(v) < 1:
             continue
         if type(v) is not list:
             v = [v]
