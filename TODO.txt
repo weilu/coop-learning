@@ -90,10 +90,12 @@ Questions (for 16 Aug)
 frenemy:
   - appreciation of friends (has strict core) => top responsive, if symmetric => SSNS (strict strong nash stability): https://arxiv.org/pdf/1201.4754.pdf
   - aversion of enemies (has core) => bottom responsive, if symmetric => (strong nash stable)
-top covering algo guarantees strict core: On top responsiveness and strict core stability
-partition as a result of top covering algo is individually rational: Top responsiveness and nash stability in coalition formation games
-update value function based on AoF see if top cover generates same results as AoF -> yes
-implement bottom avoiding algorithm: https://papers.ssrn.com/sol3/papers.cfm?abstract_id=1700921
-Are top covering & friend algorithms equivalent? Yes! proof sketch. friend algo is also more efficient
-Is sampling really necessary in our experiment?
-Given bottom avoiding algorithm, is finding core of an aversion of enemies game really NP hard?
+- top covering algo guarantees strict core: On top responsiveness and strict core stability
+- partition as a result of top covering algo is individually rational: Top responsiveness and nash stability in coalition formation games
+- update value function based on AoF see if top cover generates same results as AoF -> yes
+- implement bottom avoiding algorithm: https://papers.ssrn.com/sol3/papers.cfm?abstract_id=1700921 [DONE]
+- Are top covering & friend algorithms equivalent? Yes! proof sketch. friend algo is also more efficient
+- Is sampling really necessary in our experiment?
+- bottom avoiding algorithm:
+  - Given this algorithm finds a core, is finding core of an aversion of enemies game really NP hard?
+  - complexity: O(n^3) for aversion to enemies model
