@@ -14,6 +14,8 @@ class TestBottomAvoiding(unittest.TestCase):
         self.assertTrue(frozenset({1, 2}) in pi)
         self.assertTrue(frozenset({3}) in pi)
 
+        # TODO: add more test cases
+
 
 if __name__ == '__main__':
     unittest.main()

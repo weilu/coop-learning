@@ -1,6 +1,6 @@
 import unittest
 from knesset_test import read_votes_and_player_data, print_partition_stats
-from friends_and_enemies import stable_friends, find_friends, top_cover, to_avoid_sets
+from friends_and_enemies import stable_friends, find_friends, top_cover, to_avoid_sets, bottom_avoid
 
 
 class TestFriendsAndEnemies(unittest.TestCase):
@@ -102,6 +102,16 @@ class TestFriendsAndEnemies(unittest.TestCase):
         avoid_sets = to_avoid_sets(friend_matrix)
         self.assertEqual(len(avoid_sets), 1)
         self.assertEqual(avoid_sets[2], {2})
+
+
+    def test_bottom_avoid(self):
+        friend_matrix = [{1}, {0, 2}, {1}]
+        pi = bottom_avoid(friend_matrix)
+        self.assertEqual(len(pi), 2)
+        self.assertTrue(frozenset({0, 1}) in pi)
+        self.assertTrue(frozenset({2}) in pi)
+
+        #TODO: add more test cases
 
 
 if __name__ == '__main__':
