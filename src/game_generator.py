@@ -27,22 +27,22 @@ def check_top_responsive(game, return_violations=False):
 
                 if preferences.index(cs_s) < preferences.index(cs_t):
                     if not preferences.index(s) < preferences.index(t):
-                        violations.append(f'Player {i}, CS_S: {cs_s} > CS_T: {cs_t}, expect S: {s} > T: {t}, but not the case.\n Game: {game}')
+                        violations.append(f'Player {i}, CS_S: {cs_s} > CS_T: {cs_t}, expect S: {s} > T: {t}, but not the case.')
                 elif preferences.index(cs_t) < preferences.index(cs_s):
                     if not preferences.index(t) < preferences.index(s):
-                        violations.append(f'Player {i}, CS_S: {cs_s} < CS_T: {cs_t}, expect S: {s} < T: {t}, but not the case.\n Game: {game}')
+                        violations.append(f'Player {i}, CS_S: {cs_s} < CS_T: {cs_t}, expect S: {s} < T: {t}, but not the case.')
                 else:
                     if s < t:
                         if not preferences.index(s) < preferences.index(t):
-                            violations.append(f'Player {i}, CS_S: {cs_s} = CS_T: {cs_t}, s in t, expect S: {s} > T: {t}, but not the case.\n Game: {game}')
+                            violations.append(f'Player {i}, CS_S: {cs_s} = CS_T: {cs_t}, s in t, expect S: {s} > T: {t}, but not the case.')
                     elif t < s:
                         if not preferences.index(t) < preferences.index(s):
-                            violations.append(f'Player {i}, CS_S: {cs_s} = CS_T: {cs_t}, t in s, expect S: {t} > T: {s}, but not the case.\n Game: {game}')
+                            violations.append(f'Player {i}, CS_S: {cs_s} = CS_T: {cs_t}, t in s, expect S: {t} > T: {s}, but not the case.')
 
                 if not return_violations and violations:
                     assert False, violations[0]
 
-        logging.info(f'found {len(violations)} violations')
+        logging.info(f'found {len(violations)} violations\n Game: {game}')
 
     if return_violations:
         return (len(violations) == 0), violations
