@@ -45,6 +45,24 @@ class TestGameGenerator(unittest.TestCase):
         self.assertFalse(is_tr)
         self.assertEqual(len(violations), 1)
 
+        game = {
+            1: [{1, 2}, {1, 3}, {1}, {1, 2, 3}],
+            2: [{2, 3}, {2, 1}, {2}, {1, 2, 3}],
+            3: [{1, 3}, {2, 3}, {3}, {1, 2, 3}]
+        }
+        is_tr, violations = check_top_responsive(game, return_violations=True)
+        self.assertFalse(is_tr)
+        self.assertEqual(len(violations), 6)
+
+        game = {
+            1: [{1, 2}, {1}, {1, 2, 3}, {1, 2, 4}, {1, 2, 3, 4}, {1, 3}, {1, 4}, {1, 3, 4}],
+            2: [{1, 2, 3}, {1, 2}, {2, 3}, {1, 2, 3, 4}, {2}, {1, 2, 4}, {2, 3, 4}, {2, 4}],
+            3: [{3, 4}, {3}, {1, 3, 4}, {2, 3, 4}, {1, 2, 3, 4}, {1, 3}, {2, 3}, {1, 2, 3}],
+            4: [{1, 3, 4}, {1, 4}, {3, 4}, {1, 2, 3, 4}, {4}, {1, 2, 4}, {2, 3, 4}, {2, 4}],
+        }
+        is_tr, violations = check_top_responsive(game, return_violations=True)
+        self.assertFalse(is_tr)
+
     def test_generate_b_hedonic_game_top_responsive(self):
         for i in range(2, 7):
             game = generate_b_hedonic_game(i)
