@@ -2,7 +2,7 @@ from graph_tool.all import *
 from game_generator import freeze
 
 
-def top_cover(pref):
+def top_cover(pref, allow_pref_substraction=False):
     """Top covering algorithm as described in Handbook of Computational Social Choice, p371
 
     Parameters
@@ -27,11 +27,15 @@ def top_cover(pref):
     while len(pref) > 0:
         graph, vlabel_to_index = build_graph(pref)
         smallest_cc = find_smallest_cc(graph)
+        # smallest_cc = find_largest_scc(graph)
         # print('samllest_cc:', smallest_cc)
         stable_partition.add(smallest_cc)
-        pref = update_preferences(pref, smallest_cc)
+        pref = update_preferences(pref, smallest_cc, allow_pref_substraction)
     return stable_partition
 
+def find_largest_scc(graph):
+    cc = graph_tool.topology.label_largest_component(graph)
+    return frozenset([graph.vp.label[i] for i, v in enumerate(cc.a) if v == 1])
 
 def find_smallest_cc(graph):
     smallest_cc = None
@@ -45,7 +49,7 @@ def find_smallest_cc(graph):
     return frozenset([graph.vp.label[i] for i, v in enumerate(smallest_cc.a) if v == 1])
 
 
-def update_preferences(pref, smallest_cc):
+def update_preferences(pref, smallest_cc, allow_substraction):
     new_pref = {}
     for k, v in pref.items():
         if k in smallest_cc:
@@ -53,8 +57,11 @@ def update_preferences(pref, smallest_cc):
         choice_set = []
         for n in v:
             new_n = frozenset(n - smallest_cc)
-            if new_n == n:
-                choice_set.append(n)
+            if allow_substraction:
+                choice_set.append(new_n)
+            else:
+                if new_n == n:
+                    choice_set.append(n)
         new_pref[k] = choice_set
     # print('new_pref:', new_pref)
     return new_pref

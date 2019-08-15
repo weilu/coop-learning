@@ -5,11 +5,12 @@ def stable_friends(friend_matrix):
     graph = build_graph(friend_matrix)
     vertex_indexes = graph.vertex_index.copy()
     while(list(graph.vertices())):
-        largest_cc = find_largest_cc(graph)
-        largest_cc_indexes = frozenset(vertex_indexes[v] for v in largest_cc)
-        stable_partition.add(largest_cc_indexes)
-        friend_matrix = update_friend_matrix(friend_matrix, largest_cc_indexes)
-        graph.remove_vertex(largest_cc)
+        largest_scc = find_largest_scc(graph)
+        largest_scc_indexes = frozenset(vertex_indexes[v] for v in largest_scc)
+        # print('largest_scc:', largest_scc_indexes)
+        stable_partition.add(largest_scc_indexes)
+        friend_matrix = update_friend_matrix(friend_matrix, largest_scc_indexes)
+        graph.remove_vertex(largest_scc)
 
     return stable_partition
 
@@ -26,9 +27,9 @@ def build_graph(friend_matrix):
     return g
 
 
-def find_largest_cc(graph):
-    cc_graph = graph_tool.topology.extract_largest_component(graph)
-    return list(cc_graph.vertices())
+def find_largest_scc(graph):
+    scc_graph = graph_tool.topology.extract_largest_component(graph)
+    return list(scc_graph.vertices())
 
 
 def update_friend_matrix(friend_matrix, to_remove):

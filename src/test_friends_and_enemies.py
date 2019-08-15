@@ -1,6 +1,7 @@
 import unittest
 from knesset_test import read_votes_and_player_data, print_partition_stats
 from friends_and_enemies import stable_friends, find_friends
+from top_covering import top_cover
 
 
 class TestFriendsAndEnemies(unittest.TestCase):
@@ -11,6 +12,10 @@ class TestFriendsAndEnemies(unittest.TestCase):
         pi = stable_friends(friend_matrix)
         print(pi)
         print_partition_stats(pi)
+
+        game = friend_matrix_to_game(friend_matrix)
+        pi_tc = top_cover(game, allow_pref_substraction=True)
+        self.assertEqual(pi, pi_tc)
         # TODO: verify core stable
 
     def test_find_friends(self):
@@ -44,17 +49,23 @@ class TestFriendsAndEnemies(unittest.TestCase):
         self.assertTrue(0 in friend_matrix[2])
 
 
-    def test_table_friends(self):
+    def test_stable_friends(self):
         friend_matrix = [{1, 2}, {0}, {0}]
         pi = stable_friends(friend_matrix)
         self.assertEqual(len(pi), 1)
         self.assertTrue(frozenset({0, 1, 2}) in pi)
+        game = friend_matrix_to_game(friend_matrix)
+        pi_tc = top_cover(game, allow_pref_substraction=True)
+        self.assertEqual(pi, pi_tc)
 
         friend_matrix = [{1}, {0}, set()]
         pi = stable_friends(friend_matrix)
         self.assertEqual(len(pi), 2)
         self.assertTrue(frozenset({0, 1}) in pi)
         self.assertTrue(frozenset({2}) in pi)
+        game = friend_matrix_to_game(friend_matrix)
+        pi_tc = top_cover(game, allow_pref_substraction=True)
+        self.assertEqual(pi, pi_tc)
 
         friend_matrix = [{1}, {}, {0, 1}]
         pi = stable_friends(friend_matrix)
@@ -62,6 +73,17 @@ class TestFriendsAndEnemies(unittest.TestCase):
         self.assertTrue(frozenset({0}) in pi)
         self.assertTrue(frozenset({1}) in pi)
         self.assertTrue(frozenset({2}) in pi)
+        game = friend_matrix_to_game(friend_matrix)
+        pi_tc = top_cover(game, allow_pref_substraction=True)
+        self.assertEqual(pi, pi_tc)
+
+
+def friend_matrix_to_game(friend_matrix):
+    game = {}
+    for i, friends in enumerate(friend_matrix):
+        game[i] = [friends]
+    return game
+
 
 if __name__ == '__main__':
     unittest.main()
