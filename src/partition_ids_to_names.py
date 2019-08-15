@@ -26,6 +26,8 @@ if __name__ == '__main__':
         pi_names.append(sorted(coal_names))
 
     sorted_pi_names = sorted(pi_names, key=len, reverse=True)
+    print(sorted_pi_names)
+    print('\nOne coalition per line:')
     for coal in sorted_pi_names:
         print(coal)
 
