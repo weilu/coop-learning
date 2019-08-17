@@ -138,7 +138,53 @@ For the purpose of our research, we treat the data with individual member's vote
 \subsection{Hedonic Games}
 Hedonic games are a sub-class of nontransferable utility cooperative games. A hedonic game is a coalition formation game with hedonic preferences. A coalition formation game aims to divide the set of all players $N$ into disjoint coalitions, formally known as a coalition structure, often denoted as $\pi$. Hedonic preferenfes means that every player only cares about the coalition they belong to, which implies that the inter-coalitional dependencies are completely ignored. The description of a hedonic game could be exponentially large in the number of players, as each player needs to rank all possible coalitions they may belong to.
 
-A hedonic game is core stable when there is no strongly blocking coalition. A coalition $S \subseteq N$ strongly blocks a coalition structure $\pi$ if every player $i \in S$ strictly prefers $S$ over its current coalition $\pi(i)$. Similarly, a hedonic game is strictly core stable when there is no weakly blocking coalition. A coalition $S \subseteq N$ weakly blocks a coalition structure $\pi$ if every player $i \in S$ weakly prefers $S$ over its current coalition $\pi(i)$ and there exists at least one player $j \in S$ who strictly prefers $S$ over $\pi(j)$. Core stable and strictly core stable are solution concepts useful for modeling real world scenarios because they represent a stable state where no subset of players can be better off by deviating from.
+\subsection{Top Responsive Games}
+The intuition behind top responsiveness is that every player derives their utility from the most preferred subset players of the coalition they belong. If two coalitions, with one containing the other, yield the same utility for a player, the tie is broken in favor of the smaller coalition. Formally, for a game to satisfy top responsiveness, it requires the following three conditions to hold true for any player $i \in N$, and any coalition that may contain player $i$: $S, T \in \mathcal{N}_i$:
+\begin{enumerate}
+  \item $|Ch(i, S)| = 1$.
+  \item if $ch(i, S) \succ_i ch(i, T)$ then $S \succ_i T$
+  \item if $ch(i, S) = ch(i, T)$ and $S \subset T$ then $S \succ_i T$
+\end{enumerate}
+
+Where $Ch(i, S)$ denotes the choice sets of player $i$ in coalition $S$, formally defined as:
+
+$Ch(i, S) = \{S' \subseteq S: (i \in S') \wedge (S' \succeq_i S'' \forall S'' \subseteq S)\}$
+
+The unique choice set in $Ch(i, S)$ is denoted as $ch(i, S)$.
+
+\subsection{Bottom Responsive Games}
+Bottom responsive games can be viewed as the counterpart of top responsive games, where a player's utility is derived from the absence of disliked players. For a game to satisfy bottom responsiveness, two conditions are required:
+
+\begin{enumerate}
+  \item if for all $S' \in Av(i, S)$ $T' \in Av(i, T)$, $ S' \succ_i T'$ then $S \succ_i T$
+  \item if $Av(i, S) \cap Av(i, T) \neq \emptyset$ and $|S| \geq |T|$ then $S \succeq_i T$
+\end{enumerate}
+
+Where $Av(i, S)$ denotes the avoid sets of player $i$ in coalition $S$, formally defined as:
+
+$Av(i, S) = \{S' \subseteq S: (i \in S') \wedge (S' \preceq_i S'' \forall S'' \subseteq S)\}$
+
+If in addition to the above two conditions, a game also satisfies $|Av(i, S)| = 1$ for all $i \in N$ and all $S \in \mathcal{N}_i$, then it is strongly bottom responsive.
+
+\subsection{Mutuality}
+Mutaulity in the context of top responsive games means that for all $i, j \in N$, for all coalition that contains $i$ and $j$: $S \in \mathcal{N}_i \cap \mathcal{N}_j$, $i \in ch(j, S)$ if and only if $j \in ch(i, S)$. Similarly, a strong bottom responsive game is mutual if $i \in av(j, S) \iff j \in av(i, S)$. Mutuality provides guarantees for solutions that satisfy stronger notion of stability, which we will discuss after the stability concepts defitions.
+
+\subsection{Stability Concepts}
+Core stable and strictly core stable are solution concepts useful for modeling real world scenarios because they represent a stable state where no subset of players can be better off by deviating from. A hedonic game solution $\pi$ is core stable when there is no strongly blocking coalition. A coalition $S \subseteq N$ strongly blocks a coalition structure $\pi$ if every player $i \in S$ strictly prefers $S$ over its current coalition $\pi(i)$. Similarly, a hedonic game is strictly core stable when there is no weakly blocking coalition. A coalition $S \subseteq N$ weakly blocks a coalition structure $\pi$ if every player $i \in S$ weakly prefers $S$ over its current coalition $\pi(i)$ and there exists at least one player $j \in S$ who strictly prefers $S$ over $\pi(j)$.
+
+Strong Nash Stability (SNS) and Strict Strong Nash Stability (SSNS) is a pair of stronger stable concepts compared to Core (C) and Strict Core (SC) stabilities, that are also based on group deviations. If a partition $\pi' \neq \pi$ exists with movement of players $S \subseteq N$ and $S \neq \emptyset$ (denoted as $\pi \xrightarrow{S} \pi'$), where $\forall i \in S$, $\pi'(i) \succ_i \pi(i)$, and $\forall j \in N\text{\textbackslash}S$, $\pi'(j) = \pi(j)$, then $S$ strongly Nash blocks $\pi$. A partition that admits no strongly Nash blocking set $S \subseteq N$ is said to be strong Nash stable. A non-empty set of player $S \subseteq N$ weakly Nash blocks $\pi$ if $\forall i \in S$, $\pi'(i) \succeq_i \pi(i)$ and $\exists j \in S$, $\pi'(j) \succ_j \pi(j)$. A partition that admits no weakly Nash blocking set $S \subseteq N$ is said to be strict strong Nash stable.
+
+Nash stable is the strongest stability notion based on individual deviations, as it doesn't account for the disutility of the group an individual player is joining or leaving. A partition is Nash stable if no player can benefit by moving unilaterally to another coalition.
+
+Strict strong Nash stable implies strict core and strong Nash stable. Strong Nash stable immplies core and Nash stable. Strict core implies core. TODO: illustration
+
+TODO: Example of Core that's not SNS, example of SNS that's not strict core
+
+\subsection{Algorithms and Their Complexities}
+
+\cite{ALCALDE2004869} showed that top responsive games guarantee the existence of a core stable partition, which is discoverable through the Top Covering Algorithm. \cite{DIMITROV2007130} simplified the original Top Covering Algorithm and proved that it not only constructs a core, but a strict core. \cite{Dimitrov2006TopRA} also showed that adding the mutuality condition the simplified top covering algorithm produces a Nash stable partition. \cite{Aziz:2012:ESH:2343776.2343806} further proved that with mutuality the partition produced is in fact strict strong Nash stable for any top responsive game.
+
+Bottom Avoiding Algorithm
 
 \subsection{PAC Learnable and PAC Stabilizable}
 TODO
@@ -146,7 +192,7 @@ TODO
 \section{Experiments}
 
 \subsection{Top Responsive Game Model}
-The intuition behind top responsiveness is that every player derives their utility from the most preferred subset players of the coalition they belong. If two coalitions yield the same utility for a player, the tie is broken in favor of the smaller coalition. In the context of legislature, it captures that politicians care about whose votes they stand with – they want to vote with other politicians they like. Top responsiveness guarantees a core stable partition, which can be computed in polynomial time using the top covering algorithm. It makes this model desirable for our research, and we can compare the resulting partition to party affiliations to assess the quality of our model.
+Top responsiveness models preference profiles that every player derives their utility for a given coalition from the most preferred subset players in their coalition. In the context of legislature, it captures that politicians care about whose votes they stand with – they want to vote with other politicians they like. Top responsiveness guarantees a core stable partition, which can be computed in polynomial time using the top covering algorithm. It makes this model desirable for our research, and we can compare the resulting partition to party affiliations to assess the quality of our model.
 
 One way to model Knesset as a coalition formation game is to first learn every member's preference profile, then find a stable coalition structure from the preference profiles. This approach is impractical because the size of complete preference profiles is exponential in the number of players. Sliwinski and Zick have shown that the preference profiles of a top responsive game are not even PAC learnable; however a top responsive game's core stable partition can be PAC approaximated. They offered an algorithm which takes an alternative approach of assuming top responsive preferences and learning a PAC stable partition directly from samples, where every sample consists of a coalition $S_j \subseteq N$, and the values assigned to $S_j$ by each of its memeber $\vec{v}(S_j) = (v_i(S_j))_{i \in S_j}$.
 
@@ -173,7 +219,8 @@ The original algorithm requires $m = (2n^4 + 2n^3)\ceil{\frac{1}{\epsilon}\log{\
 
 TODO: experiment results
 
-% \bibliography{references}\\
-% \bibliographystyle{aaai}\\
+\bibliography{references}
+\bibliographystyle{aaai}
+
 \end{document}
 
