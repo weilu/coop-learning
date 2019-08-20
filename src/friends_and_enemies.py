@@ -2,7 +2,7 @@ import numpy as np
 import logging
 import random
 from graph_tool.all import *
-from top_covering import smallest_cc_from_pref
+from top_covering import smallest_cc_from_pref, largest_scc_from_pref
 
 
 logging.basicConfig(format='%(asctime)s [%(levelname)s] %(message)s',
@@ -98,13 +98,13 @@ def find_friends_from_sample(sample_bill_indexes, diff_matrix, active_players=No
 
 
 # top cover needs to be re-implemented to avoid having to expand the full preference profile
-def top_cover(friend_matrix):
+def top_cover(friend_matrix, pref_to_cc_method=smallest_cc_from_pref):
     stable_partition = set()
     pref = to_choice_sets(friend_matrix)
     while pref.keys():
-        smallest_cc = smallest_cc_from_pref(pref)
-        stable_partition.add(smallest_cc)
-        friend_matrix = update_friend_matrix(friend_matrix, smallest_cc)
+        cc = pref_to_cc_method(pref)
+        stable_partition.add(cc)
+        friend_matrix = update_friend_matrix(friend_matrix, cc)
         pref = to_choice_sets(friend_matrix)
     return stable_partition
 
@@ -233,15 +233,15 @@ def pac_top_cover(votes, sample_size=None, sample_method=random.choices):
             approximate_preferences(votes, B, players, diff_matrix, coalition_matrix, sample_size, sample_method)
         logging.debug(f'done approximating preferences')
 
-        smallest_cc = smallest_cc_from_pref(B)
-        stable_partition.add(smallest_cc)
-        logging.debug(f'done finding smallest cc')
+        cc = largest_scc_from_pref(B)
+        stable_partition.add(cc)
+        logging.debug(f'done finding best cc')
 
-        players = players - smallest_cc
+        players = players - cc
         # remove votes of removed players
         for i, row in enumerate(votes):
             for j in range(num_players):
-                if j in smallest_cc:
+                if j in cc:
                     votes[i][j] = None
 
     return stable_partition

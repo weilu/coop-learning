@@ -1,7 +1,10 @@
+import copy
 import random
 import unittest
 from knesset_test import read_votes_and_player_data, print_partition_stats
 from friends_and_enemies import stable_friends, find_friends, top_cover, to_avoid_sets, bottom_avoid, pac_top_cover, precalculate_coalitions
+from top_covering import largest_scc_from_pref
+from partition_ids_to_names import build_member_map, partition_id_str_to_names
 
 
 class TestFriendsAndEnemies(unittest.TestCase):
@@ -34,12 +37,19 @@ class TestFriendsAndEnemies(unittest.TestCase):
         self.assertTrue(frozenset({0, 1}) in pi)
         self.assertTrue(frozenset({2}) in pi)
 
+
     def test_pac_knesset(self):
-        votes, player_labels = read_votes_and_player_data()
-        sample_size = int(0.75 * len(votes))
-        pi = pac_top_cover(votes, sample_size)
-        print(pi)
-        print_partition_stats(pi)
+        member_map = build_member_map()
+        random.seed(42)
+        original_votes, _ = read_votes_and_player_data()
+        for _ in range(2):
+            votes = copy.deepcopy(original_votes)
+            sample_size = int(0.75 * len(votes))
+            pi = pac_top_cover(votes, sample_size)
+            print(pi)
+            print_partition_stats(pi)
+            partition_id_str_to_names(str(pi), member_map)
+
 
     def test_knesset(self):
         votes, player_labels = read_votes_and_player_data()
@@ -47,10 +57,11 @@ class TestFriendsAndEnemies(unittest.TestCase):
         pi = stable_friends(friend_matrix)
         print(pi)
         print_partition_stats(pi)
-
-        pi_tc = top_cover(friend_matrix)
-        self.assertEqual(pi, pi_tc)
         # TODO: verify core stable
+        pi_tc = top_cover(friend_matrix)
+        self.assertEqual(pi_tc, pi)
+        pi_tc_scc = top_cover(friend_matrix, pref_to_cc_method=largest_scc_from_pref)
+        self.assertEqual(pi_tc_scc, pi)
 
         pi_ba = bottom_avoid(friend_matrix)
         print(pi_ba)
@@ -114,6 +125,8 @@ class TestFriendsAndEnemies(unittest.TestCase):
         self.assertTrue(frozenset({0, 1, 2}) in pi)
         pi_tc = top_cover(friend_matrix)
         self.assertEqual(pi, pi_tc)
+        pi_tc_scc = top_cover(friend_matrix, pref_to_cc_method=largest_scc_from_pref)
+        self.assertEqual(pi_tc_scc, pi)
 
         friend_matrix = [{1}, {0}, set()]
         pi = stable_friends(friend_matrix)
@@ -122,6 +135,8 @@ class TestFriendsAndEnemies(unittest.TestCase):
         self.assertTrue(frozenset({2}) in pi)
         pi_tc = top_cover(friend_matrix)
         self.assertEqual(pi, pi_tc)
+        pi_tc_scc = top_cover(friend_matrix, pref_to_cc_method=largest_scc_from_pref)
+        self.assertEqual(pi_tc_scc, pi)
 
         friend_matrix = [{1}, {}, {0, 1}]
         pi = stable_friends(friend_matrix)
@@ -131,6 +146,8 @@ class TestFriendsAndEnemies(unittest.TestCase):
         self.assertTrue(frozenset({2}) in pi)
         pi_tc = top_cover(friend_matrix)
         self.assertEqual(pi, pi_tc)
+        pi_tc_scc = top_cover(friend_matrix, pref_to_cc_method=largest_scc_from_pref)
+        self.assertEqual(pi_tc_scc, pi)
 
 
     def test_to_avoid_sets(self):

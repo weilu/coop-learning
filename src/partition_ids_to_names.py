@@ -6,17 +6,18 @@ def partition_str_to_list(partition_str):
     partition_index_strs = ('}), ' + partition_str[1:-1] + ', frozenset({').split('}), frozenset({')[1:-1]
     return list(coalition.split(', ') for coalition in partition_index_strs)
 
-if __name__ == '__main__':
-    partition_str = sys.argv[1]
 
+def build_member_map():
     member_map = {}
     with open('data/members.csv') as f:
         csv_reader = csv.DictReader(f)
         for row in csv_reader:
             party_initials = ''.join(filter(str.isupper, row['party name']))
             member_map[row['index']] = party_initials + ' - ' + row['google translated name']
+    return member_map
 
 
+def partition_id_str_to_names(partition_str, member_map):
     pi = partition_str_to_list(partition_str)
     pi_names = []
     for coal in pi:
@@ -31,3 +32,7 @@ if __name__ == '__main__':
     for coal in sorted_pi_names:
         print(coal)
 
+
+if __name__ == '__main__':
+    member_map = build_member_map()
+    partition_id_str_to_names(sys.argv[1], member_map)

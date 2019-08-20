@@ -34,8 +34,14 @@ def smallest_cc_from_pref(pref):
     graph, _ = build_graph(pref)
     smallest_cc = find_smallest_cc(graph)
     # smallest_cc = find_largest_scc(graph)
-    # print('samllest_cc:', smallest_cc)
+    # print('smallest_cc:', smallest_cc)
     return smallest_cc
+
+def largest_scc_from_pref(pref):
+    graph, _ = build_graph(pref)
+    largest_scc = find_largest_scc(graph)
+    # print('largest_scc:', largest_scc)
+    return largest_scc
 
 def find_largest_scc(graph):
     cc = graph_tool.topology.label_largest_component(graph)
