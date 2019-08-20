@@ -1,7 +1,7 @@
 import random
 import unittest
 from knesset_test import read_votes_and_player_data, print_partition_stats
-from friends_and_enemies import stable_friends, find_friends, top_cover, to_avoid_sets, bottom_avoid, pac_top_cover
+from friends_and_enemies import stable_friends, find_friends, top_cover, to_avoid_sets, bottom_avoid, pac_top_cover, precalculate_coalitions
 
 
 class TestFriendsAndEnemies(unittest.TestCase):
@@ -172,6 +172,31 @@ class TestFriendsAndEnemies(unittest.TestCase):
         self.assertTrue(frozenset({2}) in pi)
 
         #TODO: add more test cases
+
+
+    def test_precalculate_coalitions(self):
+        coalition_matrix = precalculate_coalitions([[1, 1, 2]])
+        self.assertEqual(len(coalition_matrix), 1)
+        self.assertEqual(len(coalition_matrix[0]), 3)
+        self.assertEqual(coalition_matrix[0][0], {0, 1})
+        self.assertEqual(coalition_matrix[0][1], {0, 1})
+        self.assertEqual(coalition_matrix[0][2], {2})
+
+        coalition_matrix = precalculate_coalitions([[3, 1, 3]])
+        self.assertEqual(len(coalition_matrix), 1)
+        self.assertEqual(len(coalition_matrix[0]), 3)
+        self.assertEqual(coalition_matrix[0][0], None)
+        self.assertEqual(coalition_matrix[0][1], {1})
+        self.assertEqual(coalition_matrix[0][2], None)
+
+        coalition_matrix = precalculate_coalitions([
+            [1, 1, 2],
+            [2, 1, 2],
+        ])
+        self.assertEqual(len(coalition_matrix), 2)
+        self.assertEqual(coalition_matrix[1][0], {0, 2})
+        self.assertEqual(coalition_matrix[1][1], {1})
+        self.assertEqual(coalition_matrix[1][2], {0, 2})
 
 
 if __name__ == '__main__':

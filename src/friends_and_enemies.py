@@ -154,31 +154,37 @@ def to_avoid_sets(friend_matrix):
     return avoid_sets
 
 
-def approximate_preferences(votes, B, players, diff_matrix, sample_size, sample_method):
+def af_better(friend_count, max_friend_count, enemy_count, max_enemy_count):
+    if friend_count > max_friend_count:
+        return True
+    elif friend_count == max_friend_count:
+        return enemy_count < max_enemy_count
+    else:
+        return False
+
+
+def approximate_preferences(votes, B, players, diff_matrix, coalition_matrix, sample_size, sample_method):
     S_prime_indexes = sample_method(range(len(votes)), k=sample_size)
     sample_votes = list(votes[i] for i in S_prime_indexes)
-    logging.info('start finding friends')
     friend_matrix = find_friends_from_sample(S_prime_indexes, diff_matrix, active_players=players)
-    logging.info('done finding friends')
-    for i in range(len(sample_votes[0])):
-        if i not in players:
-            continue
+    for i in players:
         if i in B and B[i] == {i}: # already singleton, no need to check further
             continue
-        max_count = 0
+        max_friend_count = 0
+        max_enemy_count = len(votes[0])
         max_coalition = None
-        for bill in sample_votes:
-            my_vote = bill[i]
+        for bill_index in S_prime_indexes:
+            my_vote = votes[bill_index][i]
             if my_vote not in {1, 2}:
                 continue
-            voted_with_me = set()
-            for col_index, vote in enumerate(bill):
-                if vote == my_vote:
-                    voted_with_me.add(col_index)
+            voted_with_me = coalition_matrix[bill_index][i]
             friends_voted_with_me = voted_with_me & friend_matrix[i]
-            if len(friends_voted_with_me) > max_count:
-                max_count = len(friends_voted_with_me)
+            friend_count = len(friends_voted_with_me)
+            enemy_count = len(voted_with_me) - len(friends_voted_with_me)
+            if af_better(friend_count, max_friend_count, enemy_count, max_enemy_count):
+                max_friend_count = len(friends_voted_with_me)
                 max_coalition = voted_with_me
+                max_enemy_count = enemy_count
         old_coal_len = len(B[i]) if i in B else 0
         if max_coalition == None:
             B[i] = {i}
@@ -191,6 +197,22 @@ def approximate_preferences(votes, B, players, diff_matrix, sample_size, sample_
             logging.info(f'{i} coalition size reduced: {old_coal_len} -> {len(B[i])}')
 
 
+def precalculate_coalitions(votes):
+    coalition_matrix = []
+    for row_index, row in enumerate(votes):
+        coalitions = [None]*len(row)
+        for_coalition = set()
+        against_coalition = set()
+        for col_index, vote in enumerate(row):
+            if vote == 1:
+                for_coalition.add(col_index)
+                coalitions[col_index] = for_coalition
+            elif vote == 2:
+                against_coalition.add(col_index)
+                coalitions[col_index] = against_coalition
+        coalition_matrix.append(coalitions)
+    return coalition_matrix
+
 def pac_top_cover(votes, sample_size=None, sample_method=random.choices):
     if sample_size is None:
         sample_size = len(votes)
@@ -199,14 +221,15 @@ def pac_top_cover(votes, sample_size=None, sample_method=random.choices):
     stable_partition = set()
 
     diff_matrix = precalculate_frenemy_per_player_per_bill(votes)
+    coalition_matrix = precalculate_coalitions(votes)
     while players:
         logging.info(f'{len(players)} players left')
         B = {}
-        approximate_preferences(votes, B, players, diff_matrix, sample_size, sample_method)
+        approximate_preferences(votes, B, players, diff_matrix, coalition_matrix, sample_size, sample_method)
         # successive restriction loop
         for round_index in range(len(players)):
             logging.info(f'round {round_index}')
-            approximate_preferences(votes, B, players, diff_matrix, sample_size, sample_method)
+            approximate_preferences(votes, B, players, diff_matrix, coalition_matrix, sample_size, sample_method)
         logging.debug(f'done approximating preferences')
 
         smallest_cc = smallest_cc_from_pref(B)
