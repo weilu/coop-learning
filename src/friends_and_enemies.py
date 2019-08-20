@@ -52,11 +52,13 @@ def find_friends(votes):
 
     for my_index in range(num_players):
         for row_index, row in enumerate(votes):
+            my_vote = row[my_index]
+            if my_vote not in {1, 2}:
+                continue
             for col_index, vote in enumerate(row):
+                if vote not in {1, 2}:
+                    continue
                 if col_index != my_index:
-                    my_vote = row[my_index]
-                    if my_vote not in [1, 2]:
-                        continue
                     if vote == my_vote:
                         frenemy_matrix[my_index][col_index] += 1
                     else:

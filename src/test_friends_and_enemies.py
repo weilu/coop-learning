@@ -77,6 +77,15 @@ class TestFriendsAndEnemies(unittest.TestCase):
         pi_tc = top_cover(friend_matrix)
         self.assertEqual(pi, pi_tc)
 
+        friend_matrix = find_friends([
+            [1, 1, 2],
+            [3, 1, 3],
+            [3, 2, 3],
+        ])
+        self.assertTrue(1 in friend_matrix[0])
+        self.assertTrue(0 in friend_matrix[1])
+        self.assertFalse(friend_matrix[2])
+
 
     def test_to_avoid_sets(self):
         friend_matrix = [{1, 2}, {0}, {0}]
