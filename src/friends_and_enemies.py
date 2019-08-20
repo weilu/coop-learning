@@ -1,3 +1,4 @@
+import numpy as np
 import logging
 import random
 from graph_tool.all import *
@@ -53,10 +54,10 @@ def update_friend_matrix(friend_matrix, to_remove):
     return updated_friend_matrix
 
 
-def find_friends(votes, active_players=None):
+def precalculate_frenemy_per_player_per_bill(votes):
+    num_bills = len(votes)
     num_players = len(votes[0])
-    frenemy_matrix = [[0]*num_players for _ in range(num_players)]
-
+    diff_matrix = np.zeros((num_bills, num_players, num_players))
     for my_index in range(num_players):
         for row_index, row in enumerate(votes):
             my_vote = row[my_index]
@@ -67,11 +68,22 @@ def find_friends(votes, active_players=None):
                     continue
                 if col_index != my_index:
                     if vote == my_vote:
-                        frenemy_matrix[my_index][col_index] += 1
+                        diff_matrix[row_index, my_index, col_index] += 1
                     else:
-                        frenemy_matrix[my_index][col_index] -= 1
+                        diff_matrix[row_index, my_index, col_index] -= 1
+    return diff_matrix
 
-    logging.info('done calculating frenemy_matrix')
+
+def find_friends(votes, active_players=None):
+    diff_matrix = precalculate_frenemy_per_player_per_bill(votes)
+    return find_friends_from_sample(list(range(len(votes))), diff_matrix, active_players)
+
+
+def find_friends_from_sample(sample_bill_indexes, diff_matrix, active_players=None):
+    num_players = len(diff_matrix[0, 0])
+
+    diff_matrix = diff_matrix[sample_bill_indexes]
+    frenemy_matrix = np.sum(diff_matrix, axis=0)
 
     friend_matrix = []
     for i, row in enumerate(frenemy_matrix):
@@ -82,7 +94,6 @@ def find_friends(votes, active_players=None):
             if active_players:
                 friends &= active_players
             friend_matrix.append(friends)
-    logging.info('done constructing friend_matrix')
     return friend_matrix
 
 
@@ -143,11 +154,11 @@ def to_avoid_sets(friend_matrix):
     return avoid_sets
 
 
-def approximate_preferences(votes, B, players, sample_size, sample_method):
+def approximate_preferences(votes, B, players, diff_matrix, sample_size, sample_method):
     S_prime_indexes = sample_method(range(len(votes)), k=sample_size)
     sample_votes = list(votes[i] for i in S_prime_indexes)
     logging.info('start finding friends')
-    friend_matrix = find_friends(sample_votes, players)
+    friend_matrix = find_friends_from_sample(S_prime_indexes, diff_matrix, active_players=players)
     logging.info('done finding friends')
     for i in range(len(sample_votes[0])):
         if i not in players:
@@ -187,14 +198,15 @@ def pac_top_cover(votes, sample_size=None, sample_method=random.choices):
     players = set(range(len(votes[0])))
     stable_partition = set()
 
+    diff_matrix = precalculate_frenemy_per_player_per_bill(votes)
     while players:
         logging.info(f'{len(players)} players left')
         B = {}
-        approximate_preferences(votes, B, players, sample_size, sample_method)
+        approximate_preferences(votes, B, players, diff_matrix, sample_size, sample_method)
         # successive restriction loop
         for round_index in range(len(players)):
             logging.info(f'round {round_index}')
-            approximate_preferences(votes, B, players, sample_size, sample_method)
+            approximate_preferences(votes, B, players, diff_matrix, sample_size, sample_method)
         logging.debug(f'done approximating preferences')
 
         smallest_cc = smallest_cc_from_pref(B)
