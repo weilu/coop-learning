@@ -1,5 +1,12 @@
+import logging
+import random
 from graph_tool.all import *
 from top_covering import smallest_cc_from_pref
+
+
+logging.basicConfig(format='%(asctime)s [%(levelname)s] %(message)s',
+                    level=logging.INFO)
+
 
 def stable_friends(friend_matrix):
     stable_partition = set()
@@ -46,7 +53,7 @@ def update_friend_matrix(friend_matrix, to_remove):
     return updated_friend_matrix
 
 
-def find_friends(votes):
+def find_friends(votes, active_players=None):
     num_players = len(votes[0])
     frenemy_matrix = [[0]*num_players for _ in range(num_players)]
 
@@ -64,10 +71,18 @@ def find_friends(votes):
                     else:
                         frenemy_matrix[my_index][col_index] -= 1
 
+    logging.info('done calculating frenemy_matrix')
+
     friend_matrix = []
-    for row in frenemy_matrix:
-        friends = set([i for i, count in enumerate(row) if count > 0])
-        friend_matrix.append(friends)
+    for i, row in enumerate(frenemy_matrix):
+        if active_players and i not in active_players:
+            friend_matrix.append(None)
+        else:
+            friends = set([i for i, count in enumerate(row) if count > 0])
+            if active_players:
+                friends &= active_players
+            friend_matrix.append(friends)
+    logging.info('done constructing friend_matrix')
     return friend_matrix
 
 
