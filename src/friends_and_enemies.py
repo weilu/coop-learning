@@ -217,13 +217,14 @@ def pac_top_cover(votes, sample_size=None, sample_method=random.choices):
     if sample_size is None:
         sample_size = len(votes)
 
-    players = set(range(len(votes[0])))
+    num_players = len(votes[0])
+    players = set(range(num_players))
     stable_partition = set()
 
     diff_matrix = precalculate_frenemy_per_player_per_bill(votes)
-    coalition_matrix = precalculate_coalitions(votes)
     while players:
         logging.info(f'{len(players)} players left')
+        coalition_matrix = precalculate_coalitions(votes)
         B = {}
         approximate_preferences(votes, B, players, diff_matrix, coalition_matrix, sample_size, sample_method)
         # successive restriction loop
@@ -237,5 +238,10 @@ def pac_top_cover(votes, sample_size=None, sample_method=random.choices):
         logging.debug(f'done finding smallest cc')
 
         players = players - smallest_cc
+        # remove votes of removed players
+        for i, row in enumerate(votes):
+            for j in range(num_players):
+                if j in smallest_cc:
+                    votes[i][j] = None
 
     return stable_partition
