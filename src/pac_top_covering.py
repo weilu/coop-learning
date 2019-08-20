@@ -1,6 +1,6 @@
 import random
 import logging
-from top_covering import build_graph, find_smallest_cc
+from top_covering import smallest_cc_from_pref
 from votes_to_game import value_function, get_coalition, majority, precalculate_valuations_and_coalitions
 
 
@@ -28,8 +28,7 @@ def pac_top_cover(num_players, S, w=None):
         logging.debug(f'done approximating preferences')
 
         # perform top covering
-        graph, vlabel_to_index = build_graph(B)
-        smallest_cc = find_smallest_cc(graph)
+        smallest_cc = smallest_cc_from_pref(B)
         stable_partition.add(smallest_cc)
         logging.debug(f'done finding smallest cc')
 
