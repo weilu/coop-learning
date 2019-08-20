@@ -1,10 +1,11 @@
 import copy
 import random
 import unittest
-from knesset_test import read_votes_and_player_data, print_partition_stats
+from knesset_test import read_votes_and_player_data, print_partition_stats, print_partition_stability_stats
 from friends_and_enemies import stable_friends, find_friends, top_cover, to_avoid_sets, bottom_avoid, pac_top_cover, precalculate_coalitions
 from top_covering import largest_scc_from_pref
 from partition_ids_to_names import build_member_map, partition_id_str_to_names
+from votes_to_game import partition_edit_distance
 
 
 class TestFriendsAndEnemies(unittest.TestCase):
@@ -41,14 +42,27 @@ class TestFriendsAndEnemies(unittest.TestCase):
     def test_pac_knesset(self):
         member_map = build_member_map()
         random.seed(42)
+        partitions = []
         original_votes, _ = read_votes_and_player_data()
-        for _ in range(2):
+        sample_size = int(0.75 * len(original_votes))
+        for _ in range(50):
             votes = copy.deepcopy(original_votes)
-            sample_size = int(0.75 * len(votes))
             pi = pac_top_cover(votes, sample_size)
             print(pi)
             print_partition_stats(pi)
             partition_id_str_to_names(str(pi), member_map)
+            partitions.append(pi)
+
+        distances = []
+        for p1 in partitions:
+            for p2 in partitions:
+                if p1 == p2:
+                    continue
+                distances.append(partition_edit_distance(p1, p2)[0])
+        if not distances:
+            print('All partitions are identical')
+        else:
+            print_partition_stability_stats(distances)
 
 
     def test_knesset(self):

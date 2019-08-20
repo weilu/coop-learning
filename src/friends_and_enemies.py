@@ -194,7 +194,7 @@ def approximate_preferences(votes, B, players, diff_matrix, coalition_matrix, sa
             else:
                 B[i] &= max_coalition
         if old_coal_len != len(B[i]):
-            logging.info(f'{i} coalition size reduced: {old_coal_len} -> {len(B[i])}')
+            logging.info(f'player {i}\'s coalition size changed: {old_coal_len} -> {len(B[i])}. {B[i]}')
 
 
 def precalculate_coalitions(votes):
@@ -235,7 +235,7 @@ def pac_top_cover(votes, sample_size=None, sample_method=random.choices):
 
         cc = largest_scc_from_pref(B)
         stable_partition.add(cc)
-        logging.debug(f'done finding best cc')
+        logging.info(f'players to remove: {cc}')
 
         players = players - cc
         # remove votes of removed players
