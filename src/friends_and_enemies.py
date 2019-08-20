@@ -141,3 +141,66 @@ def to_avoid_sets(friend_matrix):
         if friends is not None:
             avoid_sets[i] = active_players - friends
     return avoid_sets
+
+
+def approximate_preferences(votes, B, players, sample_size, sample_method):
+    S_prime_indexes = sample_method(range(len(votes)), k=sample_size)
+    sample_votes = list(votes[i] for i in S_prime_indexes)
+    logging.info('start finding friends')
+    friend_matrix = find_friends(sample_votes, players)
+    logging.info('done finding friends')
+    for i in range(len(sample_votes[0])):
+        if i not in players:
+            continue
+        if i in B and B[i] == {i}: # already singleton, no need to check further
+            continue
+        max_count = 0
+        max_coalition = None
+        for bill in sample_votes:
+            my_vote = bill[i]
+            if my_vote not in {1, 2}:
+                continue
+            voted_with_me = set()
+            for col_index, vote in enumerate(bill):
+                if vote == my_vote:
+                    voted_with_me.add(col_index)
+            friends_voted_with_me = voted_with_me & friend_matrix[i]
+            if len(friends_voted_with_me) > max_count:
+                max_count = len(friends_voted_with_me)
+                max_coalition = voted_with_me
+        old_coal_len = len(B[i]) if i in B else 0
+        if max_coalition == None:
+            B[i] = {i}
+        else:
+            if i not in B: # initialization round
+                B[i] = max_coalition
+            else:
+                B[i] &= max_coalition
+        if old_coal_len != len(B[i]):
+            logging.info(f'{i} coalition size reduced: {old_coal_len} -> {len(B[i])}')
+
+
+def pac_top_cover(votes, sample_size=None, sample_method=random.choices):
+    if sample_size is None:
+        sample_size = len(votes)
+
+    players = set(range(len(votes[0])))
+    stable_partition = set()
+
+    while players:
+        logging.info(f'{len(players)} players left')
+        B = {}
+        approximate_preferences(votes, B, players, sample_size, sample_method)
+        # successive restriction loop
+        for round_index in range(len(players)):
+            logging.info(f'round {round_index}')
+            approximate_preferences(votes, B, players, sample_size, sample_method)
+        logging.debug(f'done approximating preferences')
+
+        smallest_cc = smallest_cc_from_pref(B)
+        stable_partition.add(smallest_cc)
+        logging.debug(f'done finding smallest cc')
+
+        players = players - smallest_cc
+
+    return stable_partition

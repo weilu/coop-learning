@@ -1,9 +1,45 @@
+import random
 import unittest
 from knesset_test import read_votes_and_player_data, print_partition_stats
-from friends_and_enemies import stable_friends, find_friends, top_cover, to_avoid_sets, bottom_avoid
+from friends_and_enemies import stable_friends, find_friends, top_cover, to_avoid_sets, bottom_avoid, pac_top_cover
 
 
 class TestFriendsAndEnemies(unittest.TestCase):
+
+    def test_pac_top_cover(self):
+        votes = [
+            [1, 1, 2],
+        ]
+        pi = pac_top_cover(votes, sample_method=random.sample)
+        self.assertEqual(len(pi), 2)
+        self.assertTrue(frozenset({0, 1}) in pi)
+        self.assertTrue(frozenset({2}) in pi)
+
+        votes = [
+            [1, 1, 2],
+            [2, 1, 2],
+            [2, 2, 2],
+        ]
+        pi = pac_top_cover(votes, sample_method=random.sample)
+        self.assertEqual(len(pi), 1)
+        self.assertTrue(frozenset({0, 1, 2}) in pi)
+
+        votes = [
+            [1, 1, 2],
+            [3, 1, 3],
+            [3, 2, 3],
+        ]
+        pi = pac_top_cover(votes, sample_method=random.sample)
+        self.assertEqual(len(pi), 2)
+        self.assertTrue(frozenset({0, 1}) in pi)
+        self.assertTrue(frozenset({2}) in pi)
+
+    def test_pac_knesset(self):
+        votes, player_labels = read_votes_and_player_data()
+        sample_size = int(0.75 * len(votes))
+        pi = pac_top_cover(votes, sample_size)
+        print(pi)
+        print_partition_stats(pi)
 
     def test_knesset(self):
         votes, player_labels = read_votes_and_player_data()
