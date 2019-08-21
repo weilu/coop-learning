@@ -2,9 +2,9 @@ import csv
 import sys
 
 
-def partition_str_to_list(partition_str):
+def partition_str_to_set(partition_str):
     partition_index_strs = ('}), ' + partition_str[1:-1] + ', frozenset({').split('}), frozenset({')[1:-1]
-    return list(coalition.split(', ') for coalition in partition_index_strs)
+    return set(frozenset(coalition.split(', ')) for coalition in partition_index_strs)
 
 
 def build_member_map():
@@ -18,7 +18,7 @@ def build_member_map():
 
 
 def partition_id_str_to_names(partition_str, member_map):
-    pi = partition_str_to_list(partition_str)
+    pi = partition_str_to_set(partition_str)
     pi_names = []
     for coal in pi:
         coal_names = []
