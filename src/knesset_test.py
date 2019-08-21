@@ -125,15 +125,12 @@ def print_partition_stability_stats(edit_distances):
 
 def calculate_partition_edit_distances_and_print_stats(partitions):
     distances = []
-    for p1 in partitions:
-        for p2 in partitions:
-            if p1 == p2:
+    for i, p1 in enumerate(partitions):
+        for j, p2 in enumerate(partitions):
+            if i == j:
                 continue
             distances.append(partition_edit_distance(p1, p2)[0])
-    if not distances:
-        print('All partitions are identical')
-    else:
-        print_partition_stability_stats(distances)
+    print_partition_stability_stats(distances)
 
 if __name__ == '__main__':
     unittest.main()
