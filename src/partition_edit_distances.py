@@ -11,5 +11,13 @@ def read_partitions(filename):
 
 
 if __name__ == '__main__':
+    print('All coalitions:')
     partitions = read_partitions('data/partitions_pac_friends_43_runs.txt')
     calculate_partition_edit_distances_and_print_stats(partitions)
+
+    print('Largest two coalitions:')
+    largest_two_coalitions_list = []
+    for partition in partitions:
+        largest_two_coalitions = set(sorted(partition, key=len, reverse=True)[0:2])
+        largest_two_coalitions_list.append(largest_two_coalitions)
+    calculate_partition_edit_distances_and_print_stats(largest_two_coalitions_list)
