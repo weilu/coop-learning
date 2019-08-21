@@ -55,16 +55,7 @@ class KnessetTest(unittest.TestCase):
                 csv_writer.writerow(row)
                 partitions.append(pi)
 
-        distances = []
-        for p1 in partitions:
-            for p2 in partitions:
-                if p1 == p2:
-                    continue
-                distances.append(partition_edit_distance(p1, p2)[0])
-        if not distances:
-            print('All partitions are identical')
-        else:
-            print_partition_stability_stats(distances)
+        calculate_partition_edit_distances_and_print_stats(partitions)
 
 
     def test_search_and_split(self):
@@ -131,6 +122,18 @@ def print_partition_stability_stats(edit_distances):
           f'     min: {min_dist},\n'
           f'     mean: {mean_dist}, \n'
           f'     median: {median_dist}')
+
+def calculate_partition_edit_distances_and_print_stats(partitions):
+    distances = []
+    for p1 in partitions:
+        for p2 in partitions:
+            if p1 == p2:
+                continue
+            distances.append(partition_edit_distance(p1, p2)[0])
+    if not distances:
+        print('All partitions are identical')
+    else:
+        print_partition_stability_stats(distances)
 
 if __name__ == '__main__':
     unittest.main()
