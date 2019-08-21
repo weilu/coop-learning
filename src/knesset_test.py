@@ -125,10 +125,10 @@ def print_partition_stability_stats(edit_distances):
 
 def calculate_partition_edit_distances_and_print_stats(partitions):
     distances = []
-    for i, p1 in enumerate(partitions):
-        for j, p2 in enumerate(partitions):
-            if i == j:
-                continue
+    for i in range(len(partitions) - 1):
+        p1 = partitions[i]
+        for j in range(i+1, len(partitions)):
+            p2 = partitions[j]
             distances.append(partition_edit_distance(p1, p2)[0])
     print_partition_stability_stats(distances)
 
