@@ -64,6 +64,7 @@ def precalculate_frenemy_per_player_per_bill(votes):
             if my_vote not in {1, 2}:
                 continue
             for col_index, vote in enumerate(row):
+                # comment out the following two lines to be more selective about friends
                 if vote not in {1, 2}:
                     continue
                 if col_index != my_index:
