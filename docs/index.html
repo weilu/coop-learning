@@ -1,32 +1,14 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
-<title>SANKEY Experiment</title>
-<style>
-
-.node rect {
-  cursor: move;
-  fill-opacity: .9;
-  shape-rendering: crispEdges;
-}
-
-.node text {
-  pointer-events: none;
-  text-shadow: 0 1px 0 #fff;
-}
-
-.link {
-  fill: none;
-  stroke: #000;
-  stroke-opacity: .2;
-}
-
-.link:hover {
-  stroke-opacity: .5;
-}
-
-</style>
+<title>Knesset Partition Visualized</title>
+<head>
+  <script src="https://cdn.plot.ly/plotly-1.49.3.js"></script></script>
+  <script src="https://d3js.org/d3-color.v1.min.js"></script>
+  <script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
+  <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+  <script src="https://d3js.org/d3-scale.v3.min.js"></script>
+</head>
 <body>
-<script src="https://unpkg.com/d3@5"></script>
-<script src="https://unpkg.com/d3-sankey@0"></script>
-<script src="index.js"></script>
+  <div id="sankey"></div>
+  <script src="index.js"></script>
 </body>

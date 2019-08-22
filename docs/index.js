@@ -1,78 +1,59 @@
-// adopted from https://observablehq.com/@d3/sankey-diagram and https://bl.ocks.org/GerardoFurtado/ff2096ed1aa29bb74fa151a39e9c1387
+Plotly.d3.json('sankey.json', function(fig){
+  const party_list = ["The Jewish Home", "Shas", "United Torah Judaism", "New Right", "Likud", "Yisrael Beiteinu", "Kulanu", "Yesh Atid", "Zionist Union", "Meretz", "Joint List"]
+  const party_colors = d3.schemeRdYlBu[party_list.length]
+  const color_fn = d3.scaleOrdinal(party_list, party_colors)
+  const node_parties = fig.data[0].node.party
+  const colors = node_parties.map(color_fn)
 
-var units = "Widgets";
+  const members = fig.data[0].node.label
+  const link_source = [...Array(members.length).keys()]
+  const link_target = Array(members.length).fill().map((e,i)=>i+members.length)
+  const link_value = Array(members.length).fill(1)
 
-// set the dimensions and margins of the graph
-var margin = {top: 10, right: 10, bottom: 10, left: 10},
-  width = 700 - margin.left - margin.right,
-  height = 300 - margin.top - margin.bottom;
+  const party_to_member = members.reduce((acc, curr, idx) => {
+    party = node_parties[idx]
+    if (acc[party] == null) {
+      acc[party] = [idx]
+    } else {
+      acc[party].push(idx)
+    }
+    return acc
+  }, {})
+  // TODO: hack plotly.js to preserve order
+  const group_values = party_list.map(p => party_to_member[p])
+  const group_colors = party_list.map(color_fn)
 
-// format variables
-var formatNumber = d3.format(",.0f"),    // zero decimal places
-  format = function(d) { return formatNumber(d) + " " + units; },
-  color = d3.scaleOrdinal(d3.schemeCategory10);
+  var data = {
+    type: "sankey",
+    orientation: "h",
+    node: {
+      pad: 15,
+      thickness: 15,
+      line: {
+        color: "black",
+        width: 0.5
+      },
+      label: members.concat(members).concat(party_list),
+      color: colors.concat(colors).concat(group_colors),
+      groups: group_values
+    },
+    link: {
+      source: link_source,
+      target: link_target,
+      value: link_value
+    }
+  }
 
-// append the svg object to the body of the page
-var svg = d3.select("body").append("svg")
-  .attr("width", width + margin.left + margin.right)
-  .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-  .attr("transform",
-    "translate(" + margin.left + "," + margin.top + ")");
+  var data = [data]
 
-// Set the sankey diagram properties
-var sankey = d3.sankey()
-  .nodeWidth(36)
-  .nodePadding(40)
-  .size([width, height]);
+  var layout = {
+    title: "Knesset Coalition Visualized",
+    width: 1200,
+    height: 4000,
+    font: {
+      size: 10
+    }
+  }
 
-// load the data
-d3.json("sankey.json").then(function(graph) {
-
-  const {nodes, links} = sankey({
-    nodes: graph.nodes.map(d => Object.assign({}, d)),
-    links: graph.links.map(d => Object.assign({}, d))
-  })
-
-  // add in the links
-  const link = svg.append("g")
-    .attr("fill", "none")
-    .attr("stroke-opacity", 0.5)
-    .selectAll("g")
-    .data(links)
-    .join("g")
-    .style("mix-blend-mode", "multiply");
-
-  link.append("path")
-    .attr("d", d3.sankeyLinkHorizontal())
-    .attr("stroke", d => color(d.source.name))
-    .attr("stroke-width", d => Math.max(1, d.width));
-
-  link.append("title")
-    .text(d => `${d.source.name} → ${d.target.name}\n${format(d.value)}`);
-
-  // add in the nodes
-  svg.append("g")
-      .attr("stroke", "#000")
-    .selectAll("rect")
-    .data(nodes)
-    .join("rect")
-      .attr("x", d => d.x0)
-      .attr("y", d => d.y0)
-      .attr("height", d => d.y1 - d.y0)
-      .attr("width", d => d.x1 - d.x0)
-      .attr("fill", d => color(d.name))
-    .append("title")
-      .text(d => `${d.name}\n${format(d.value)}`);
-
-  svg.append("g")
-      .style("font", "10px sans-serif")
-    .selectAll("text")
-    .data(nodes)
-    .join("text")
-      .attr("x", d => d.x0 < width / 2 ? d.x1 + 6 : d.x0 - 6)
-      .attr("y", d => (d.y1 + d.y0) / 2)
-      .attr("dy", "0.35em")
-      .attr("text-anchor", d => d.x0 < width / 2 ? "start" : "end")
-      .text(d => d.name);
+  Plotly.plot('sankey', data, layout)
 });
