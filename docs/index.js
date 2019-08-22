@@ -1,4 +1,6 @@
-Plotly.d3.json('sankey.json', function(fig){
+Plotly.d3.json("sankey.json", fig => {
+Plotly.d3.json("partitions.json", exp_partitions => {
+
   const party_list = ["The Jewish Home", "Shas", "United Torah Judaism", "Likud", "Yisrael Beiteinu", "Kulanu", "Yesh Atid", "Zionist Union", "Meretz", "Joint List"]
   const party_colors = d3.schemeRdYlBu[party_list.length]
   const color_fn = d3.scaleOrdinal(party_list, party_colors)
@@ -9,6 +11,8 @@ Plotly.d3.json('sankey.json', function(fig){
   const link_source = [...Array(members.length).keys()]
   const link_target = Array(members.length).fill().map((e,i)=>i+members.length)
   const link_value = Array(members.length).fill(1)
+
+  const dummy_labels = Array(members.length).fill('')
 
   // group by party
   const party_to_member = members.reduce((acc, curr, idx) => {
@@ -24,17 +28,21 @@ Plotly.d3.json('sankey.json', function(fig){
   const group_values = party_list.map(p => party_to_member[p])
   const group_colors = party_list.map(color_fn)
 
-  // group by partition
-  var partition1 = [[72], [132, 137, 138, 141, 14, 54], [145, 140, 86], [64, 134], [129, 2, 3, 4, 130, 6, 7, 131, 133, 136, 11, 15, 16, 17, 18, 23, 25, 27, 29, 30, 32, 33, 36, 39, 43, 44, 45, 48, 49, 51, 52, 57, 58, 59, 60, 61, 62, 63, 65, 87, 96, 98, 99, 100, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126], [144, 139, 135], [97, 34, 37, 8, 9, 10, 46, 114, 21, 22, 55, 24, 26, 127, 94, 95], [146], [77], [0, 1, 128, 5, 12, 13, 19, 20, 28, 31, 35, 38, 40, 41, 47, 50, 53, 56, 66, 67, 68, 69, 70, 71, 73, 74, 75, 76, 78, 79, 80, 81, 82, 83, 84, 85, 88, 89, 90, 91, 92, 93, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113], [42], [142], [143]]
-  // shift partition index to skip the first two columns of nodes
-  partition1 = partition1.map(coal => coal.map(idx => idx + members.length * 2))
-
-  var partition2 = [[64, 134], [2, 8, 9, 10, 11, 21, 22, 24, 26, 34, 37, 39, 44, 45, 46, 48, 52, 55, 57, 94, 95, 97, 114, 125, 127], [146], [131, 132, 135, 72, 137, 138, 139, 140, 141, 14, 144, 145, 54, 86], [77], [143], [0, 1, 128, 5, 12, 13, 19, 20, 28, 31, 35, 38, 40, 41, 47, 50, 53, 56, 66, 67, 68, 69, 70, 71, 73, 74, 75, 76, 78, 79, 80, 81, 82, 83, 84, 85, 88, 89, 90, 91, 92, 93, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113], [42], [142], [129, 130, 3, 4, 133, 6, 7, 136, 15, 16, 17, 18, 23, 25, 27, 29, 30, 32, 33, 36, 43, 49, 51, 58, 59, 60, 61, 62, 63, 65, 87, 96, 98, 99, 100, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 126]]
-  partition2 = partition2.map(coal => coal.map(idx => idx + members.length * 2))
-
   const partition_link_source = Array(members.length).fill().map((e,i) => i + members.length)
   const partition_link_target = Array(members.length).fill().map((e,i) => i + members.length * 2)
   const partition_link_value = Array(members.length).fill(1)
+
+  // partition groups
+  var partition_tuples = []
+  Object.keys(exp_partitions).forEach(key => {
+    var partitions = exp_partitions[key]
+    partition_tuples = partition_tuples.concat(partitions.map((p, id) => {
+      // shift partition index to skip the first two columns of nodes
+      var partition = p.map(coal => coal.map(idx => idx + members.length * 2))
+      var partition_name = key + ' partition ' + (id + 1)
+      return [partition_name, group_values.concat(partition)]
+    }))
+  })
 
   var data = {
     type: "sankey",
@@ -46,9 +54,9 @@ Plotly.d3.json('sankey.json', function(fig){
         color: "black",
         width: 0.5
       },
-      label: members.concat(members).concat(members).concat(party_list),
-      color: colors.concat(colors).concat(colors).concat(group_colors),
-      groups: group_values.concat(partition1)
+      label: dummy_labels.concat(members).concat(dummy_labels).concat(party_list),
+      color: dummy_labels.concat(colors).concat(dummy_labels).concat(group_colors),
+      groups: partition_tuples[0][1]
     },
     link: {
       source: link_source.concat(partition_link_source),
@@ -59,6 +67,15 @@ Plotly.d3.json('sankey.json', function(fig){
 
   var data = [data]
 
+  // generate group by partition buttons
+  const buttons = partition_tuples.map(t => {
+      return {
+          label: t[0],
+          method: "restyle",
+          args: ["node.groups", [t[1]]]
+      }
+  })
+
   var layout = {
     title: "Knesset Coalition Visualized",
     width: 1200,
@@ -68,19 +85,10 @@ Plotly.d3.json('sankey.json', function(fig){
     },
     updatemenus: [{
       active: 0,
-      buttons: [{
-          label: "Partition 1",
-          method: "restyle",
-          args: ["node.groups", [group_values.concat(partition1)]]
-        },
-        {
-          label: "Partition 2",
-          method: "restyle",
-          args: ["node.groups", [group_values.concat(partition2)]]
-        },
-      ]
+      buttons: buttons
     }]
   }
 
   Plotly.plot('sankey', data, layout)
-});
+})
+})
