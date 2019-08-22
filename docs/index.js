@@ -5,7 +5,6 @@ Plotly.d3.json("partitions.json", exp_partitions => {
     var num_partitions = partitions.map(p => p.length)
     exp_num_partition_tuples.push([key, num_partitions])
   })
-  console.log(exp_num_partition_tuples)
 
   const hist_data = [{
     x: exp_num_partition_tuples[0][1],
@@ -34,7 +33,7 @@ Plotly.d3.json("partitions.json", exp_partitions => {
   Plotly.d3.json("sankey.json", fig => {
 
     const party_list = ["The Jewish Home", "Shas", "United Torah Judaism", "Likud", "Yisrael Beiteinu", "Kulanu", "Yesh Atid", "Zionist Union", "Meretz", "Joint List"]
-    const party_colors = d3.schemeRdYlBu[party_list.length]
+    const party_colors = d3.schemeRdYlBu[party_list.length + 1]
     const color_fn = d3.scaleOrdinal(party_list, party_colors)
     const node_parties = fig.data[0].node.party
     const colors = node_parties.map(color_fn)
