@@ -1,3 +1,4 @@
+import glob
 import re
 import json
 import sys
@@ -13,7 +14,8 @@ def partition_str_to_list(partition_str):
 
 
 if __name__ == '__main__':
-    files = sys.argv[1:]
+    files = glob.glob('data/partitions_*.txt')
+    print(files)
 
     filename_to_partitions = {}
     for filename in files:
