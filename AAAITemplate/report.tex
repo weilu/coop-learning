@@ -207,6 +207,28 @@ squarednode/.style={rectangle, draw=white!60, fill=white!5, very thick, minimum 
 
 \cite{ALCALDE2004869} showed that top responsive games guarantee the existence of a core stable partition, which is discoverable through the Top Covering Algorithm. \cite{DIMITROV2007130} simplified the original Top Covering Algorithm and proved that it not only constructs a core, but a strict core. \cite{Dimitrov2006TopRA} also showed that adding the mutuality condition the simplified top covering algorithm produces a Nash stable partition. \cite{Aziz:2012:ESH:2343776.2343806} further proved that with mutuality the partition produced is in fact strict strong Nash stable for any top responsive game.
 
+\begin{algorithm}[htb]
+  \caption{Top Covering Algorithm}
+  \textbf{Input:} A hedonic game satisfying top responsiveness.
+
+  \begin{algorithmic}[1]
+\STATE $R^1 \leftarrow N$; $\pi \leftarrow \emptyset$.
+
+\FOR{$k=1$ to $|N|$}
+\STATE \label{step:select} Select $i\in R^k$ such that $|CC(i,R^k)| \leq |CC(j,R^k)|$ for each $j\in R^k$.
+\STATE $S^k\leftarrow  CC(i,R^k)$; $\pi \leftarrow  \pi \cup \lbrace S^k \rbrace$;  and $R^{k+1} \leftarrow  R^k \setminus S^k$
+ \IF{$R^{k+1} = \emptyset$}
+\RETURN $\pi$
+\ENDIF
+\ENDFOR
+\RETURN $\pi$
+ \end{algorithmic}
+\end{algorithm}
+
+Where $CC(i, S)$ denotes the connected component with $i$ as the root node, in the graph induced by $S$ as vertices and directed edges $E$, $(i, j) \in E$ if $j \in ch(i, S)$ for all $j \in S$.
+
+Note that the input of the top covering algorithm is the entire preference profile of all players, which is in the order of $O(2^{|N|})$. Finding the choice set for every player after each round of player removal at line 4 requires scanning through every remaining player's preference profile, which makes the most expensive part of this algorithm, so this algorithm is exponential time in the number of players.
+
 Bottom Avoiding Algorithm
 
 \subsection{PAC Learnable and PAC Stabilizable}
