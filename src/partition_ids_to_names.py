@@ -2,9 +2,12 @@ import csv
 import sys
 
 
+def to_partition_index_strs(partition_str):
+    return ('}), ' + partition_str.strip()[1:-1] + ', frozenset({').split('}), frozenset({')[1:-1]
+
+
 def partition_str_to_set(partition_str):
-    partition_index_strs = ('}), ' + partition_str[1:-1] + ', frozenset({').split('}), frozenset({')[1:-1]
-    return set(frozenset(coalition.split(', ')) for coalition in partition_index_strs)
+    return set(frozenset(coalition.split(', ')) for coalition in to_partition_index_strs(partition_str))
 
 
 def build_member_map():
