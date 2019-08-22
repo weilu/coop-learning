@@ -16,6 +16,9 @@
 
 \usepackage{mathtools}
 \DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usepackage{algorithm,algorithmic}
 %\nocopyright
 %PDF Info Is REQUIRED.
 % For /Author, add all authors within the parentheses, separated by commas. No accents or commands.
@@ -176,9 +179,29 @@ Strong Nash Stability (SNS) and Strict Strong Nash Stability (SSNS) is a pair of
 
 Nash stable is the strongest stability notion based on individual deviations, as it doesn't account for the disutility of the group an individual player is joining or leaving. A partition is Nash stable if no player can benefit by moving unilaterally to another coalition.
 
-Strict strong Nash stable implies strict core and strong Nash stable. Strong Nash stable immplies core and Nash stable. Strict core implies core. TODO: illustration
-
 TODO: Example of Core that's not SNS, example of SNS that's not strict core
+
+\begin{figure}
+\centering
+\begin{tikzpicture}[
+squarednode/.style={rectangle, draw=white!60, fill=white!5, very thick, minimum size=5mm},
+]
+%Nodes
+\node[squarednode]      (SSNS)                             {SSNS};
+\node[squarednode]      (SNS)       [below left=of SSNS]   {SNS};
+\node[squarednode]      (NS)        [below=of SNS]         {NS};
+\node[squarednode]      (SC)        [below right=of SSNS]  {SC};
+\node[squarednode]      (C)         [below=of SC]          {C};
+
+%Lines
+\draw[->] (SSNS.south west) -- (SNS.north east);
+\draw[->] (SNS.south) -- (NS.north);
+\draw[->] (SSNS.south east) -- (SC.north west);
+\draw[->] (SC.south) -- (C.north);
+\draw[->] (SNS.south east) -- (C.north west);
+\end{tikzpicture}
+\caption{Relationships between stability concepts for hedonic games: Strict strong Nash stable implies strict core and strong Nash stable. Strong Nash stable immplies core and Nash stable. Strict core implies core.}
+\end{figure}
 
 \subsection{Algorithms and Their Complexities}
 
