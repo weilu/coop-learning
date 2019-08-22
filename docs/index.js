@@ -1,5 +1,5 @@
 Plotly.d3.json('sankey.json', function(fig){
-  const party_list = ["The Jewish Home", "Shas", "United Torah Judaism", "New Right", "Likud", "Yisrael Beiteinu", "Kulanu", "Yesh Atid", "Zionist Union", "Meretz", "Joint List"]
+  const party_list = ["The Jewish Home", "Shas", "United Torah Judaism", "Likud", "Yisrael Beiteinu", "Kulanu", "Yesh Atid", "Zionist Union", "Meretz", "Joint List"]
   const party_colors = d3.schemeRdYlBu[party_list.length]
   const color_fn = d3.scaleOrdinal(party_list, party_colors)
   const node_parties = fig.data[0].node.party
