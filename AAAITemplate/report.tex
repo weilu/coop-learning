@@ -280,7 +280,21 @@ The conditional value function captures that a winning coalition, being successf
 
 This handcrafted value function allows us to construct a partial preference relation for every parliment member. We programmatically verified that this partial preference profile in fact does not satisfy top responsiveness. It makes this approach analogous to improper learning.
 
-To simulate i.i.d, we item sample $\frac{3}{4}$ of the bills with replacement. We repeated the algorithm run 100 times and observed that the resulting partition is consistent with little variability. (TODO: double check identical partition across all 100 runs). It is not core stable with respect to the partial preference profile. This is unsurprising due to the PAC model. The partition has one large coalition consisting of 61 members and 86 singleton coalitions. All members of the only large coalition are from right wing parties. Despite the number of singleton coalitions, the largest coalition does reflect political position of about 40\% of the parliment members.
+To simulate i.i.d, we item sample $\frac{3}{4}$ of the bills with replacement. We repeated the algorithm run 100 times and observed that the resulting partition is consistent with little variability. It is not core stable with respect to the partial preference profile. This is unsurprising due to the PAC model. The partition has one large coalition consisting of 61 members and 86 singleton coalitions. All members of the only large coalition are from right wing parties. The singleton coalitions are likely a result of the limited size of the derived partial preference profile - Upon discovery of the smallest $CC$ in each iteration, we also remove any coalition that contains any of the removed player from the remaining player's preference relation. Since we took away a large number of players in one of the first few iterations, many coalitions are removed from remaining players' preference relations, resulting in isolated nodes in the updated graph which leads to singleton coalitions. Despite the number of singleton coalitions, the largest coalition does reflect political position of about 40\% of the parliment members.
+
+\subsection{Appreciation of Friends}
+Another set of experiments are based on the appreciation of friends model, which is a proper subset of top responsive games. We define friends of a player's as anyone whose votes agreed with the given player's more than disagreed. Agreed votes are only counted if the given player voted ``for'' or ``against''. We experimented with two different ways of counting the disagreed votes:
+
+\begin{enumerate}
+  \item Narrow disagreement: the other player's vote is different from mine, and is either ``for'' or ``against''
+  \item Broad disagreement: the other player's vote is different from mine
+\end{enumerate}
+
+Compared to narrow disagreement, broad disagreement leads to every player being more selective of friends. For any player, those who are not friends are considered enemies.
+
+Note that as soon as the sets of friends and enemies are derived for each parliment member, we can expand them into a complete preference profile, and apply top covering algorithm. The broad disagreement setup produced a partition with 18 coalitions out of which there are two large coalitions with 66 and 58 members each. One of these two large coalitions is made of left wing party politicians, while the other of right wing party members. Together, over 84\% of the parliment members' political positions are revealed by this model. In contrast, by being slightly less selective of friends, the narrow disagreement setup resulted in the grand coalition as the core stable outcome. This shows that the appreciation of friends model is very sensitive to the definition of friends.
+
+TODO: PAC friends
 
 \bibliography{references}
 \bibliographystyle{aaai}
