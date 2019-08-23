@@ -43,16 +43,13 @@ class KnessetTest(unittest.TestCase):
         sample_size = int(0.75 * len(self.votes))
         partitions = []
 
-        with open('data/partitions_with_sampling.csv', 'w') as f:
-            csv_writer = csv.writer(f)
-            for _ in range(100):
+        with open('data/partitions_pac_value_function_50_runs.txt', 'w') as f:
+            for _ in range(50):
                 pi = pac_top_cover(len(self.player_labels), self.votes, w=sample_size)
                 print(pi)
+                f.write(str(pi) + '\n')
                 print_partition_stats(pi)
-                print(f'core stable: {check_core_stable(self.game, pi)}')
-                pi_labelled = index_to_label(self.player_labels, pi)
-                row = [', '.join(coal) for coal in sorted(pi_labelled, key=len, reverse=True)]
-                csv_writer.writerow(row)
+                # print(f'core stable: {check_core_stable(self.game, pi)}')
                 partitions.append(pi)
 
         calculate_partition_edit_distances_and_print_stats(partitions)
