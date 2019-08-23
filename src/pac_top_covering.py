@@ -23,14 +23,15 @@ def pac_top_cover(num_players, S, w=None):
 
         if w != None: # w = None means no sampling
             # successive restriction loop
-            for _ in range(len(players)):
+            for round_index in range(len(players)):
+                logging.info(f'round {round_index}')
                 approximate_preferences(players, S, B, value_matrix, coalition_matrix, w)
         logging.debug(f'done approximating preferences')
 
         # perform top covering
         smallest_cc = smallest_cc_from_pref(B)
         stable_partition.add(smallest_cc)
-        logging.debug(f'done finding smallest cc')
+        logging.info(f'players to remove: {smallest_cc}')
 
         players = players - smallest_cc
         # remove coalitions with removed players
@@ -62,6 +63,7 @@ def approximate_preferences(players, S, B, value_matrix, coalition_matrix, w):
             if value > max_value:
                 max_value = value
                 max_coalition = coalition
+        old_coal_len = len(B[i]) if i in B else 0
         if max_coalition == None:
             B[i] = {i} # checking if i in B doesn't seem to make a difference with the knesset dataset
         else:
@@ -69,4 +71,6 @@ def approximate_preferences(players, S, B, value_matrix, coalition_matrix, w):
                 B[i] = max_coalition
             else:
                 B[i] &= max_coalition
+        if old_coal_len != len(B[i]):
+            logging.info(f'player {i}\'s coalition size changed: {old_coal_len} -> {len(B[i])}. {B[i]}')
         logging.debug(f'{i}, {max_value}, {B[i]}')
