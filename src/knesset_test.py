@@ -80,7 +80,7 @@ class KnessetTest(unittest.TestCase):
 
 
 def read_votes_and_player_data():
-    with open('data/votes_names.csv') as f:
+    with open('data/votes_names_cleaned.csv') as f:
         reader = csv.reader(f)
         player_labels = next(reader, None)
         player_labels = player_labels[1:]

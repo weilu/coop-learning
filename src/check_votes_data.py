@@ -90,7 +90,7 @@ if __name__ == '__main__':
                 consistent = False
                 num_pass_inconsistent += 1
                 # print(f"{bill_id}: {result['sess_item_dscr']}, {result['vote_item_dscr']}")
-                print(f"{bill_id} total passed count mismatch - expected: {result['is_accepted']}, actual {passed}, "
+                logging.warning(f"{bill_id} total passed count mismatch - expected: {result['is_accepted']}, actual {passed}, "
                                 f"expected for: {result['total_for']}, actual for: {num_for}, "
                                 f"expected against: {result['total_against']}, actual against: {num_against}")
             if num_for != int(result['total_for']):
