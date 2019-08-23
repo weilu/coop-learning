@@ -13,7 +13,7 @@ def partition_str_to_list(partition_str):
     return partition
 
 
-if __name__ == '__main__':
+def gather_experiment_partitions():
     files = glob.glob('data/partitions_*.txt')
     print(files)
 
@@ -25,6 +25,11 @@ if __name__ == '__main__':
                 partitions.append(partition_str_to_list(line))
         key = re.search('partitions_(.*)_\d', filename).group(1)
         filename_to_partitions[key] = partitions
+    return filename_to_partitions
+
+
+if __name__ == '__main__':
 
     with open('../docs/partitions.json', 'w') as f:
-        json.dump(filename_to_partitions, f)
+        grouped_partitions = gather_experiment_partitions()
+        json.dump(grouped_partitions, f)
