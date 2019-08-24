@@ -1,0 +1,93 @@
+±  |master ↑3 {4} U:5 ?:2 ✗| → python partition_stats.py 
+['data/partitions_pac_friends_50_runs.txt', 'data/partitions_pac_selective_friends_50_runs.txt', 'data/partitions_pac_value_function_50_runs.txt', 'data/partitions_selective_friends_1_run.txt', 'data/partitions_friends_1_run.txt']
+
+Experiment pac_friends (50 runs)
+  Number of Coalitions:
+     max: 15,
+     min: 10,
+     median: 13.0, 
+     mean: 12.48, 
+     variance: 1.846530612244898
+  VI:
+     max: 3.2681198385535937,
+     min: 2.883795831490466,
+     median: 2.9815895630530553, 
+     mean: 3.004213834250393, 
+     variance: 0.008293006426236222
+  NVI:
+     max: 0.7438996904059832,
+     min: 0.6902995226881574,
+     median: 0.7213021953698552, 
+     mean: 0.7198821820130208, 
+     variance: 0.00013736508125022852
+  NID:
+     max: 0.6441486737854103,
+     min: 0.5722481713860872,
+     median: 0.625551274667721, 
+     mean: 0.6200940079049355, 
+     variance: 0.00035750718959619326
+
+Experiment pac_selective_friends (50 runs)
+  Number of Coalitions:
+     max: 23,
+     min: 17,
+     median: 19.0, 
+     mean: 19.64, 
+     variance: 2.5208163265306123
+  VI:
+     max: 3.1357024454247244,
+     min: 2.6747014811769,
+     median: 2.8331688569747797, 
+     mean: 2.848261199390456, 
+     variance: 0.012724871922517117
+  NVI:
+     max: 0.7171999099891269,
+     min: 0.6840751878849656,
+     median: 0.6998913511133555, 
+     mean: 0.6991518044400081, 
+     variance: 4.818007186344942e-05
+  NID:
+     max: 0.6169957193078192,
+     min: 0.5707714711819277,
+     median: 0.602234513643235, 
+     mean: 0.6019677844235286, 
+     variance: 9.760021932241471e-05
+
+Experiment pac_value_function (50 runs)
+  Number of Coalitions:
+     max: 87,
+     min: 87,
+     median: 87.0, 
+     mean: 87, 
+     variance: 0
+  VI:
+     max: 3.323913915083859,
+     min: 3.323913915083859,
+     median: 3.323913915083859, 
+     mean: 3.323913915083859, 
+     variance: 0.0
+  NVI:
+     max: 0.5967714769203889,
+     min: 0.5967714769203889,
+     median: 0.5967714769203889, 
+     mean: 0.5967714769203889, 
+     variance: 0.0
+  NID:
+     max: 0.5260404827797089,
+     min: 0.5260404827797089,
+     median: 0.5260404827797089, 
+     mean: 0.5260404827797089, 
+     variance: 0.0
+
+Experiment selective_friends (1 runs)
+  Number of Coalitions: 18
+  VI: 2.691618522427742
+  NVI: 0.6892244678601624
+  NID: 0.6055836502636901
+
+Experiment friends (1 runs)
+  Number of Coalitions: 1
+  VI: 3.0771221102941144
+  NVI: 1.0
+  NID: 1.0
+
