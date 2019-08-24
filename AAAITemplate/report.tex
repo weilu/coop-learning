@@ -19,6 +19,7 @@
 \usepackage{tikz}
 \usetikzlibrary{positioning}
 \usepackage{algorithm,algorithmic}
+\usepackage{multirow}
 %\nocopyright
 %PDF Info Is REQUIRED.
 % For /Author, add all authors within the parentheses, separated by commas. No accents or commands.
@@ -287,18 +288,48 @@ Another set of experiments are based on the appreciation of friends model, which
 
 \begin{enumerate}
   \item Narrow disagreement: the other player's vote is different from mine, and is either ``for'' or ``against''
-  \item Broad disagreement (selective of friends): the other player's vote is different from mine
+  \item Broad disagreement (selective friends): the other player's vote is different from mine
 \end{enumerate}
 
 Compared to narrow disagreement, broad disagreement leads to every player being more selective of friends. For any player, those who are not friends are considered enemies.
 
 Note that as soon as the sets of friends and enemies are derived for each parliment member, we can expand them into a complete preference profile, and apply top covering algorithm to obtain a strict core stable partition with respect to the given preference profile. The broad disagreement setup produced a partition with 18 coalitions out of which there are two large coalitions with 66 and 58 members each. One of these two large coalitions is made of left wing party politicians, while the other of right wing party members. Together, over 84\% of the parliment members' political positions are revealed by this model. In contrast, by being slightly less selective of friends, the narrow disagreement setup resulted in the grand coalition as the core stable outcome. This shows that the appreciation of friends model is very sensitive to the definition of friends.
 
+\begin{table}[h!]
+\centering
+\begin{tabular}{c|c|c}
+\hline
+Model & No. Coalitions & Norm Info Dist \\
+\hline
+Friends & 1 & 1 \\
+Selective friends & 18 & 0.605 \\
+\hline
+\end{tabular}
+\caption{Partitions generated using top covering algorithm, with full preference profile derived from appreciation-of-friends preference model. Friends corresponds to narrow disagreement definition model, selective friends corresponds to broad disagreement definition model}
+\label{table:friends_models}
+\end{table}
+
 We then integrated the appreciation-of-friends preference profile with the PAC top covering algorithm. Similar to the value function experiment, in each iteration, we repeated sample $\frac{3}{4}$ of all the bills and use them to find every remaining player's most preferred coalition, which is used as an approximation of their choice set. With the approximated choice sets, we construct the directed graph, find the largest strongly connected component, assign all players corresponding to the vertices of the strongly connected component to a coalition as part of the final partition, remove the assigned players from the game and repeat the iteration for the remaining players.
 
 Recall in the value function preference model, the value of any coalition is only calculated once; as we remove players, any coalitions containing any removed players are simply removed from remaining players' preference relations. For any ``for'' or ``against'' coalition of a given bill, it doesn't make sense to modify it because the value function is defined for the observed coalition based on a combination of the voting outcome and participation. In contrast, with the friends preference model, we define coalition for a given player and a sample bill as the set of players who voted the same as the given player (either ``for'' or ``against'' the bill) and we allow this coalition to shrink as players are removed from the game in each iteration of the algorithm. Therefore we need to re-evaluate every coalition for a given player and sample bill pair as removing players will change the friend count and/or the enemy count for each coalition. This makes this model more computationally expensive than the value function model.
 
 We ran the algorithm 50 times each for the two disagreement definitions in order to check robustness of our models. The narrow disagreement model produced partitions with 10 to 16 coalitions, while the broad disagreement (selective friends) model generated partitions with 17 to 23 coalitions. The general structures of the two set of partitions are very similar – with two large coalitions, one made of the left wing party members and the other of the right wing party members, together with some smaller coalitions and singletons. TODO: NID between two disagreement models. Recall that the full preference profile models are very sensitive to the definition of disagreement. The PAC versions are much less sensitive.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{c|c|c|c|c}
+\hline
+\multirow{2}{*}{ PAC Model } & \multicolumn{2}{c|}{ No. Coalitions } & \multicolumn{2}{|c}{ Norm Info Dist } \\
+& mean & variance & mean & variance \\
+\hline
+Value Function & 87 & 0 & 0.526 & 0 \\
+Friends & 13 & 1.6669 & 0.617 & 0.0003 \\
+Selective friends & 20 & 2.5208 & 0.602 & 0 \\
+\hline
+\end{tabular}
+\caption{Each PAC model is implemented using the PAC top covering algorithm; choice set approximation are done with $3/4$ of all bills; the model is executed 50 times on the same Knesset dataset.}
+\label{table:pac_models}
+\end{table}
 
 \bibliography{references}
 \bibliographystyle{aaai}
