@@ -1,0 +1,931 @@
+# no loop, 100% data, no sample
+time python knesset_test.py KnessetTest.test_pac_with_sampling
+7515
+2019-08-09 12:02:56,215 [INFO] Start calculating valuations & coalitions
+2019-08-09 12:03:12,199 [INFO] Done calculating valuations & coalitions
+2019-08-09 12:03:12,200 [INFO] 147 players left
+/usr/local/lib/python3.7/site-packages/graph_tool/decorators.py:97: DeprecationWarning: inspect.getargspec() is deprecated since Python 3.0, use inspect.signature() or inspect.getfullargspec()
+  arg_names = inspect.getargspec(func)[0]
+2019-08-09 12:03:13,853 [INFO] 146 players left
+2019-08-09 12:03:15,590 [INFO] 86 players left
+2019-08-09 12:03:16,184 [INFO] 85 players left
+2019-08-09 12:03:16,743 [INFO] 84 players left
+2019-08-09 12:03:17,283 [INFO] 83 players left
+2019-08-09 12:03:17,804 [INFO] 82 players left
+2019-08-09 12:03:18,323 [INFO] 81 players left
+2019-08-09 12:03:18,834 [INFO] 80 players left
+2019-08-09 12:03:19,332 [INFO] 79 players left
+2019-08-09 12:03:19,969 [INFO] 78 players left
+2019-08-09 12:03:20,458 [INFO] 77 players left
+2019-08-09 12:03:20,949 [INFO] 76 players left
+2019-08-09 12:03:21,574 [INFO] 75 players left
+2019-08-09 12:03:22,144 [INFO] 27 players left
+2019-08-09 12:03:22,343 [INFO] 26 players left
+2019-08-09 12:03:22,540 [INFO] 25 players left
+2019-08-09 12:03:22,734 [INFO] 24 players left
+2019-08-09 12:03:22,924 [INFO] 23 players left
+2019-08-09 12:03:23,111 [INFO] 22 players left
+2019-08-09 12:03:23,287 [INFO] 21 players left
+2019-08-09 12:03:23,460 [INFO] 20 players left
+2019-08-09 12:03:23,630 [INFO] 19 players left
+2019-08-09 12:03:23,793 [INFO] 18 players left
+2019-08-09 12:03:23,949 [INFO] 17 players left
+2019-08-09 12:03:24,102 [INFO] 16 players left
+2019-08-09 12:03:24,242 [INFO] 15 players left
+2019-08-09 12:03:24,376 [INFO] 14 players left
+2019-08-09 12:03:24,507 [INFO] 13 players left
+2019-08-09 12:03:24,636 [INFO] 12 players left
+2019-08-09 12:03:24,757 [INFO] 11 players left
+2019-08-09 12:03:24,874 [INFO] 10 players left
+2019-08-09 12:03:24,980 [INFO] 9 players left
+2019-08-09 12:03:25,080 [INFO] 8 players left
+2019-08-09 12:03:25,185 [INFO] 7 players left
+2019-08-09 12:03:25,288 [INFO] 6 players left
+2019-08-09 12:03:25,379 [INFO] 5 players left
+2019-08-09 12:03:25,465 [INFO] 4 players left
+2019-08-09 12:03:25,543 [INFO] 2 players left
+2019-08-09 12:03:25,613 [INFO] 1 players left
+{frozenset({86}), frozenset({127}), frozenset({145}), frozenset({57}), frozenset({10}), frozenset({116}), frozenset({18}), frozenset({77}), frozenset({139}), frozenset({138}), frozenset({33}), frozenset({72}), frozenset({0, 1, 2, 128, 131, 5, 12, 13, 19, 20, 23, 28, 31, 35, 38, 39, 40, 41, 45, 47, 50, 53, 56, 66, 67, 68, 69, 70, 71, 73, 74, 75, 76, 78, 79, 80, 81, 82, 83, 84, 85, 88, 89, 90, 91, 92, 93, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113}), frozenset({14}), frozenset({24}), frozenset({8}), frozenset({141}), frozenset({115}), frozenset({114}), frozenset({135}), frozenset({132}), frozenset({54}), frozenset({26}), frozenset({137}), frozenset({146}), frozenset({46}), frozenset({129, 130, 3, 6, 7, 9, 11, 15, 16, 17, 21, 22, 25, 29, 30, 32, 36, 37, 43, 44, 48, 49, 51, 52, 55, 58, 59, 60, 61, 62, 63, 65, 94, 96, 97, 98, 99, 100, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126}), frozenset({42}), frozenset({140}), frozenset({87}), frozenset({4}), frozenset({143}), frozenset({144}), frozenset({95}), frozenset({134}), frozenset({34}), frozenset({133}), frozenset({64}), frozenset({136, 27}), frozenset({142})}
+Number of coalitions: 40,
+coalition sizes:    max: 60,
+    min: 1,
+    mean: 3.675, 
+    median: 1.0
+core stable: True
+All partitions are identical
+.
+----------------------------------------------------------------------
+Ran 1 test in 76.646s
+
+OK
+
+real	1m21.672s
+user	1m18.736s
+sys	0m1.967s
+
+# no loop, 100% data, sampling without replacement (effectively reordering)
+  |2.3.1| Weis-MacBook-Air in ~/Documents/CS_Masters_Thesis/coop-learning/src
+±  |master ↑3 {3} U:2 ?:4 ✗| → time python knesset_test.py KnessetTest.test_pac_with_sampling
+7515
+2019-08-09 12:05:40,160 [INFO] Start calculating valuations & coalitions
+2019-08-09 12:05:55,953 [INFO] Done calculating valuations & coalitions
+2019-08-09 12:05:55,953 [INFO] 147 players left
+/usr/local/lib/python3.7/site-packages/graph_tool/decorators.py:97: DeprecationWarning: inspect.getargspec() is deprecated since Python 3.0, use inspect.signature() or inspect.getfullargspec()
+  arg_names = inspect.getargspec(func)[0]
+2019-08-09 12:05:57,523 [INFO] 146 players left
+2019-08-09 12:05:59,197 [INFO] 86 players left
+2019-08-09 12:05:59,815 [INFO] 85 players left
+2019-08-09 12:06:00,426 [INFO] 84 players left
+2019-08-09 12:06:01,025 [INFO] 83 players left
+2019-08-09 12:06:01,622 [INFO] 82 players left
+2019-08-09 12:06:02,210 [INFO] 81 players left
+2019-08-09 12:06:02,775 [INFO] 80 players left
+2019-08-09 12:06:03,351 [INFO] 79 players left
+2019-08-09 12:06:03,917 [INFO] 78 players left
+2019-08-09 12:06:04,468 [INFO] 77 players left
+2019-08-09 12:06:05,016 [INFO] 76 players left
+2019-08-09 12:06:05,564 [INFO] 75 players left
+2019-08-09 12:06:06,132 [INFO] 27 players left
+2019-08-09 12:06:06,366 [INFO] 26 players left
+2019-08-09 12:06:06,595 [INFO] 25 players left
+2019-08-09 12:06:06,823 [INFO] 24 players left
+2019-08-09 12:06:07,040 [INFO] 23 players left
+2019-08-09 12:06:07,265 [INFO] 22 players left
+2019-08-09 12:06:07,470 [INFO] 21 players left
+2019-08-09 12:06:07,665 [INFO] 20 players left
+2019-08-09 12:06:07,860 [INFO] 19 players left
+2019-08-09 12:06:08,050 [INFO] 18 players left
+2019-08-09 12:06:08,232 [INFO] 17 players left
+2019-08-09 12:06:08,407 [INFO] 16 players left
+2019-08-09 12:06:08,570 [INFO] 15 players left
+2019-08-09 12:06:08,727 [INFO] 14 players left
+2019-08-09 12:06:08,884 [INFO] 13 players left
+2019-08-09 12:06:09,033 [INFO] 12 players left
+2019-08-09 12:06:09,178 [INFO] 11 players left
+2019-08-09 12:06:09,312 [INFO] 10 players left
+2019-08-09 12:06:09,438 [INFO] 9 players left
+2019-08-09 12:06:09,557 [INFO] 8 players left
+2019-08-09 12:06:09,674 [INFO] 7 players left
+2019-08-09 12:06:09,785 [INFO] 6 players left
+2019-08-09 12:06:09,890 [INFO] 5 players left
+2019-08-09 12:06:09,996 [INFO] 4 players left
+2019-08-09 12:06:10,089 [INFO] 2 players left
+2019-08-09 12:06:10,173 [INFO] 1 players left
+{frozenset({86}), frozenset({127}), frozenset({145}), frozenset({57}), frozenset({10}), frozenset({116}), frozenset({18}), frozenset({77}), frozenset({139}), frozenset({138}), frozenset({33}), frozenset({72}), frozenset({0, 1, 2, 128, 131, 5, 12, 13, 19, 20, 23, 28, 31, 35, 38, 39, 40, 41, 45, 47, 50, 53, 56, 66, 67, 68, 69, 70, 71, 73, 74, 75, 76, 78, 79, 80, 81, 82, 83, 84, 85, 88, 89, 90, 91, 92, 93, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113}), frozenset({14}), frozenset({24}), frozenset({8}), frozenset({141}), frozenset({115}), frozenset({114}), frozenset({135}), frozenset({132}), frozenset({54}), frozenset({26}), frozenset({137}), frozenset({146}), frozenset({46}), frozenset({129, 130, 3, 6, 7, 9, 11, 15, 16, 17, 21, 22, 25, 29, 30, 32, 36, 37, 43, 44, 48, 49, 51, 52, 55, 58, 59, 60, 61, 62, 63, 65, 94, 96, 97, 98, 99, 100, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126}), frozenset({42}), frozenset({140}), frozenset({87}), frozenset({4}), frozenset({143}), frozenset({144}), frozenset({95}), frozenset({134}), frozenset({34}), frozenset({133}), frozenset({64}), frozenset({136, 27}), frozenset({142})}
+Number of coalitions: 40,
+coalition sizes:    max: 60,
+    min: 1,
+    mean: 3.675, 
+    median: 1.0
+core stable: True
+2019-08-09 12:06:25,866 [INFO] Start calculating valuations & coalitions
+2019-08-09 12:06:40,421 [INFO] Done calculating valuations & coalitions
+2019-08-09 12:06:40,421 [INFO] 147 players left
+2019-08-09 12:06:41,983 [INFO] 146 players left
+2019-08-09 12:06:43,705 [INFO] 86 players left
+2019-08-09 12:06:44,311 [INFO] 85 players left
+2019-08-09 12:06:44,905 [INFO] 84 players left
+2019-08-09 12:06:45,498 [INFO] 83 players left
+2019-08-09 12:06:46,075 [INFO] 82 players left
+2019-08-09 12:06:46,655 [INFO] 81 players left
+2019-08-09 12:06:47,226 [INFO] 80 players left
+2019-08-09 12:06:47,791 [INFO] 79 players left
+2019-08-09 12:06:48,357 [INFO] 78 players left
+2019-08-09 12:06:48,909 [INFO] 77 players left
+2019-08-09 12:06:49,456 [INFO] 76 players left
+2019-08-09 12:06:49,998 [INFO] 75 players left
+2019-08-09 12:06:50,570 [INFO] 27 players left
+2019-08-09 12:06:50,798 [INFO] 26 players left
+2019-08-09 12:06:51,027 [INFO] 25 players left
+2019-08-09 12:06:51,252 [INFO] 24 players left
+2019-08-09 12:06:51,467 [INFO] 23 players left
+2019-08-09 12:06:51,675 [INFO] 22 players left
+2019-08-09 12:06:51,880 [INFO] 21 players left
+2019-08-09 12:06:52,079 [INFO] 20 players left
+2019-08-09 12:06:52,277 [INFO] 19 players left
+2019-08-09 12:06:52,466 [INFO] 18 players left
+2019-08-09 12:06:52,646 [INFO] 17 players left
+2019-08-09 12:06:52,820 [INFO] 16 players left
+2019-08-09 12:06:52,986 [INFO] 15 players left
+2019-08-09 12:06:53,147 [INFO] 14 players left
+2019-08-09 12:06:53,301 [INFO] 13 players left
+2019-08-09 12:06:53,451 [INFO] 12 players left
+2019-08-09 12:06:53,596 [INFO] 11 players left
+2019-08-09 12:06:53,733 [INFO] 10 players left
+2019-08-09 12:06:53,858 [INFO] 9 players left
+2019-08-09 12:06:53,978 [INFO] 8 players left
+2019-08-09 12:06:54,097 [INFO] 7 players left
+2019-08-09 12:06:54,208 [INFO] 6 players left
+2019-08-09 12:06:54,312 [INFO] 5 players left
+2019-08-09 12:06:54,413 [INFO] 4 players left
+2019-08-09 12:06:54,507 [INFO] 2 players left
+2019-08-09 12:06:54,592 [INFO] 1 players left
+{frozenset({86}), frozenset({127}), frozenset({145}), frozenset({57}), frozenset({10}), frozenset({116}), frozenset({18}), frozenset({77}), frozenset({139}), frozenset({138}), frozenset({33}), frozenset({72}), frozenset({0, 1, 2, 128, 131, 5, 12, 13, 19, 20, 23, 28, 31, 35, 38, 39, 40, 41, 45, 47, 50, 53, 56, 66, 67, 68, 69, 70, 71, 73, 74, 75, 76, 78, 79, 80, 81, 82, 83, 84, 85, 88, 89, 90, 91, 92, 93, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113}), frozenset({14}), frozenset({24}), frozenset({8}), frozenset({141}), frozenset({115}), frozenset({114}), frozenset({135}), frozenset({132}), frozenset({54}), frozenset({26}), frozenset({137}), frozenset({146}), frozenset({46}), frozenset({129, 130, 3, 6, 7, 9, 11, 15, 16, 17, 21, 22, 25, 29, 30, 32, 36, 37, 43, 44, 48, 49, 51, 52, 55, 58, 59, 60, 61, 62, 63, 65, 94, 96, 97, 98, 99, 100, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126}), frozenset({42}), frozenset({140}), frozenset({87}), frozenset({4}), frozenset({143}), frozenset({144}), frozenset({95}), frozenset({134}), frozenset({34}), frozenset({133}), frozenset({64}), frozenset({136, 27}), frozenset({142})}
+Number of coalitions: 40,
+coalition sizes:    max: 60,
+    min: 1,
+    mean: 3.675, 
+    median: 1.0
+core stable: True
+2019-08-09 12:07:10,132 [INFO] Start calculating valuations & coalitions
+2019-08-09 12:07:29,624 [INFO] Done calculating valuations & coalitions
+2019-08-09 12:07:29,624 [INFO] 147 players left
+2019-08-09 12:07:32,148 [INFO] 146 players left
+2019-08-09 12:07:34,107 [INFO] 86 players left
+2019-08-09 12:07:34,793 [INFO] 85 players left
+2019-08-09 12:07:35,486 [INFO] 84 players left
+2019-08-09 12:07:36,146 [INFO] 83 players left
+2019-08-09 12:07:36,804 [INFO] 82 players left
+2019-08-09 12:07:37,437 [INFO] 81 players left
+2019-08-09 12:07:38,045 [INFO] 80 players left
+2019-08-09 12:07:38,645 [INFO] 79 players left
+2019-08-09 12:07:39,236 [INFO] 78 players left
+2019-08-09 12:07:39,840 [INFO] 77 players left
+2019-08-09 12:07:40,453 [INFO] 76 players left
+2019-08-09 12:07:41,046 [INFO] 75 players left
+2019-08-09 12:07:41,640 [INFO] 27 players left
+2019-08-09 12:07:41,899 [INFO] 26 players left
+2019-08-09 12:07:42,142 [INFO] 25 players left
+2019-08-09 12:07:42,376 [INFO] 24 players left
+2019-08-09 12:07:42,599 [INFO] 23 players left
+2019-08-09 12:07:42,823 [INFO] 22 players left
+2019-08-09 12:07:43,034 [INFO] 21 players left
+2019-08-09 12:07:43,239 [INFO] 20 players left
+2019-08-09 12:07:43,439 [INFO] 19 players left
+2019-08-09 12:07:43,628 [INFO] 18 players left
+2019-08-09 12:07:43,815 [INFO] 17 players left
+2019-08-09 12:07:43,988 [INFO] 16 players left
+2019-08-09 12:07:44,155 [INFO] 15 players left
+2019-08-09 12:07:44,316 [INFO] 14 players left
+2019-08-09 12:07:44,471 [INFO] 13 players left
+2019-08-09 12:07:44,622 [INFO] 12 players left
+2019-08-09 12:07:44,771 [INFO] 11 players left
+2019-08-09 12:07:44,907 [INFO] 10 players left
+2019-08-09 12:07:45,036 [INFO] 9 players left
+2019-08-09 12:07:45,163 [INFO] 8 players left
+2019-08-09 12:07:45,293 [INFO] 7 players left
+2019-08-09 12:07:45,406 [INFO] 6 players left
+2019-08-09 12:07:45,518 [INFO] 5 players left
+2019-08-09 12:07:45,620 [INFO] 4 players left
+2019-08-09 12:07:45,714 [INFO] 2 players left
+{frozenset({86}), frozenset({136, 127}), frozenset({145}), frozenset({27, 133}), frozenset({57}), frozenset({10}), frozenset({116}), frozenset({18}), frozenset({77}), frozenset({139}), frozenset({138}), frozenset({33}), frozenset({72}), frozenset({0, 1, 2, 128, 131, 5, 12, 13, 19, 20, 23, 28, 31, 35, 38, 39, 40, 41, 45, 47, 50, 53, 56, 66, 67, 68, 69, 70, 71, 73, 74, 75, 76, 78, 79, 80, 81, 82, 83, 84, 85, 88, 89, 90, 91, 92, 93, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113}), frozenset({14}), frozenset({24}), frozenset({8}), frozenset({141}), frozenset({115}), frozenset({114}), frozenset({135}), frozenset({132}), frozenset({54}), frozenset({26}), frozenset({137}), frozenset({146}), frozenset({46}), frozenset({129, 130, 3, 6, 7, 9, 11, 15, 16, 17, 21, 22, 25, 29, 30, 32, 36, 37, 43, 44, 48, 49, 51, 52, 55, 58, 59, 60, 61, 62, 63, 65, 94, 96, 97, 98, 99, 100, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126}), frozenset({42}), frozenset({140}), frozenset({87}), frozenset({4}), frozenset({143}), frozenset({144}), frozenset({95}), frozenset({134}), frozenset({34}), frozenset({64}), frozenset({142})}
+Number of coalitions: 39,
+coalition sizes:    max: 60,
+    min: 1,
+    mean: 3.769230769230769, 
+    median: 1
+core stable: False
+Partition edit distances:
+     max: 2.0,
+     min: 2.0,
+     mean: 2.0, 
+     median: 2.0
+.
+----------------------------------------------------------------------
+Ran 1 test in 161.581s
+
+OK
+
+real	2m44.972s
+user	2m41.166s
+sys	0m2.749s
+
+# with loop, 100% data, sampling without replacement (effectively reordering)
+  |2.3.1| Weis-MacBook-Air in ~/Documents/CS_Masters_Thesis/coop-learning/src
+±  |master ↑3 {3} U:2 ?:4 ✗| → time python knesset_test.py KnessetTest.test_pac_with_sampling
+7515
+2019-08-09 12:34:41,869 [INFO] Start calculating valuations & coalitions
+2019-08-09 12:34:57,263 [INFO] Done calculating valuations & coalitions
+2019-08-09 12:34:57,264 [INFO] 147 players left
+/usr/local/lib/python3.7/site-packages/graph_tool/decorators.py:97: DeprecationWarning: inspect.getargspec() is deprecated since Python 3.0, use inspect.signature() or inspect.getfullargspec()
+  arg_names = inspect.getargspec(func)[0]
+2019-08-09 12:37:16,716 [INFO] 146 players left
+2019-08-09 12:39:52,673 [INFO] 86 players left
+2019-08-09 12:40:22,983 [INFO] 85 players left
+2019-08-09 12:40:51,902 [INFO] 84 players left
+2019-08-09 12:41:19,385 [INFO] 83 players left
+2019-08-09 12:41:48,319 [INFO] 82 players left
+2019-08-09 12:42:19,108 [INFO] 81 players left
+2019-08-09 12:42:49,593 [INFO] 80 players left
+2019-08-09 12:43:19,689 [INFO] 79 players left
+2019-08-09 12:43:52,925 [INFO] 78 players left
+2019-08-09 12:44:23,323 [INFO] 77 players left
+2019-08-09 12:44:54,713 [INFO] 76 players left
+2019-08-09 12:45:25,132 [INFO] 75 players left
+2019-08-09 12:45:54,568 [INFO] 74 players left
+2019-08-09 12:46:23,970 [INFO] 73 players left
+2019-08-09 12:46:54,343 [INFO] 25 players left
+2019-08-09 12:46:55,196 [INFO] 24 players left
+2019-08-09 12:46:55,993 [INFO] 23 players left
+2019-08-09 12:46:56,704 [INFO] 22 players left
+2019-08-09 12:46:57,378 [INFO] 21 players left
+2019-08-09 12:46:58,037 [INFO] 20 players left
+2019-08-09 12:46:58,673 [INFO] 19 players left
+2019-08-09 12:46:59,319 [INFO] 18 players left
+2019-08-09 12:46:59,935 [INFO] 17 players left
+2019-08-09 12:47:00,491 [INFO] 16 players left
+2019-08-09 12:47:01,030 [INFO] 15 players left
+2019-08-09 12:47:01,517 [INFO] 14 players left
+2019-08-09 12:47:01,971 [INFO] 13 players left
+2019-08-09 12:47:02,425 [INFO] 12 players left
+2019-08-09 12:47:02,844 [INFO] 11 players left
+2019-08-09 12:47:03,238 [INFO] 10 players left
+2019-08-09 12:47:03,595 [INFO] 9 players left
+2019-08-09 12:47:03,917 [INFO] 8 players left
+2019-08-09 12:47:04,222 [INFO] 7 players left
+2019-08-09 12:47:04,497 [INFO] 6 players left
+2019-08-09 12:47:04,739 [INFO] 5 players left
+2019-08-09 12:47:04,960 [INFO] 4 players left
+2019-08-09 12:47:05,150 [INFO] 3 players left
+2019-08-09 12:47:05,310 [INFO] 2 players left
+{frozenset({86}), frozenset({127}), frozenset({145}), frozenset({27, 133}), frozenset({57}), frozenset({10}), frozenset({116}), frozenset({18}), frozenset({77}), frozenset({139}), frozenset({138}), frozenset({33}), frozenset({72}), frozenset({0, 1, 2, 128, 131, 5, 12, 13, 19, 20, 23, 28, 31, 35, 38, 39, 40, 41, 45, 47, 50, 53, 56, 66, 67, 68, 69, 70, 71, 73, 74, 75, 76, 78, 79, 80, 81, 82, 83, 84, 85, 88, 89, 90, 91, 92, 93, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113}), frozenset({14}), frozenset({24}), frozenset({8}), frozenset({141}), frozenset({115}), frozenset({114}), frozenset({135}), frozenset({132}), frozenset({54}), frozenset({136}), frozenset({26}), frozenset({137}), frozenset({146}), frozenset({46}), frozenset({129, 130, 3, 6, 7, 9, 11, 15, 16, 17, 21, 22, 25, 29, 30, 32, 36, 37, 43, 44, 48, 49, 51, 52, 55, 58, 59, 60, 61, 62, 63, 65, 94, 96, 97, 98, 99, 100, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126}), frozenset({42}), frozenset({140}), frozenset({87}), frozenset({4}), frozenset({143}), frozenset({144}), frozenset({95}), frozenset({134}), frozenset({34}), frozenset({64}), frozenset({142})}
+Number of coalitions: 40,
+coalition sizes:    max: 60,
+    min: 1,
+    mean: 3.675, 
+    median: 1.0
+core stable: False
+2019-08-09 12:47:09,928 [INFO] Start calculating valuations & coalitions
+2019-08-09 12:47:26,268 [INFO] Done calculating valuations & coalitions
+2019-08-09 12:47:26,268 [INFO] 147 players left
+2019-08-09 12:50:20,575 [INFO] 146 players left
+2019-08-09 12:53:04,606 [INFO] 86 players left
+2019-08-09 12:53:41,122 [INFO] 85 players left
+2019-08-09 12:54:17,156 [INFO] 84 players left
+2019-08-09 12:54:52,715 [INFO] 83 players left
+2019-08-09 12:55:26,929 [INFO] 82 players left
+2019-08-09 12:56:00,384 [INFO] 81 players left
+2019-08-09 12:56:34,111 [INFO] 80 players left
+2019-08-09 12:57:07,424 [INFO] 79 players left
+2019-08-09 12:57:35,470 [INFO] 78 players left
+2019-08-09 12:58:04,896 [INFO] 77 players left
+2019-08-09 12:58:33,123 [INFO] 76 players left
+2019-08-09 12:58:59,914 [INFO] 75 players left
+2019-08-09 12:59:27,095 [INFO] 74 players left
+2019-08-09 12:59:53,932 [INFO] 73 players left
+2019-08-09 13:00:19,555 [INFO] 25 players left
+2019-08-09 13:00:20,198 [INFO] 24 players left
+2019-08-09 13:00:20,867 [INFO] 23 players left
+2019-08-09 13:00:21,503 [INFO] 22 players left
+2019-08-09 13:00:22,118 [INFO] 21 players left
+2019-08-09 13:00:22,713 [INFO] 20 players left
+2019-08-09 13:00:23,284 [INFO] 19 players left
+2019-08-09 13:00:23,831 [INFO] 18 players left
+2019-08-09 13:00:24,350 [INFO] 17 players left
+2019-08-09 13:00:24,843 [INFO] 16 players left
+2019-08-09 13:00:25,301 [INFO] 15 players left
+2019-08-09 13:00:25,739 [INFO] 14 players left
+2019-08-09 13:00:26,170 [INFO] 13 players left
+2019-08-09 13:00:26,579 [INFO] 12 players left
+2019-08-09 13:00:26,980 [INFO] 11 players left
+2019-08-09 13:00:27,324 [INFO] 10 players left
+2019-08-09 13:00:27,649 [INFO] 9 players left
+2019-08-09 13:00:27,962 [INFO] 8 players left
+2019-08-09 13:00:28,298 [INFO] 7 players left
+2019-08-09 13:00:28,570 [INFO] 6 players left
+2019-08-09 13:00:28,804 [INFO] 5 players left
+2019-08-09 13:00:29,003 [INFO] 4 players left
+2019-08-09 13:00:29,170 [INFO] 3 players left
+2019-08-09 13:00:29,320 [INFO] 2 players left
+{frozenset({86}), frozenset({127}), frozenset({145}), frozenset({27, 133}), frozenset({57}), frozenset({10}), frozenset({116}), frozenset({18}), frozenset({77}), frozenset({139}), frozenset({138}), frozenset({33}), frozenset({72}), frozenset({0, 1, 2, 128, 131, 5, 12, 13, 19, 20, 23, 28, 31, 35, 38, 39, 40, 41, 45, 47, 50, 53, 56, 66, 67, 68, 69, 70, 71, 73, 74, 75, 76, 78, 79, 80, 81, 82, 83, 84, 85, 88, 89, 90, 91, 92, 93, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113}), frozenset({14}), frozenset({24}), frozenset({8}), frozenset({141}), frozenset({115}), frozenset({114}), frozenset({135}), frozenset({132}), frozenset({54}), frozenset({136}), frozenset({26}), frozenset({137}), frozenset({146}), frozenset({46}), frozenset({129, 130, 3, 6, 7, 9, 11, 15, 16, 17, 21, 22, 25, 29, 30, 32, 36, 37, 43, 44, 48, 49, 51, 52, 55, 58, 59, 60, 61, 62, 63, 65, 94, 96, 97, 98, 99, 100, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126}), frozenset({42}), frozenset({140}), frozenset({87}), frozenset({4}), frozenset({143}), frozenset({144}), frozenset({95}), frozenset({134}), frozenset({34}), frozenset({64}), frozenset({142})}
+Number of coalitions: 40,
+coalition sizes:    max: 60,
+    min: 1,
+    mean: 3.675, 
+    median: 1.0
+core stable: False
+All partitions are identical
+.
+----------------------------------------------------------------------
+Ran 1 test in 1582.414s
+
+OK
+
+real	26m25.944s
+user	26m7.781s
+sys	0m8.915s
+
+# with loop, 100% data, sampling with replacement
+  |2.3.1| Weis-MacBook-Air in ~/Documents/CS_Masters_Thesis/coop-learning/src
+±  |master ↑3 {3} U:2 ?:4 ✗| → time python knesset_test.py KnessetTest.test_pac_with_sampling
+7515
+2019-08-09 13:19:12,650 [INFO] Start calculating valuations & coalitions
+2019-08-09 13:19:29,128 [INFO] Done calculating valuations & coalitions
+2019-08-09 13:19:29,128 [INFO] 147 players left
+/usr/local/lib/python3.7/site-packages/graph_tool/decorators.py:97: DeprecationWarning: inspect.getargspec() is deprecated since Python 3.0, use inspect.signature() or inspect.getfullargspec()
+  arg_names = inspect.getargspec(func)[0]
+2019-08-09 13:21:22,969 [INFO] 146 players left
+2019-08-09 13:23:17,754 [INFO] 145 players left
+2019-08-09 13:25:09,923 [INFO] 144 players left
+2019-08-09 13:26:59,745 [INFO] 143 players left
+2019-08-09 13:28:48,769 [INFO] 142 players left
+2019-08-09 13:30:16,548 [INFO] 141 players left
+2019-08-09 13:31:42,291 [INFO] 140 players left
+2019-08-09 13:33:07,950 [INFO] 79 players left
+2019-08-09 13:33:11,648 [INFO] 78 players left
+2019-08-09 13:33:16,698 [INFO] 77 players left
+2019-08-09 13:33:18,848 [INFO] 76 players left
+2019-08-09 13:33:20,997 [INFO] 75 players left
+2019-08-09 13:33:24,033 [INFO] 74 players left
+2019-08-09 13:33:27,284 [INFO] 73 players left
+2019-08-09 13:33:28,895 [INFO] 72 players left
+2019-08-09 13:33:30,651 [INFO] 71 players left
+2019-08-09 13:33:32,153 [INFO] 70 players left
+2019-08-09 13:33:33,273 [INFO] 69 players left
+2019-08-09 13:33:35,221 [INFO] 68 players left
+2019-08-09 13:33:36,412 [INFO] 67 players left
+2019-08-09 13:33:37,456 [INFO] 66 players left
+2019-08-09 13:33:38,476 [INFO] 65 players left
+2019-08-09 13:33:39,505 [INFO] 64 players left
+2019-08-09 13:33:40,201 [INFO] 63 players left
+2019-08-09 13:33:40,852 [INFO] 62 players left
+2019-08-09 13:33:41,524 [INFO] 61 players left
+2019-08-09 13:33:42,335 [INFO] 60 players left
+2019-08-09 13:33:43,033 [INFO] 59 players left
+2019-08-09 13:33:43,587 [INFO] 58 players left
+2019-08-09 13:33:44,387 [INFO] 57 players left
+2019-08-09 13:33:45,353 [INFO] 56 players left
+2019-08-09 13:33:46,000 [INFO] 55 players left
+2019-08-09 13:33:46,631 [INFO] 54 players left
+2019-08-09 13:33:47,084 [INFO] 53 players left
+2019-08-09 13:33:47,552 [INFO] 52 players left
+2019-08-09 13:33:47,997 [INFO] 51 players left
+2019-08-09 13:33:48,538 [INFO] 50 players left
+2019-08-09 13:33:49,151 [INFO] 49 players left
+2019-08-09 13:33:49,649 [INFO] 48 players left
+2019-08-09 13:33:50,091 [INFO] 47 players left
+2019-08-09 13:33:50,581 [INFO] 46 players left
+2019-08-09 13:33:51,083 [INFO] 45 players left
+2019-08-09 13:33:51,556 [INFO] 44 players left
+2019-08-09 13:33:51,965 [INFO] 43 players left
+2019-08-09 13:33:52,415 [INFO] 42 players left
+2019-08-09 13:33:52,857 [INFO] 41 players left
+2019-08-09 13:33:53,215 [INFO] 40 players left
+2019-08-09 13:33:53,597 [INFO] 39 players left
+2019-08-09 13:33:53,968 [INFO] 38 players left
+2019-08-09 13:33:54,330 [INFO] 37 players left
+2019-08-09 13:33:54,660 [INFO] 36 players left
+2019-08-09 13:33:54,984 [INFO] 35 players left
+2019-08-09 13:33:55,301 [INFO] 34 players left
+2019-08-09 13:33:55,610 [INFO] 33 players left
+2019-08-09 13:33:55,917 [INFO] 32 players left
+2019-08-09 13:33:56,223 [INFO] 31 players left
+2019-08-09 13:33:56,521 [INFO] 30 players left
+2019-08-09 13:33:56,812 [INFO] 29 players left
+2019-08-09 13:33:57,134 [INFO] 28 players left
+2019-08-09 13:33:57,401 [INFO] 27 players left
+2019-08-09 13:33:57,661 [INFO] 26 players left
+2019-08-09 13:33:57,909 [INFO] 25 players left
+2019-08-09 13:33:58,165 [INFO] 24 players left
+2019-08-09 13:33:58,403 [INFO] 23 players left
+2019-08-09 13:33:58,631 [INFO] 22 players left
+2019-08-09 13:33:58,849 [INFO] 21 players left
+2019-08-09 13:33:59,067 [INFO] 20 players left
+2019-08-09 13:33:59,280 [INFO] 19 players left
+2019-08-09 13:33:59,486 [INFO] 18 players left
+2019-08-09 13:33:59,682 [INFO] 17 players left
+2019-08-09 13:33:59,870 [INFO] 16 players left
+2019-08-09 13:34:00,057 [INFO] 15 players left
+2019-08-09 13:34:00,231 [INFO] 14 players left
+2019-08-09 13:34:00,397 [INFO] 13 players left
+2019-08-09 13:34:00,556 [INFO] 12 players left
+2019-08-09 13:34:00,709 [INFO] 11 players left
+2019-08-09 13:34:00,853 [INFO] 10 players left
+2019-08-09 13:34:00,993 [INFO] 9 players left
+2019-08-09 13:34:01,122 [INFO] 8 players left
+2019-08-09 13:34:01,242 [INFO] 7 players left
+2019-08-09 13:34:01,355 [INFO] 6 players left
+2019-08-09 13:34:01,463 [INFO] 5 players left
+2019-08-09 13:34:01,563 [INFO] 4 players left
+2019-08-09 13:34:01,654 [INFO] 3 players left
+2019-08-09 13:34:01,735 [INFO] 2 players left
+2019-08-09 13:34:01,811 [INFO] 1 players left
+{frozenset({86}), frozenset({106}), frozenset({145}), frozenset({89}), frozenset({77}), frozenset({105}), frozenset({58}), frozenset({93}), frozenset({54}), frozenset({112}), frozenset({47}), frozenset({68}), frozenset({74}), frozenset({46}), frozenset({144}), frozenset({2}), frozenset({104}), frozenset({110}), frozenset({64}), frozenset({102}), frozenset({88}), frozenset({128}), frozenset({0}), frozenset({91}), frozenset({66}), frozenset({111}), frozenset({139}), frozenset({138}), frozenset({73}), frozenset({85}), frozenset({13}), frozenset({92}), frozenset({53}), frozenset({137}), frozenset({75}), frozenset({5}), frozenset({87}), frozenset({12}), frozenset({50}), frozenset({133}), frozenset({20}), frozenset({84}), frozenset({142}), frozenset({76}), frozenset({56}), frozenset({1}), frozenset({108}), frozenset({81}), frozenset({72}), frozenset({39}), frozenset({71}), frozenset({69}), frozenset({31}), frozenset({41}), frozenset({101}), frozenset({113}), frozenset({67}), frozenset({146}), frozenset({107}), frozenset({70}), frozenset({129, 130, 3, 4, 6, 7, 8, 9, 10, 11, 15, 16, 17, 18, 21, 22, 23, 24, 25, 26, 27, 29, 30, 32, 33, 34, 36, 37, 43, 44, 48, 49, 51, 52, 55, 59, 60, 61, 62, 63, 65, 94, 95, 96, 97, 98, 99, 100, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127}), frozenset({38}), frozenset({35}), frozenset({40}), frozenset({57}), frozenset({28}), frozenset({78}), frozenset({79}), frozenset({109}), frozenset({90}), frozenset({14}), frozenset({82}), frozenset({141}), frozenset({45}), frozenset({114}), frozenset({135}), frozenset({132}), frozenset({83}), frozenset({136}), frozenset({131}), frozenset({103}), frozenset({42}), frozenset({140}), frozenset({80}), frozenset({143}), frozenset({134}), frozenset({19})}
+Number of coalitions: 87,
+coalition sizes:    max: 61,
+    min: 1,
+    mean: 1.6896551724137931, 
+    median: 1
+core stable: False
+2019-08-09 13:34:02,030 [INFO] Start calculating valuations & coalitions
+2019-08-09 13:34:16,142 [INFO] Done calculating valuations & coalitions
+2019-08-09 13:34:16,142 [INFO] 147 players left
+2019-08-09 13:35:52,952 [INFO] 146 players left
+2019-08-09 13:41:37,309 [INFO] 145 players left
+2019-08-09 13:43:38,375 [INFO] 144 players left
+2019-08-09 13:45:33,240 [INFO] 83 players left
+2019-08-09 13:45:47,074 [INFO] 82 players left
+2019-08-09 13:46:03,194 [INFO] 81 players left
+2019-08-09 13:46:17,609 [INFO] 80 players left
+2019-08-09 13:46:24,508 [INFO] 79 players left
+2019-08-09 13:46:28,150 [INFO] 78 players left
+2019-08-09 13:46:32,480 [INFO] 77 players left
+2019-08-09 13:46:37,473 [INFO] 76 players left
+2019-08-09 13:46:39,414 [INFO] 75 players left
+2019-08-09 13:46:40,917 [INFO] 74 players left
+2019-08-09 13:46:42,124 [INFO] 73 players left
+2019-08-09 13:46:43,357 [INFO] 72 players left
+2019-08-09 13:46:44,440 [INFO] 71 players left
+2019-08-09 13:46:45,662 [INFO] 70 players left
+2019-08-09 13:46:46,621 [INFO] 69 players left
+2019-08-09 13:46:47,744 [INFO] 68 players left
+2019-08-09 13:46:48,573 [INFO] 67 players left
+2019-08-09 13:46:49,446 [INFO] 66 players left
+2019-08-09 13:46:50,412 [INFO] 65 players left
+2019-08-09 13:46:51,455 [INFO] 64 players left
+2019-08-09 13:46:52,388 [INFO] 63 players left
+2019-08-09 13:46:53,471 [INFO] 62 players left
+2019-08-09 13:46:54,200 [INFO] 61 players left
+2019-08-09 13:46:54,802 [INFO] 60 players left
+2019-08-09 13:46:55,800 [INFO] 59 players left
+2019-08-09 13:46:56,383 [INFO] 58 players left
+2019-08-09 13:46:57,078 [INFO] 57 players left
+2019-08-09 13:46:57,697 [INFO] 56 players left
+2019-08-09 13:46:58,502 [INFO] 55 players left
+2019-08-09 13:46:59,334 [INFO] 54 players left
+2019-08-09 13:47:00,111 [INFO] 53 players left
+2019-08-09 13:47:00,616 [INFO] 52 players left
+2019-08-09 13:47:01,292 [INFO] 51 players left
+2019-08-09 13:47:01,993 [INFO] 50 players left
+2019-08-09 13:47:02,555 [INFO] 49 players left
+2019-08-09 13:47:03,191 [INFO] 48 players left
+2019-08-09 13:47:03,692 [INFO] 47 players left
+2019-08-09 13:47:04,198 [INFO] 46 players left
+2019-08-09 13:47:04,773 [INFO] 45 players left
+2019-08-09 13:47:05,168 [INFO] 44 players left
+2019-08-09 13:47:05,633 [INFO] 43 players left
+2019-08-09 13:47:06,087 [INFO] 42 players left
+2019-08-09 13:47:06,515 [INFO] 41 players left
+2019-08-09 13:47:07,067 [INFO] 40 players left
+2019-08-09 13:47:07,514 [INFO] 39 players left
+2019-08-09 13:47:07,862 [INFO] 38 players left
+2019-08-09 13:47:08,222 [INFO] 37 players left
+2019-08-09 13:47:08,567 [INFO] 36 players left
+2019-08-09 13:47:08,914 [INFO] 35 players left
+2019-08-09 13:47:09,242 [INFO] 34 players left
+2019-08-09 13:47:09,558 [INFO] 33 players left
+2019-08-09 13:47:09,860 [INFO] 32 players left
+2019-08-09 13:47:10,164 [INFO] 31 players left
+2019-08-09 13:47:10,458 [INFO] 30 players left
+2019-08-09 13:47:10,741 [INFO] 29 players left
+2019-08-09 13:47:11,025 [INFO] 28 players left
+2019-08-09 13:47:11,298 [INFO] 27 players left
+2019-08-09 13:47:11,560 [INFO] 26 players left
+2019-08-09 13:47:11,819 [INFO] 25 players left
+2019-08-09 13:47:12,070 [INFO] 24 players left
+2019-08-09 13:47:12,312 [INFO] 23 players left
+2019-08-09 13:47:12,542 [INFO] 22 players left
+2019-08-09 13:47:12,775 [INFO] 21 players left
+2019-08-09 13:47:13,007 [INFO] 20 players left
+2019-08-09 13:47:13,226 [INFO] 19 players left
+2019-08-09 13:47:13,444 [INFO] 18 players left
+2019-08-09 13:47:13,642 [INFO] 17 players left
+2019-08-09 13:47:13,837 [INFO] 16 players left
+2019-08-09 13:47:14,032 [INFO] 15 players left
+2019-08-09 13:47:14,248 [INFO] 14 players left
+2019-08-09 13:47:14,451 [INFO] 13 players left
+2019-08-09 13:47:14,619 [INFO] 12 players left
+2019-08-09 13:47:14,773 [INFO] 11 players left
+2019-08-09 13:47:14,924 [INFO] 10 players left
+2019-08-09 13:47:15,065 [INFO] 9 players left
+2019-08-09 13:47:15,200 [INFO] 8 players left
+2019-08-09 13:47:15,328 [INFO] 7 players left
+2019-08-09 13:47:15,448 [INFO] 6 players left
+2019-08-09 13:47:15,557 [INFO] 5 players left
+2019-08-09 13:47:15,656 [INFO] 4 players left
+2019-08-09 13:47:15,748 [INFO] 3 players left
+2019-08-09 13:47:15,834 [INFO] 2 players left
+2019-08-09 13:47:15,915 [INFO] 1 players left
+{frozenset({86}), frozenset({106}), frozenset({145}), frozenset({89}), frozenset({77}), frozenset({105}), frozenset({58}), frozenset({93}), frozenset({54}), frozenset({112}), frozenset({47}), frozenset({68}), frozenset({74}), frozenset({46}), frozenset({144}), frozenset({2}), frozenset({104}), frozenset({110}), frozenset({64}), frozenset({102}), frozenset({88}), frozenset({128}), frozenset({0}), frozenset({91}), frozenset({66}), frozenset({111}), frozenset({139}), frozenset({138}), frozenset({73}), frozenset({85}), frozenset({13}), frozenset({92}), frozenset({53}), frozenset({137}), frozenset({75}), frozenset({5}), frozenset({87}), frozenset({12}), frozenset({50}), frozenset({133}), frozenset({20}), frozenset({84}), frozenset({142}), frozenset({76}), frozenset({56}), frozenset({1}), frozenset({108}), frozenset({81}), frozenset({72}), frozenset({39}), frozenset({71}), frozenset({69}), frozenset({31}), frozenset({41}), frozenset({101}), frozenset({113}), frozenset({67}), frozenset({146}), frozenset({107}), frozenset({70}), frozenset({38}), frozenset({129, 130, 3, 4, 6, 7, 8, 9, 10, 11, 15, 16, 17, 18, 21, 22, 23, 24, 25, 26, 27, 29, 30, 32, 33, 34, 36, 37, 43, 44, 48, 49, 51, 52, 55, 59, 60, 61, 62, 63, 65, 94, 95, 96, 97, 98, 99, 100, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127}), frozenset({35}), frozenset({40}), frozenset({57}), frozenset({28}), frozenset({78}), frozenset({79}), frozenset({109}), frozenset({90}), frozenset({14}), frozenset({82}), frozenset({141}), frozenset({45}), frozenset({114}), frozenset({135}), frozenset({132}), frozenset({83}), frozenset({136}), frozenset({131}), frozenset({103}), frozenset({42}), frozenset({140}), frozenset({80}), frozenset({143}), frozenset({134}), frozenset({19})}
+Number of coalitions: 87,
+coalition sizes:    max: 61,
+    min: 1,
+    mean: 1.6896551724137931, 
+    median: 1
+core stable: False
+All partitions are identical
+.
+----------------------------------------------------------------------
+Ran 1 test in 1481.547s
+
+OK
+
+real	28m40.340s
+user	24m29.108s
+sys	0m7.054s
+
+# with loop, 75% data, sampling with replacement
+  |2.3.1| Weis-MacBook-Air in ~/Documents/CS_Masters_Thesis/coop-learning/src
+±  |master ↑3 {3} U:2 ?:5 ✗| → time python knesset_test.py KnessetTest.test_pac_with_sampling
+5636
+2019-08-09 13:54:53,667 [INFO] Start calculating valuations & coalitions
+2019-08-09 13:55:09,550 [INFO] Done calculating valuations & coalitions
+2019-08-09 13:55:09,551 [INFO] 147 players left
+/usr/local/lib/python3.7/site-packages/graph_tool/decorators.py:97: DeprecationWarning: inspect.getargspec() is deprecated since Python 3.0, use inspect.signature() or inspect.getfullargspec()
+  arg_names = inspect.getargspec(func)[0]
+2019-08-09 13:56:32,889 [INFO] 146 players left
+2019-08-09 13:57:45,602 [INFO] 145 players left
+2019-08-09 13:58:58,298 [INFO] 144 players left
+2019-08-09 14:02:17,799 [INFO] 143 players left
+2019-08-09 14:03:25,245 [INFO] 142 players left
+2019-08-09 14:04:28,448 [INFO] 81 players left
+2019-08-09 14:04:31,030 [INFO] 80 players left
+2019-08-09 14:04:34,473 [INFO] 79 players left
+2019-08-09 14:04:36,800 [INFO] 78 players left
+2019-08-09 14:04:37,990 [INFO] 77 players left
+2019-08-09 14:04:39,786 [INFO] 76 players left
+2019-08-09 14:04:40,941 [INFO] 75 players left
+2019-08-09 14:04:42,147 [INFO] 74 players left
+2019-08-09 14:04:43,095 [INFO] 73 players left
+2019-08-09 14:04:43,811 [INFO] 72 players left
+2019-08-09 14:04:44,568 [INFO] 71 players left
+2019-08-09 14:04:45,424 [INFO] 70 players left
+2019-08-09 14:04:46,273 [INFO] 69 players left
+2019-08-09 14:04:47,054 [INFO] 68 players left
+2019-08-09 14:04:47,772 [INFO] 67 players left
+2019-08-09 14:04:48,485 [INFO] 66 players left
+2019-08-09 14:04:49,087 [INFO] 65 players left
+2019-08-09 14:04:49,695 [INFO] 64 players left
+2019-08-09 14:04:50,326 [INFO] 63 players left
+2019-08-09 14:04:50,785 [INFO] 62 players left
+2019-08-09 14:04:51,264 [INFO] 61 players left
+2019-08-09 14:04:51,764 [INFO] 60 players left
+2019-08-09 14:04:52,272 [INFO] 59 players left
+2019-08-09 14:04:52,753 [INFO] 58 players left
+2019-08-09 14:04:53,251 [INFO] 57 players left
+2019-08-09 14:04:53,667 [INFO] 56 players left
+2019-08-09 14:04:54,111 [INFO] 55 players left
+2019-08-09 14:04:54,531 [INFO] 54 players left
+2019-08-09 14:04:55,011 [INFO] 53 players left
+2019-08-09 14:04:55,396 [INFO] 52 players left
+2019-08-09 14:04:55,816 [INFO] 51 players left
+2019-08-09 14:04:56,265 [INFO] 50 players left
+2019-08-09 14:04:56,816 [INFO] 49 players left
+2019-08-09 14:04:57,333 [INFO] 48 players left
+2019-08-09 14:04:57,741 [INFO] 47 players left
+2019-08-09 14:04:58,068 [INFO] 46 players left
+2019-08-09 14:04:58,449 [INFO] 45 players left
+2019-08-09 14:04:58,816 [INFO] 44 players left
+2019-08-09 14:04:59,193 [INFO] 43 players left
+2019-08-09 14:04:59,521 [INFO] 42 players left
+2019-08-09 14:04:59,968 [INFO] 41 players left
+2019-08-09 14:05:00,341 [INFO] 40 players left
+2019-08-09 14:05:00,666 [INFO] 39 players left
+2019-08-09 14:05:00,963 [INFO] 38 players left
+2019-08-09 14:05:01,257 [INFO] 37 players left
+2019-08-09 14:05:01,530 [INFO] 36 players left
+2019-08-09 14:05:01,800 [INFO] 35 players left
+2019-08-09 14:05:02,057 [INFO] 34 players left
+2019-08-09 14:05:02,311 [INFO] 33 players left
+2019-08-09 14:05:02,559 [INFO] 32 players left
+2019-08-09 14:05:02,798 [INFO] 31 players left
+2019-08-09 14:05:03,039 [INFO] 30 players left
+2019-08-09 14:05:03,268 [INFO] 29 players left
+2019-08-09 14:05:03,496 [INFO] 28 players left
+2019-08-09 14:05:03,724 [INFO] 27 players left
+2019-08-09 14:05:03,940 [INFO] 26 players left
+2019-08-09 14:05:04,169 [INFO] 25 players left
+2019-08-09 14:05:04,440 [INFO] 24 players left
+2019-08-09 14:05:04,692 [INFO] 23 players left
+2019-08-09 14:05:04,916 [INFO] 22 players left
+2019-08-09 14:05:05,130 [INFO] 21 players left
+2019-08-09 14:05:05,339 [INFO] 20 players left
+2019-08-09 14:05:05,530 [INFO] 19 players left
+2019-08-09 14:05:05,712 [INFO] 18 players left
+2019-08-09 14:05:05,884 [INFO] 17 players left
+2019-08-09 14:05:06,075 [INFO] 16 players left
+2019-08-09 14:05:06,249 [INFO] 15 players left
+2019-08-09 14:05:06,422 [INFO] 14 players left
+2019-08-09 14:05:06,596 [INFO] 13 players left
+2019-08-09 14:05:06,759 [INFO] 12 players left
+2019-08-09 14:05:06,909 [INFO] 11 players left
+2019-08-09 14:05:07,036 [INFO] 10 players left
+2019-08-09 14:05:07,155 [INFO] 9 players left
+2019-08-09 14:05:07,274 [INFO] 8 players left
+2019-08-09 14:05:07,388 [INFO] 7 players left
+2019-08-09 14:05:07,493 [INFO] 6 players left
+2019-08-09 14:05:07,594 [INFO] 5 players left
+2019-08-09 14:05:07,688 [INFO] 4 players left
+2019-08-09 14:05:07,775 [INFO] 3 players left
+2019-08-09 14:05:07,855 [INFO] 2 players left
+2019-08-09 14:05:07,931 [INFO] 1 players left
+{frozenset({86}), frozenset({106}), frozenset({145}), frozenset({89}), frozenset({77}), frozenset({105}), frozenset({58}), frozenset({93}), frozenset({54}), frozenset({112}), frozenset({47}), frozenset({74}), frozenset({68}), frozenset({46}), frozenset({144}), frozenset({2}), frozenset({104}), frozenset({110}), frozenset({64}), frozenset({102}), frozenset({88}), frozenset({128}), frozenset({0}), frozenset({91}), frozenset({66}), frozenset({111}), frozenset({139}), frozenset({138}), frozenset({73}), frozenset({85}), frozenset({13}), frozenset({92}), frozenset({53}), frozenset({137}), frozenset({75}), frozenset({5}), frozenset({87}), frozenset({12}), frozenset({50}), frozenset({133}), frozenset({20}), frozenset({84}), frozenset({142}), frozenset({76}), frozenset({56}), frozenset({1}), frozenset({108}), frozenset({81}), frozenset({72}), frozenset({39}), frozenset({71}), frozenset({69}), frozenset({31}), frozenset({41}), frozenset({101}), frozenset({113}), frozenset({67}), frozenset({146}), frozenset({107}), frozenset({70}), frozenset({38}), frozenset({129, 130, 3, 4, 6, 7, 8, 9, 10, 11, 15, 16, 17, 18, 21, 22, 23, 24, 25, 26, 27, 29, 30, 32, 33, 34, 36, 37, 43, 44, 48, 49, 51, 52, 55, 59, 60, 61, 62, 63, 65, 94, 95, 96, 97, 98, 99, 100, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127}), frozenset({35}), frozenset({40}), frozenset({57}), frozenset({28}), frozenset({78}), frozenset({79}), frozenset({109}), frozenset({90}), frozenset({14}), frozenset({82}), frozenset({141}), frozenset({45}), frozenset({114}), frozenset({135}), frozenset({132}), frozenset({83}), frozenset({136}), frozenset({131}), frozenset({103}), frozenset({42}), frozenset({140}), frozenset({80}), frozenset({143}), frozenset({134}), frozenset({19})}
+Number of coalitions: 87,
+coalition sizes:    max: 61,
+    min: 1,
+    mean: 1.6896551724137931, 
+    median: 1
+core stable: False
+2019-08-09 14:05:08,124 [INFO] Start calculating valuations & coalitions
+2019-08-09 14:05:22,584 [INFO] Done calculating valuations & coalitions
+2019-08-09 14:05:22,584 [INFO] 147 players left
+2019-08-09 14:06:47,257 [INFO] 146 players left
+2019-08-09 14:08:06,187 [INFO] 145 players left
+2019-08-09 14:09:29,145 [INFO] 144 players left
+2019-08-09 14:10:47,815 [INFO] 143 players left
+2019-08-09 14:11:58,489 [INFO] 82 players left
+2019-08-09 14:12:03,195 [INFO] 81 players left
+2019-08-09 14:12:08,675 [INFO] 80 players left
+2019-08-09 14:12:11,737 [INFO] 79 players left
+2019-08-09 14:12:13,835 [INFO] 78 players left
+2019-08-09 14:12:14,785 [INFO] 77 players left
+2019-08-09 14:12:18,598 [INFO] 76 players left
+2019-08-09 14:12:21,396 [INFO] 75 players left
+2019-08-09 14:12:22,341 [INFO] 74 players left
+2019-08-09 14:12:23,020 [INFO] 73 players left
+2019-08-09 14:12:23,934 [INFO] 72 players left
+2019-08-09 14:12:24,781 [INFO] 71 players left
+2019-08-09 14:12:25,591 [INFO] 70 players left
+2019-08-09 14:12:26,285 [INFO] 69 players left
+2019-08-09 14:12:26,845 [INFO] 68 players left
+2019-08-09 14:12:27,409 [INFO] 67 players left
+2019-08-09 14:12:28,009 [INFO] 66 players left
+2019-08-09 14:12:28,610 [INFO] 65 players left
+2019-08-09 14:12:29,239 [INFO] 64 players left
+2019-08-09 14:12:29,766 [INFO] 63 players left
+2019-08-09 14:12:30,233 [INFO] 62 players left
+2019-08-09 14:12:30,905 [INFO] 61 players left
+2019-08-09 14:12:31,499 [INFO] 60 players left
+2019-08-09 14:12:32,030 [INFO] 59 players left
+2019-08-09 14:12:32,658 [INFO] 58 players left
+2019-08-09 14:12:33,138 [INFO] 57 players left
+2019-08-09 14:12:33,736 [INFO] 56 players left
+2019-08-09 14:12:34,281 [INFO] 55 players left
+2019-08-09 14:12:34,960 [INFO] 54 players left
+2019-08-09 14:12:35,382 [INFO] 53 players left
+2019-08-09 14:12:35,896 [INFO] 52 players left
+2019-08-09 14:12:36,327 [INFO] 51 players left
+2019-08-09 14:12:36,784 [INFO] 50 players left
+2019-08-09 14:12:37,160 [INFO] 49 players left
+2019-08-09 14:12:37,654 [INFO] 48 players left
+2019-08-09 14:12:38,017 [INFO] 47 players left
+2019-08-09 14:12:38,346 [INFO] 46 players left
+2019-08-09 14:12:38,934 [INFO] 45 players left
+2019-08-09 14:12:39,511 [INFO] 44 players left
+2019-08-09 14:12:39,860 [INFO] 43 players left
+2019-08-09 14:12:40,178 [INFO] 42 players left
+2019-08-09 14:12:40,510 [INFO] 41 players left
+2019-08-09 14:12:40,839 [INFO] 40 players left
+2019-08-09 14:12:41,357 [INFO] 39 players left
+2019-08-09 14:12:41,717 [INFO] 38 players left
+2019-08-09 14:12:42,007 [INFO] 37 players left
+2019-08-09 14:12:42,291 [INFO] 36 players left
+2019-08-09 14:12:42,563 [INFO] 35 players left
+2019-08-09 14:12:42,839 [INFO] 34 players left
+2019-08-09 14:12:43,113 [INFO] 33 players left
+2019-08-09 14:12:43,369 [INFO] 32 players left
+2019-08-09 14:12:43,628 [INFO] 31 players left
+2019-08-09 14:12:43,868 [INFO] 30 players left
+2019-08-09 14:12:44,107 [INFO] 29 players left
+2019-08-09 14:12:44,424 [INFO] 28 players left
+2019-08-09 14:12:44,655 [INFO] 27 players left
+2019-08-09 14:12:44,940 [INFO] 26 players left
+2019-08-09 14:12:45,178 [INFO] 25 players left
+2019-08-09 14:12:45,403 [INFO] 24 players left
+2019-08-09 14:12:45,612 [INFO] 23 players left
+2019-08-09 14:12:45,805 [INFO] 22 players left
+2019-08-09 14:12:45,994 [INFO] 21 players left
+2019-08-09 14:12:46,177 [INFO] 20 players left
+2019-08-09 14:12:46,355 [INFO] 19 players left
+2019-08-09 14:12:46,527 [INFO] 18 players left
+2019-08-09 14:12:46,695 [INFO] 17 players left
+2019-08-09 14:12:46,865 [INFO] 16 players left
+2019-08-09 14:12:47,021 [INFO] 15 players left
+2019-08-09 14:12:47,174 [INFO] 14 players left
+2019-08-09 14:12:47,318 [INFO] 13 players left
+2019-08-09 14:12:47,457 [INFO] 12 players left
+2019-08-09 14:12:47,591 [INFO] 11 players left
+2019-08-09 14:12:47,718 [INFO] 10 players left
+2019-08-09 14:12:47,841 [INFO] 9 players left
+2019-08-09 14:12:47,953 [INFO] 8 players left
+2019-08-09 14:12:48,061 [INFO] 7 players left
+2019-08-09 14:12:48,164 [INFO] 6 players left
+2019-08-09 14:12:48,258 [INFO] 5 players left
+2019-08-09 14:12:48,350 [INFO] 4 players left
+2019-08-09 14:12:48,434 [INFO] 3 players left
+2019-08-09 14:12:48,511 [INFO] 2 players left
+2019-08-09 14:12:48,585 [INFO] 1 players left
+{frozenset({86}), frozenset({106}), frozenset({145}), frozenset({89}), frozenset({77}), frozenset({105}), frozenset({58}), frozenset({93}), frozenset({54}), frozenset({112}), frozenset({47}), frozenset({68}), frozenset({74}), frozenset({46}), frozenset({144}), frozenset({2}), frozenset({104}), frozenset({110}), frozenset({64}), frozenset({102}), frozenset({88}), frozenset({128}), frozenset({0}), frozenset({91}), frozenset({66}), frozenset({111}), frozenset({139}), frozenset({138}), frozenset({73}), frozenset({85}), frozenset({13}), frozenset({92}), frozenset({53}), frozenset({137}), frozenset({75}), frozenset({5}), frozenset({87}), frozenset({12}), frozenset({50}), frozenset({133}), frozenset({20}), frozenset({84}), frozenset({142}), frozenset({76}), frozenset({56}), frozenset({1}), frozenset({108}), frozenset({81}), frozenset({72}), frozenset({39}), frozenset({71}), frozenset({69}), frozenset({31}), frozenset({41}), frozenset({101}), frozenset({113}), frozenset({67}), frozenset({146}), frozenset({107}), frozenset({70}), frozenset({38}), frozenset({129, 130, 3, 4, 6, 7, 8, 9, 10, 11, 15, 16, 17, 18, 21, 22, 23, 24, 25, 26, 27, 29, 30, 32, 33, 34, 36, 37, 43, 44, 48, 49, 51, 52, 55, 59, 60, 61, 62, 63, 65, 94, 95, 96, 97, 98, 99, 100, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127}), frozenset({35}), frozenset({40}), frozenset({57}), frozenset({28}), frozenset({78}), frozenset({79}), frozenset({109}), frozenset({90}), frozenset({14}), frozenset({82}), frozenset({141}), frozenset({45}), frozenset({114}), frozenset({135}), frozenset({132}), frozenset({83}), frozenset({136}), frozenset({131}), frozenset({103}), frozenset({42}), frozenset({140}), frozenset({80}), frozenset({143}), frozenset({134}), frozenset({19})}
+Number of coalitions: 87,
+coalition sizes:    max: 61,
+    min: 1,
+    mean: 1.6896551724137931, 
+    median: 1
+core stable: False
+All partitions are identical
+.
+----------------------------------------------------------------------
+Ran 1 test in 979.629s
+
+OK
+
+real	18m31.075s
+user	16m13.253s
+sys	0m4.854s
+
+# no loop, 75% data, sampling with replacement
+  |2.3.1| Weis-MacBook-Air in ~/Documents/CS_Masters_Thesis/coop-learning/src
+±  |master ↑3 {3} U:2 ?:5 ✗| → time python knesset_test.py KnessetTest.test_pac_with_sampling
+5636
+2019-08-09 14:15:23,568 [INFO] Start calculating valuations & coalitions
+2019-08-09 14:15:39,941 [INFO] Done calculating valuations & coalitions
+2019-08-09 14:15:39,941 [INFO] 147 players left
+/usr/local/lib/python3.7/site-packages/graph_tool/decorators.py:97: DeprecationWarning: inspect.getargspec() is deprecated since Python 3.0, use inspect.signature() or inspect.getfullargspec()
+  arg_names = inspect.getargspec(func)[0]
+2019-08-09 14:15:41,232 [INFO] 146 players left
+2019-08-09 14:15:42,640 [INFO] 86 players left
+2019-08-09 14:15:43,135 [INFO] 85 players left
+2019-08-09 14:15:43,568 [INFO] 84 players left
+2019-08-09 14:15:43,997 [INFO] 83 players left
+2019-08-09 14:15:44,426 [INFO] 82 players left
+2019-08-09 14:15:45,010 [INFO] 81 players left
+2019-08-09 14:15:45,820 [INFO] 80 players left
+2019-08-09 14:15:46,237 [INFO] 79 players left
+2019-08-09 14:15:46,693 [INFO] 78 players left
+2019-08-09 14:15:47,111 [INFO] 77 players left
+2019-08-09 14:15:47,517 [INFO] 76 players left
+2019-08-09 14:15:47,930 [INFO] 75 players left
+2019-08-09 14:15:48,337 [INFO] 74 players left
+2019-08-09 14:15:48,734 [INFO] 73 players left
+2019-08-09 14:15:49,107 [INFO] 72 players left
+2019-08-09 14:15:49,483 [INFO] 71 players left
+2019-08-09 14:15:49,844 [INFO] 70 players left
+2019-08-09 14:15:50,201 [INFO] 69 players left
+2019-08-09 14:15:50,573 [INFO] 68 players left
+2019-08-09 14:15:50,915 [INFO] 67 players left
+2019-08-09 14:15:51,290 [INFO] 19 players left
+2019-08-09 14:15:51,422 [INFO] 18 players left
+2019-08-09 14:15:51,555 [INFO] 17 players left
+2019-08-09 14:15:51,680 [INFO] 16 players left
+2019-08-09 14:15:51,804 [INFO] 15 players left
+2019-08-09 14:15:51,921 [INFO] 14 players left
+2019-08-09 14:15:52,036 [INFO] 13 players left
+2019-08-09 14:15:52,153 [INFO] 12 players left
+2019-08-09 14:15:52,260 [INFO] 11 players left
+2019-08-09 14:15:52,362 [INFO] 10 players left
+2019-08-09 14:15:52,460 [INFO] 9 players left
+2019-08-09 14:15:52,555 [INFO] 8 players left
+2019-08-09 14:15:52,650 [INFO] 7 players left
+2019-08-09 14:15:52,742 [INFO] 6 players left
+2019-08-09 14:15:52,829 [INFO] 5 players left
+2019-08-09 14:15:52,915 [INFO] 4 players left
+2019-08-09 14:15:52,995 [INFO] 3 players left
+2019-08-09 14:15:53,072 [INFO] 2 players left
+2019-08-09 14:15:53,152 [INFO] 1 players left
+{frozenset({86}), frozenset({127}), frozenset({145}), frozenset({57}), frozenset({10}), frozenset({116}), frozenset({18}), frozenset({77}), frozenset({139}), frozenset({138}), frozenset({33}), frozenset({72}), frozenset({0, 1, 2, 128, 131, 5, 12, 13, 19, 20, 23, 28, 31, 35, 38, 39, 40, 41, 45, 47, 50, 53, 56, 66, 67, 68, 69, 70, 71, 73, 74, 75, 76, 78, 79, 80, 81, 82, 83, 84, 85, 88, 89, 90, 91, 92, 93, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113}), frozenset({14}), frozenset({27}), frozenset({24}), frozenset({8}), frozenset({141}), frozenset({115}), frozenset({114}), frozenset({135}), frozenset({132}), frozenset({54}), frozenset({136}), frozenset({26}), frozenset({137}), frozenset({146}), frozenset({46}), frozenset({129, 130, 3, 6, 7, 9, 11, 15, 16, 17, 21, 22, 25, 29, 30, 32, 36, 37, 43, 44, 48, 49, 51, 52, 55, 58, 59, 60, 61, 62, 63, 65, 94, 96, 97, 98, 99, 100, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126}), frozenset({42}), frozenset({140}), frozenset({87}), frozenset({4}), frozenset({143}), frozenset({144}), frozenset({95}), frozenset({134}), frozenset({34}), frozenset({133}), frozenset({64}), frozenset({142})}
+Number of coalitions: 41,
+coalition sizes:    max: 60,
+    min: 1,
+    mean: 3.5853658536585367, 
+    median: 1
+core stable: False
+2019-08-09 14:15:57,230 [INFO] Start calculating valuations & coalitions
+2019-08-09 14:16:12,477 [INFO] Done calculating valuations & coalitions
+2019-08-09 14:16:12,478 [INFO] 147 players left
+2019-08-09 14:16:14,218 [INFO] 87 players left
+2019-08-09 14:16:14,766 [INFO] 86 players left
+2019-08-09 14:16:15,407 [INFO] 85 players left
+2019-08-09 14:16:16,083 [INFO] 84 players left
+2019-08-09 14:16:16,784 [INFO] 83 players left
+2019-08-09 14:16:17,418 [INFO] 82 players left
+2019-08-09 14:16:17,947 [INFO] 81 players left
+2019-08-09 14:16:18,460 [INFO] 80 players left
+2019-08-09 14:16:18,979 [INFO] 79 players left
+2019-08-09 14:16:19,415 [INFO] 78 players left
+2019-08-09 14:16:19,929 [INFO] 77 players left
+2019-08-09 14:16:20,366 [INFO] 76 players left
+2019-08-09 14:16:20,885 [INFO] 75 players left
+2019-08-09 14:16:21,307 [INFO] 74 players left
+2019-08-09 14:16:21,768 [INFO] 73 players left
+2019-08-09 14:16:22,217 [INFO] 72 players left
+2019-08-09 14:16:22,635 [INFO] 71 players left
+2019-08-09 14:16:23,145 [INFO] 70 players left
+2019-08-09 14:16:23,554 [INFO] 69 players left
+2019-08-09 14:16:23,966 [INFO] 68 players left
+2019-08-09 14:16:24,365 [INFO] 67 players left
+2019-08-09 14:16:24,724 [INFO] 66 players left
+2019-08-09 14:16:25,074 [INFO] 65 players left
+2019-08-09 14:16:25,442 [INFO] 17 players left
+2019-08-09 14:16:25,569 [INFO] 16 players left
+2019-08-09 14:16:25,695 [INFO] 15 players left
+2019-08-09 14:16:25,817 [INFO] 14 players left
+2019-08-09 14:16:25,937 [INFO] 13 players left
+2019-08-09 14:16:26,055 [INFO] 12 players left
+2019-08-09 14:16:26,167 [INFO] 11 players left
+2019-08-09 14:16:26,270 [INFO] 10 players left
+2019-08-09 14:16:26,376 [INFO] 9 players left
+2019-08-09 14:16:26,492 [INFO] 8 players left
+2019-08-09 14:16:26,593 [INFO] 7 players left
+2019-08-09 14:16:26,705 [INFO] 6 players left
+2019-08-09 14:16:26,795 [INFO] 5 players left
+2019-08-09 14:16:26,878 [INFO] 4 players left
+2019-08-09 14:16:26,960 [INFO] 3 players left
+2019-08-09 14:16:27,035 [INFO] 2 players left
+2019-08-09 14:16:27,112 [INFO] 1 players left
+{frozenset({86}), frozenset({127}), frozenset({145}), frozenset({57}), frozenset({10}), frozenset({116}), frozenset({18}), frozenset({77}), frozenset({139}), frozenset({138}), frozenset({33}), frozenset({72}), frozenset({0, 1, 2, 128, 131, 5, 12, 13, 19, 20, 23, 28, 31, 35, 38, 39, 40, 41, 45, 47, 50, 53, 56, 66, 67, 68, 69, 70, 71, 73, 74, 75, 76, 78, 79, 80, 81, 82, 83, 84, 85, 88, 89, 90, 91, 92, 93, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113}), frozenset({14}), frozenset({27}), frozenset({24}), frozenset({8}), frozenset({141}), frozenset({115}), frozenset({114}), frozenset({135}), frozenset({132}), frozenset({54}), frozenset({136}), frozenset({26}), frozenset({137}), frozenset({146}), frozenset({46}), frozenset({129, 130, 3, 6, 7, 9, 11, 15, 16, 17, 21, 22, 25, 29, 30, 32, 36, 37, 43, 44, 48, 49, 51, 52, 55, 58, 59, 60, 61, 62, 63, 65, 94, 96, 97, 98, 99, 100, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126}), frozenset({42}), frozenset({140}), frozenset({87}), frozenset({4}), frozenset({143}), frozenset({144}), frozenset({95}), frozenset({134}), frozenset({34}), frozenset({133}), frozenset({64}), frozenset({142})}
+Number of coalitions: 41,
+coalition sizes:    max: 60,
+    min: 1,
+    mean: 3.5853658536585367, 
+    median: 1
+core stable: False
+2019-08-09 14:16:31,246 [INFO] Start calculating valuations & coalitions
+2019-08-09 14:16:48,432 [INFO] Done calculating valuations & coalitions
+2019-08-09 14:16:48,432 [INFO] 147 players left
+2019-08-09 14:16:49,846 [INFO] 146 players left
+2019-08-09 14:16:51,372 [INFO] 86 players left
+2019-08-09 14:16:51,851 [INFO] 85 players left
+2019-08-09 14:16:52,331 [INFO] 84 players left
+2019-08-09 14:16:52,751 [INFO] 83 players left
+2019-08-09 14:16:53,183 [INFO] 82 players left
+2019-08-09 14:16:53,647 [INFO] 81 players left
+2019-08-09 14:16:54,140 [INFO] 80 players left
+2019-08-09 14:16:54,568 [INFO] 79 players left
+2019-08-09 14:16:55,004 [INFO] 78 players left
+2019-08-09 14:16:55,406 [INFO] 77 players left
+2019-08-09 14:16:55,885 [INFO] 76 players left
+2019-08-09 14:16:56,492 [INFO] 75 players left
+2019-08-09 14:16:56,996 [INFO] 74 players left
+2019-08-09 14:16:57,378 [INFO] 73 players left
+2019-08-09 14:16:57,778 [INFO] 72 players left
+2019-08-09 14:16:58,227 [INFO] 71 players left
+2019-08-09 14:16:58,597 [INFO] 70 players left
+2019-08-09 14:16:58,969 [INFO] 69 players left
+2019-08-09 14:16:59,363 [INFO] 68 players left
+2019-08-09 14:16:59,741 [INFO] 67 players left
+2019-08-09 14:17:00,147 [INFO] 66 players left
+2019-08-09 14:17:00,474 [INFO] 65 players left
+2019-08-09 14:17:00,851 [INFO] 17 players left
+2019-08-09 14:17:00,978 [INFO] 16 players left
+2019-08-09 14:17:01,103 [INFO] 15 players left
+2019-08-09 14:17:01,223 [INFO] 14 players left
+2019-08-09 14:17:01,343 [INFO] 13 players left
+2019-08-09 14:17:01,455 [INFO] 12 players left
+2019-08-09 14:17:01,561 [INFO] 11 players left
+2019-08-09 14:17:01,663 [INFO] 10 players left
+2019-08-09 14:17:01,764 [INFO] 9 players left
+2019-08-09 14:17:01,861 [INFO] 8 players left
+2019-08-09 14:17:01,952 [INFO] 7 players left
+2019-08-09 14:17:02,038 [INFO] 6 players left
+2019-08-09 14:17:02,123 [INFO] 5 players left
+2019-08-09 14:17:02,223 [INFO] 4 players left
+2019-08-09 14:17:02,316 [INFO] 3 players left
+2019-08-09 14:17:02,394 [INFO] 2 players left
+2019-08-09 14:17:02,471 [INFO] 1 players left
+{frozenset({86}), frozenset({127}), frozenset({145}), frozenset({57}), frozenset({10}), frozenset({116}), frozenset({18}), frozenset({77}), frozenset({139}), frozenset({138}), frozenset({33}), frozenset({72}), frozenset({0, 1, 2, 128, 131, 5, 12, 13, 19, 20, 23, 28, 31, 35, 38, 39, 40, 41, 45, 47, 50, 53, 56, 66, 67, 68, 69, 70, 71, 73, 74, 75, 76, 78, 79, 80, 81, 82, 83, 84, 85, 88, 89, 90, 91, 92, 93, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113}), frozenset({14}), frozenset({27}), frozenset({24}), frozenset({8}), frozenset({141}), frozenset({115}), frozenset({114}), frozenset({135}), frozenset({132}), frozenset({54}), frozenset({136}), frozenset({26}), frozenset({137}), frozenset({146}), frozenset({46}), frozenset({129, 130, 3, 6, 7, 9, 11, 15, 16, 17, 21, 22, 25, 29, 30, 32, 36, 37, 43, 44, 48, 49, 51, 52, 55, 58, 59, 60, 61, 62, 63, 65, 94, 96, 97, 98, 99, 100, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126}), frozenset({42}), frozenset({140}), frozenset({87}), frozenset({4}), frozenset({143}), frozenset({144}), frozenset({95}), frozenset({134}), frozenset({34}), frozenset({133}), frozenset({64}), frozenset({142})}
+Number of coalitions: 41,
+coalition sizes:    max: 60,
+    min: 1,
+    mean: 3.5853658536585367, 
+    median: 1
+core stable: False
+All partitions are identical
+.
+----------------------------------------------------------------------
+Ran 1 test in 136.874s
+
+OK
+
+real	2m20.568s
+user	2m16.778s
+sys	0m3.208s

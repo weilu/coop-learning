@@ -1,6 +1,6 @@
 *.aux
 *.bbl
 *.blg
-*.log
+src/data/out.log
 *.pdf
 *.pyc
