@@ -15,19 +15,19 @@ class TestVI(unittest.TestCase):
         X2 = [ [1,2,3,4], [5,6,7,8,9,10] ]
         Y2 = [ [1,2,3,4,5,6], [7,8,9,10] ]
         vi = variation_of_information(X2, Y2)
-        self.assertTrue(vi - 1.102 < 0.0001)
+        self.assertTrue(abs(vi - 1.102) < 0.0001)
 
         # Dissimilar partitions
         X3 = [ [1,2], [3,4,5], [6,7,8], [9,10] ]
         Y3 = [ [10,2,3], [4,5,6,7], [8,9,1] ]
         vi = variation_of_information(X3, Y3)
-        self.assertTrue(vi - 2.302 < 0.0001)
+        self.assertTrue(abs(vi - 2.302) < 0.0001)
 
         # Totally different partitions
         X4 = [ [1,2,3,4,5,6,7,8,9,10] ]
         Y4 = [ [1], [2], [3], [4], [5], [6], [7], [8], [9], [10] ]
         vi = variation_of_information(X4, Y4)
-        self.assertTrue(vi - log(10, 2) < 0.0001)
+        self.assertTrue(abs(vi - log(10, 2)) < 0.0001)
 
 
 if __name__ == '__main__':
