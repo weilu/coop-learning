@@ -135,7 +135,7 @@ During data processing, we noticed that more than half of all the vote values ar
 
 We reached out to Knesset regarding the data inconsistency between two API endpoints, as well as the missing value issue. The Knesset data management team stated that the inconsistency is likely a result of manual vote entries instead of votes recorded as a result of pressing the electronic button. Such manual vote entries are captured by the bill summary data set but not individual member's vote data set.
 
-For the purpose of our research, we treat the data with individual member's votes on every bill as the ground truth since it has the level of granularity required for modeling.  We removed the 26 bills whose pass/reject status is inconsistent between the summary and invidual data sets, since it's most likely that the individual data is wrong. (coding TODO)
+For the purpose of our research, we treat the data with individual member's votes on every bill as the ground truth since it has the level of granularity required for modeling.  We removed the 26 bills whose pass/reject status is inconsistent between the summary and invidual data sets, since it's most likely that the individual data is wrong.
 
 \section{Preliminaries}
 
@@ -283,6 +283,11 @@ This handcrafted value function allows us to construct a partial preference rela
 
 To simulate i.i.d, we sample $\frac{3}{4}$ of the bills with replacement. We repeated the algorithm run 50 times and observed that the resulting partition is consistent with little variability. It is not core stable with respect to the partial preference profile. This is unsurprising due to the PAC model. The partition has one large coalition consisting of around 60 members and the rest are all singleton coalitions. All members of the only large coalition are from right wing parties. The singleton coalitions are likely a result of the limited size of the derived partial preference profile - Upon discovery of the smallest $CC$ in each iteration, we also remove any coalition that contains any of the removed player from the remaining player's preference relation. Since we took away a large number of players in one of the first few iterations, many coalitions are removed from remaining players' preference relations, resulting in isolated nodes in the updated graph which leads to singleton coalitions. Despite the number of singleton coalitions, the largest coalition does reflect political position of about 40\% of the parliment members.
 
+\begin{figure}[htb]
+\includegraphics[width=\columnwidth]{pac_value_function}
+\caption{Coalitions formed by the PAC model with the handcrafted value function, compared to party affiliations. Left wing parties are colored with blue hues, right wing red hues, center yellow hues.}
+\end{figure}
+
 \subsection{Appreciation of Friends}
 Another set of experiments are based on the appreciation of friends model, which is a proper subset of top responsive games. We define friends of a player's as anyone whose votes agreed with the given player's more than disagreed. Agreed votes are only counted if the given player voted ``for'' or ``against''. We experimented with two different ways of counting the disagreed votes:
 
@@ -314,6 +319,11 @@ We then integrated the appreciation-of-friends preference profile with the PAC t
 Recall in the value function preference model, the value of any coalition is only calculated once; as we remove players, any coalitions containing any removed players are simply removed from remaining players' preference relations. For any ``for'' or ``against'' coalition of a given bill, it doesn't make sense to modify it because the value function is defined for the observed coalition based on a combination of the voting outcome and participation. In contrast, with the friends preference model, we define coalition for a given player and a sample bill as the set of players who voted the same as the given player (either ``for'' or ``against'' the bill) and we allow this coalition to shrink as players are removed from the game in each iteration of the algorithm. Therefore we need to re-evaluate every coalition for a given player and sample bill pair as removing players will change the friend count and/or the enemy count for each coalition. This makes this model more computationally expensive than the value function model.
 
 We ran the algorithm 50 times each for the two disagreement definitions in order to check robustness of our models. The narrow disagreement model produced partitions with 10 to 16 coalitions, while the broad disagreement (selective friends) model generated partitions with 17 to 25 coalitions. The general structures of the two set of partitions are very similar – with two large coalitions, one made of the left wing party members and the other of the right wing party members, together with some smaller coalitions and singletons. TODO: NID between two disagreement models. Recall that the full preference profile models are very sensitive to the definition of disagreement. The PAC versions are much less sensitive.
+
+\begin{figure}[htb]
+\includegraphics[width=\columnwidth]{pac_friends}
+\caption{Coalitions formed by the PAC friends model, compared to party affiliations. Left wing parties are colored with blue hues, right wing red hues, center yellow hues.}
+\end{figure}
 
 \begin{table}[h!]
 \centering
