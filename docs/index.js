@@ -96,8 +96,10 @@ function make_histogram(exp_partitions) {
   exp_num_partition_tuples = []
   Object.keys(exp_partitions).forEach(key => {
     var partitions = exp_partitions[key]
-    var num_partitions = partitions.map(p => p.length)
-    exp_num_partition_tuples.push([key, num_partitions])
+    if (partitions.length > 1) {
+      var num_partitions = partitions.map(p => p.length)
+      exp_num_partition_tuples.push([key, num_partitions])
+    }
   })
 
   const hist_data = [{
