@@ -1,35 +1,4 @@
-Plotly.d3.json("partitions.json", exp_partitions => {
-  exp_num_partition_tuples = []
-  Object.keys(exp_partitions).forEach(key => {
-    var partitions = exp_partitions[key]
-    var num_partitions = partitions.map(p => p.length)
-    exp_num_partition_tuples.push([key, num_partitions])
-  })
-
-  const hist_data = [{
-    x: exp_num_partition_tuples[0][1],
-    type: 'histogram',
-  }]
-
-  const hist_buttons = exp_num_partition_tuples.map(t => {
-      return {
-          label: t[0],
-          method: "restyle",
-          args: ["x", [t[1]]]
-      }
-  })
-  const hist_layout = {
-    title: "Knesset Coalition Count Histogram",
-    font: {
-      size: 10
-    },
-    updatemenus: [{
-      active: 0,
-      buttons: hist_buttons
-    }]
-  }
-  Plotly.newPlot('histogram', hist_data, hist_layout)
-
+function make_sankey_plot(exp_partitions) {
   Plotly.d3.json("sankey.json", fig => {
 
     const party_list = ["The Jewish Home", "Shas", "United Torah Judaism", "Likud", "Yisrael Beiteinu", "Kulanu", "Yesh Atid", "Zionist Union", "Meretz", "Joint List"]
@@ -121,4 +90,42 @@ Plotly.d3.json("partitions.json", exp_partitions => {
 
     Plotly.plot('sankey', data, layout)
   })
+}
+
+function make_histogram(exp_partitions) {
+  exp_num_partition_tuples = []
+  Object.keys(exp_partitions).forEach(key => {
+    var partitions = exp_partitions[key]
+    var num_partitions = partitions.map(p => p.length)
+    exp_num_partition_tuples.push([key, num_partitions])
+  })
+
+  const hist_data = [{
+    x: exp_num_partition_tuples[0][1],
+    type: 'histogram',
+  }]
+
+  const hist_buttons = exp_num_partition_tuples.map(t => {
+      return {
+          label: t[0],
+          method: "restyle",
+          args: ["x", [t[1]]]
+      }
+  })
+  const hist_layout = {
+    title: "Knesset Coalition Count Histogram",
+    font: {
+      size: 10
+    },
+    updatemenus: [{
+      active: 0,
+      buttons: hist_buttons
+    }]
+  }
+  Plotly.newPlot('histogram', hist_data, hist_layout)
+}
+
+Plotly.d3.json("partitions.json", exp_partitions => {
+  make_histogram(exp_partitions)
+  make_sankey_plot(exp_partitions)
 })
