@@ -1,57 +1,57 @@
-±  |master ↑3 {4} U:5 ?:2 ✗| → python partition_stats.py 
+±  |master {4} U:4 ?:3 ✗| → python partition_stats.py 
 ['data/partitions_pac_friends_50_runs.txt', 'data/partitions_pac_selective_friends_50_runs.txt', 'data/partitions_pac_value_function_50_runs.txt', 'data/partitions_selective_friends_1_run.txt', 'data/partitions_friends_1_run.txt']
 
 Experiment pac_friends (50 runs)
   Number of Coalitions:
-     max: 15,
+     max: 16,
      min: 10,
      median: 13.0, 
-     mean: 12.48, 
-     variance: 1.846530612244898
+     mean: 12.92, 
+     variance: 1.666938775510204
   VI:
-     max: 3.2681198385535937,
-     min: 2.883795831490466,
-     median: 2.9815895630530553, 
-     mean: 3.004213834250393, 
-     variance: 0.008293006426236222
+     max: 3.292954640837844,
+     min: 2.877250920107057,
+     median: 2.9872651188862305, 
+     mean: 3.018551714049946, 
+     variance: 0.009313342707574225
   NVI:
-     max: 0.7438996904059832,
-     min: 0.6902995226881574,
-     median: 0.7213021953698552, 
-     mean: 0.7198821820130208, 
-     variance: 0.00013736508125022852
+     max: 0.7405858468560476,
+     min: 0.7000184663063753,
+     median: 0.7189426972637913, 
+     mean: 0.7193573373808695, 
+     variance: 6.491887624379721e-05
   NID:
-     max: 0.6441486737854103,
-     min: 0.5722481713860872,
-     median: 0.625551274667721, 
-     mean: 0.6200940079049355, 
-     variance: 0.00035750718959619326
+     max: 0.6487038489538886,
+     min: 0.5768893545376255,
+     median: 0.6210430161474607, 
+     mean: 0.6172577939083895, 
+     variance: 0.0002833734244042151
 
 Experiment pac_selective_friends (50 runs)
   Number of Coalitions:
-     max: 23,
+     max: 25,
      min: 17,
      median: 19.0, 
-     mean: 19.64, 
-     variance: 2.5208163265306123
+     mean: 19.74, 
+     variance: 3.3391836734693876
   VI:
-     max: 3.1357024454247244,
-     min: 2.6747014811769,
-     median: 2.8331688569747797, 
-     mean: 2.848261199390456, 
-     variance: 0.012724871922517117
+     max: 3.182761358658508,
+     min: 2.6747448966702665,
+     median: 2.8748463952243304, 
+     mean: 2.877497554125724, 
+     variance: 0.014120229499874296
   NVI:
-     max: 0.7171999099891269,
+     max: 0.7126253958520902,
      min: 0.6840751878849656,
-     median: 0.6998913511133555, 
-     mean: 0.6991518044400081, 
-     variance: 4.818007186344942e-05
+     median: 0.6996234049974697, 
+     mean: 0.6993439402473696, 
+     variance: 5.2090098445338576e-05
   NID:
-     max: 0.6169957193078192,
-     min: 0.5707714711819277,
-     median: 0.602234513643235, 
-     mean: 0.6019677844235286, 
-     variance: 9.760021932241471e-05
+     max: 0.6149813609073539,
+     min: 0.5535850293666491,
+     median: 0.5984609136854042, 
+     mean: 0.598198667807789, 
+     variance: 0.0001724445540108699
 
 Experiment pac_value_function (50 runs)
   Number of Coalitions:

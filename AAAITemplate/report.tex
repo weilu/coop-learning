@@ -313,7 +313,7 @@ We then integrated the appreciation-of-friends preference profile with the PAC t
 
 Recall in the value function preference model, the value of any coalition is only calculated once; as we remove players, any coalitions containing any removed players are simply removed from remaining players' preference relations. For any ``for'' or ``against'' coalition of a given bill, it doesn't make sense to modify it because the value function is defined for the observed coalition based on a combination of the voting outcome and participation. In contrast, with the friends preference model, we define coalition for a given player and a sample bill as the set of players who voted the same as the given player (either ``for'' or ``against'' the bill) and we allow this coalition to shrink as players are removed from the game in each iteration of the algorithm. Therefore we need to re-evaluate every coalition for a given player and sample bill pair as removing players will change the friend count and/or the enemy count for each coalition. This makes this model more computationally expensive than the value function model.
 
-We ran the algorithm 50 times each for the two disagreement definitions in order to check robustness of our models. The narrow disagreement model produced partitions with 10 to 16 coalitions, while the broad disagreement (selective friends) model generated partitions with 17 to 23 coalitions. The general structures of the two set of partitions are very similar – with two large coalitions, one made of the left wing party members and the other of the right wing party members, together with some smaller coalitions and singletons. TODO: NID between two disagreement models. Recall that the full preference profile models are very sensitive to the definition of disagreement. The PAC versions are much less sensitive.
+We ran the algorithm 50 times each for the two disagreement definitions in order to check robustness of our models. The narrow disagreement model produced partitions with 10 to 16 coalitions, while the broad disagreement (selective friends) model generated partitions with 17 to 25 coalitions. The general structures of the two set of partitions are very similar – with two large coalitions, one made of the left wing party members and the other of the right wing party members, together with some smaller coalitions and singletons. TODO: NID between two disagreement models. Recall that the full preference profile models are very sensitive to the definition of disagreement. The PAC versions are much less sensitive.
 
 \begin{table}[h!]
 \centering
@@ -324,7 +324,7 @@ We ran the algorithm 50 times each for the two disagreement definitions in order
 \hline
 Value Function & 87 & 0 & 0.526 & 0 \\
 Friends & 13 & 1.6669 & 0.617 & 0.0003 \\
-Selective friends & 20 & 2.5208 & 0.602 & 0 \\
+Selective friends & 20 & 3.3391 & 0.598 & 0.0001 \\
 \hline
 \end{tabular}
 \caption{Each PAC model is implemented using the PAC top covering algorithm; choice set approximation are done with $3/4$ of all bills; the model is executed 50 times on the same Knesset dataset.}
