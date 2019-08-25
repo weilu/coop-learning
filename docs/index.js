@@ -34,8 +34,8 @@ function make_sankey_plot(exp_partitions) {
     var partition_tuples = []
     Object.keys(exp_partitions).forEach(key => {
       var partitions = exp_partitions[key]
-      partition_tuples = partition_tuples.concat(partitions.map((p, id) => {
-        if (key == 'pac_friends' && id == 1) console.log(p)
+      partition_tuples = partition_tuples.concat(partitions.map((obj, id) => {
+        var p = obj.data
         // shift partition index to skip the first two columns of nodes
         var partition = p.map(coal => coal.map(idx => idx + members.length * 2))
         var partition_name = key + ' partition ' + (id + 1)
@@ -97,7 +97,7 @@ function make_histogram(exp_partitions) {
   Object.keys(exp_partitions).forEach(key => {
     var partitions = exp_partitions[key]
     if (partitions.length > 1) {
-      var num_partitions = partitions.map(p => p.length)
+      var num_partitions = partitions.map(obj => obj.data.length)
       exp_num_partition_tuples.push([key, num_partitions])
     }
   })
@@ -127,7 +127,42 @@ function make_histogram(exp_partitions) {
   Plotly.newPlot('histogram', hist_data, hist_layout)
 }
 
+function make_k_means_line_plot(exp_partitions) {
+  const k_means_keys = Object.keys(exp_partitions)
+    .filter(key => key.indexOf('k_means') >= 0)
+
+  var plot_data = ['vi', 'nvi', 'nid'].map(stats_name => {
+    var x = []
+    var y = []
+    k_means_keys.forEach(key => {
+      var obj = exp_partitions[key][0]
+      var stats = obj.stats
+      x.push(obj.data.length)
+      y.push(stats[stats_name])
+    })
+    return {
+      name: stats_name,
+      x: x,
+      y: y,
+      type: 'scatter'
+    }
+  })
+
+  var layout = {
+    title: 'K-means clustering quality',
+    xaxis: {
+      title: 'Cluster size',
+    },
+    yaxis: {
+      title: 'Value',
+    }
+  }
+
+  Plotly.newPlot('k_means_line_plot', plot_data, layout)
+}
+
 Plotly.d3.json("partitions.json", exp_partitions => {
   make_histogram(exp_partitions)
   make_sankey_plot(exp_partitions)
+  make_k_means_line_plot(exp_partitions)
 })
