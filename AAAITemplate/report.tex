@@ -259,6 +259,28 @@ In the context of hedonic games, based on a similar notion \cite{ijcai2017-380} 
 
 Where every sample consists of a coalition $S_j \subseteq N$, and the values assigned to $S_j$ by each of its member $\vec{v}(S_j) = (v_i(S_j))_{i \in S_j}$.
 
+\subsection{Improvement to the PAC Top Covering Algorithm}
+We discovered that the PAC top covering algorithm can be made more efficient by replacing the step of finding the smallest $CC$ with finding the largest Strongly Connected Component ($SCC$). Since the PAC top covering algorithm is based on the top covering algorithm, we will show that the partition generated from finding and deleting the SCC is strictly core stable for the original top covering algorithm. Then we will analyse the running time complexity implication for the PAC version of the algorithm.
+
+Assuming the resulting partition of the $SCC$ procedure $\pi$ is not strictly core stable, then there exists at least one weakly blocking coalition $S \subseteq N$ and at least one player $i \in S$ prefers S over $\pi(i)$. Consider the step when the coalition $\pi(i)$ is generated – it was the largest strongly connected component in the directed graph induced by remaining players' choice sets. In order to form $S$ which is different from $\pi(i)$, either or both of the following steps must be carried out:
+
+\begin{enumerate}
+  \item at least one player $j \in \pi(i)$ needs to be removed from $\pi(i)$
+  \item at least one player $k \notin \pi(i)$ needs to be added to $\pi(i)$
+\end{enumerate}
+
+When only Step 1 is carried out, since $\pi(i)$ is a strongly connected component, $j$ has at least one incoming edge, which means it's in the choice set of at least one other player $j' \in \pi(i)$, therefore its removal makes player $j' \in S$ worse off, therefore $S$ cannot be weakly blocking $\pi$.
+
+When only Step 2 is carried out, since player $k$ wasn't part of the strongly connected component that induces $\pi(i)$, $k$ only has incoming or outgoing edges between itself and the $SCC$ but not both types. If $k$ only has outgoing edges to $SCC$ it means adding $k$ to $\pi(i)$ will only make $k$ better off, but other players in $\pi(i)$ worse off because $S = \pi(i) \cup \{k\}$ is bigger in size $|S| > |\pi(i)$ while for any player $i' \in S, i' \neq k$ their choice set remains the same, therefore making $S$ less preferable than $\pi(i)$ for player $i' \in S, i' \neq k$ per definition of top responsiveness. Therefore $S$ is not blocking $\pi$ when $k$ only has outgoing edges to $SCC$. In the case $k$ only has incoming edges from $SCC$, it means adding $k$ to $\pi(i)$ will only make some player $i \in \pi(i)$ better off as $k$ is in their choice set. However $k$ will be made worse off by this move, since none of the player in $\pi(i)$ is in $k$'s choice set. As such, $S$ is not blocking $\pi$ when only Step 2 is carried out.
+
+When both Step 1 and Step 2 are carried out to form $S$ from $\pi(i)$, since Step 1 is bound to make some player $j' \in \pi(i)$ worse off, the only way to compensate $j'$ is by adding someone from their choice set to $\pi(i)$. Assuming $k$ is in $j'$'s choice set, then $k$ only has incoming edges from the $SCC$, which means $k$ will be worse off by joining $\pi(i)$, so $S$ cannot be blocking $\pi$.
+
+At any iteration, the largest $SCC$ needs to be extracted as the stable coalition $S$. Assume otherwise where a small $SCC$ was extracted at iteration $l$, as a result, player $i \in S$ ended up in coalitions $S'$ which is different from $S$. We claim that $S'$ is less preferable than $S$ for some player $i \in S$, because $S'$ is extracted from subsequent iteration $l' > l$, therefore their choice set at $l'$ is less preferable than that at $l$. TODO: make this better
+
+This concludes our proof that the largest $SCC$ procedure produces a strictly core stable partition for top responsive games.
+
+The largest $SCC$ procedure provides a running time improvement over the smallest $CC$ procedure because finding the smallest $CC$ requires $O(V(V + E))$ time while the largest $SCC$ can be found using Tarjan's algorithm in linear time $O(V + E)$\cite{Tarjan72depthfirst}. This running time improvement is only meaningful for the PAC verison of the top covering algorithm due to the input size of the original top covering algorithm being exponential in the number of players. In addition, taking out more players in the earlier iterations also reduces the amount of computation required for the later iterations, making our experiments run much faster than what it would have been with the original $CC$ procedure.
+
 \section{Experiments}
 
 \subsection{Top Responsive Game Model}
