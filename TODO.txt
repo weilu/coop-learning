@@ -89,13 +89,48 @@ TODO (8 Aug)
 Questions (for 16 Aug)
 frenemy:
   - appreciation of friends (has strict core) => top responsive, if symmetric => SSNS (strict strong nash stability): https://arxiv.org/pdf/1201.4754.pdf
-  - aversion of enemies (has core) => bottom responsive, if symmetric => (strong nash stable)
+  - aversion to enemies (has core) => bottom responsive, if symmetric => (strong nash stable)
 - top covering algo guarantees strict core: On top responsiveness and strict core stability
 - partition as a result of top covering algo is individually rational: Top responsiveness and nash stability in coalition formation games
 - update value function based on AoF see if top cover generates same results as AoF -> yes
 - implement bottom avoiding algorithm: https://papers.ssrn.com/sol3/papers.cfm?abstract_id=1700921 [DONE]
 - Are top covering & friend algorithms equivalent? Yes! proof sketch. friend algo is also more efficient
-- Is sampling really necessary in our experiment?
+- Is sampling really necessary in our experiment? Yes
 - bottom avoiding algorithm:
   - Given this algorithm finds a core, is finding core of an aversion of enemies game really NP hard?
   - complexity: O(n^3) for aversion to enemies model
+
+TODO (16 Aug)
+- iid needed for PAC framework to work
+- 75% samples for robustness
+- show coalition disintegration process
+- partial ordering using just for & against: I prefer to be the coalition in the same group as me over the other coalition
+- smallest cc always a cycle? [NO] a -> b -> c <-> d c -> a
+- writing:
+  - game theory: perscriptive - if want to have properties, use this model, descriptive - this is how human behave, this is what game theory predict would be stable.
+    - want to show that other models like clustering or community detection doesn't produce results as good (TODO)
+  - choose PAC framework because it's efficient to generate core - only need poly number of samples
+- community detection:
+  - Jure Leskovec
+- sample complexity - related to dimension of the problem (how weird the problem is).
+  1/epsilon * log(1/delta) * n
+
+TODO (19 Aug)
+- formalize proof in methodology
+- write out experiment results
+- visualize partition [DONE]
+- comparisons
+  - LP result
+  - hierarchical clustering
+
+
+Notes (23 Aug)
+- grand coalition partition: overspecified problem
+- is the order the coalitions are generated meaningful? earlier coalitions are more popular and persistent?
+
+TODO  (23 Aug)
+- viz: remove individual names [DONE]
+- comparison: LP or clustering [DONE]
+- formalize proof in methodology [DONE]
+- include the result without restrictive loop
+- surviving member across all/90% runs, identify unstable coalitions
