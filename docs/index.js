@@ -38,8 +38,10 @@ function make_sankey_plot(exp_partitions) {
         var p = obj.data
         // shift partition index to skip the first two columns of nodes
         var partition = p.map(coal => coal.map(idx => idx + members.length * 2))
+        var coalition_labels = p.map((_, id) =>  'Coalition ' + (id + 1))
         var partition_name = key + ' partition ' + (id + 1)
-        return [partition_name, group_values.concat(partition)]
+        return [partition_name, group_values.concat(partition),
+          members.concat(members).concat(members).concat(party_list).concat(coalition_labels)]
       }))
     })
 
@@ -53,14 +55,16 @@ function make_sankey_plot(exp_partitions) {
           color: "black",
           width: 0.5
         },
-        label: members.concat(members).concat(members).concat(party_list),
+        label: partition_tuples[0][2],
         color: colors.concat(colors).concat(colors).concat(group_colors),
         groups: partition_tuples[0][1]
       },
       link: {
-        source: link_source.concat(partition_link_source),
-        target: link_target.concat(partition_link_target),
-        value: link_value.concat(partition_link_value)
+        source: link_source,
+        target: partition_link_target,
+        value: link_value,
+        label: members,
+        color: colors
       }
     }
 
@@ -71,14 +75,18 @@ function make_sankey_plot(exp_partitions) {
         return {
             label: t[0],
             method: "restyle",
-            args: ["node.groups", [t[1]]]
+            args: [
+              {
+                "node.groups": [t[1]]
+              }
+            ]
         }
     })
 
     var layout = {
       title: "Knesset Coalition Visualized",
-      width: 1200,
-      height: 4000,
+      width: 1000,
+      height: 800,
       font: {
         size: 10
       },

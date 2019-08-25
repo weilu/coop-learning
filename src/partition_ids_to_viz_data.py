@@ -25,6 +25,7 @@ def partition_str_to_list(partition_str):
     for coalition_str in to_partition_index_strs(partition_str):
         coalition = coalition_str.split(', ')
         partition.append([int(id_str) for id_str in coalition])
+    partition = sorted(partition, key=len, reverse=True)
     return partition
 
 
