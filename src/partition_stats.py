@@ -39,13 +39,11 @@ if __name__ == '__main__':
         nids = []
         num_coalitions = []
         for part in partitions:
-            num_coalitions.append(len(part))
-            vi = variation_of_information(part, party_partition)
-            vis.append(vi)
-            nvi = normalized_variation_of_information(part, party_partition)
-            nvis.append(nvi)
-            nid = normalized_information_distance(part, party_partition)
-            nids.append(nid)
+            num_coalitions.append(len(part['data']))
+            stats = part['stats']
+            vis.append(stats['vi'])
+            nvis.append(stats['nvi'])
+            nids.append(stats['nid'])
 
         if 'k_means' in key:
             if vis[0] < best_k_means_nid:
