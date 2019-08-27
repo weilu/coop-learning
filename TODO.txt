@@ -134,3 +134,35 @@ TODO  (23 Aug)
 - formalize proof in methodology [DONE]
 - include the result without restrictive loop
 - surviving member across all/90% runs, identify unstable coalitions
+
+26 Aug:
+
+Questions:
+- proof largest part of the SCC procedure
+- better clustering algorithm?
+- information distance measure, any commonly used? mutualized mutual information score? [CHECK]
+- measure against left, right, center?
+- meaningful to include results from deterministic runs? [CHECK: use as motivation]
+
+Notes:
+- committee lines
+- Members singled out from YB:
+  - Lieberman head of the party, left the Knesset half-way because becoming a minister. opposition
+  - Orly Levy left the party. Faught her own fight and often penalized for it
+- use older Knesset 80s (super low barrier of entry, back then 1 seat, now about 4 seats) or 90s
+  - 81-84 more ambitious government but data might be more noisy (don't use this)
+  - 84-88: national unity government. party lines should be broken
+  - 92-96 two parties fracturing.
+- sanity check using the joint list
+- how to agg multiple coalition structures? Joint list has 4 subparties, see if they get grouped together: https://he.wikipedia.org/wiki/%D7%94%D7%A8%D7%A9%D7%99%D7%9E%D7%94_%D7%94%D7%9E%D7%A9%D7%95%D7%AA%D7%A4%D7%AA
+  - weighted edge representing grouped together, only for joint list. Check out Tomas Michalale
+  - heatmap colored by number of times clustered together
+- select a partition that minimizes total info dist from all partitions from other runs
+- the PAC version produces 2 large coalitions as a result of sampling from a distribution.
+  - include it early in the paper, use it as motivation
+- writing
+  - missing:
+    examples of pref models
+    what is the model? party members have preferences which we don't observe
+    introduction: overview, roadmap of what we are doing
+  - point out interesting case study. highlight things like the joint list, Lieberman and Orley Levy
