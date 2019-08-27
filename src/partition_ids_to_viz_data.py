@@ -62,8 +62,33 @@ def gather_experiment_partitions():
     return filename_to_partitions
 
 
-if __name__ == '__main__':
+# pick the partition that minimizes the sum of nids to the rest of the group
+def select_representatives(grouped_partitions):
+    reps = {}
+    for key, partitions in grouped_partitions.items():
+        if len(partitions) < 2:
+            continue
+        min_nid_sum = len(partitions)
+        min_nid_part = partitions[0]['data']
+        for i, me in enumerate(partitions):
+            nid_sum = 0
+            for j, other in enumerate(partitions):
+                if i == j:
+                    continue
+                nid_sum += normalized_information_distance(me['data'], other['data'])
+            if nid_sum < min_nid_sum:
+                min_nid_sum = nid_sum
+                min_nid_part = me
+        reps[key] = [min_nid_part]
+    print(reps)
+    return reps
 
+
+if __name__ == '__main__':
+    grouped_partitions = gather_experiment_partitions()
     with open('../docs/partitions.json', 'w') as f:
-        grouped_partitions = gather_experiment_partitions()
         json.dump(grouped_partitions, f)
+
+    representatives = select_representatives(grouped_partitions)
+    with open('../docs/partition_reps.json', 'w') as f:
+        json.dump(representatives, f)
