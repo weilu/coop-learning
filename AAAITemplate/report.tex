@@ -132,34 +132,15 @@ dcsyaz@nus.edu.sg
 \maketitle
 
 \begin{abstract}
-TODO
+Stability solution concepts have been extensively studied in the context of hedonic games. However, most past work has been purely theoretical and assumes complete visibility of all agent preferences, which is impractical in real world settings. Recent work has introduced the theory foundation of Probably Approximately Correct (PAC) stability to model stability under uncertainty through sampling. In this paper, we propose an algorithmic improvement for discovering PAC stable solutions. We apply the improved algorithm on Knesset voting data and discover that the PAC stable solutions reflect Knesset members' political positions at large, and are able to reveal a few politicians whose voting behavior breaks their party lines. We also demonstrate empirically that this PAC hedonic game modeling approach compares favorably to clustering approach.
 \end{abstract}
 
 \noindent Introduction TODO
 
-\section{Data}
-Knesset is the national legislative branch of the Israeli government. Knesset website provides data access through Open Data Protocol (OData) on all its parliament members, laws, and every member's votes on every law. We limit our dataset to the 20th Knesset (2015-2019), which is the last Knesset preseeding the current one. We downloaded all 147 parliament members' information including id, name, faction id, faction name and their votes for all 7515 bills deliberated. A vote can take on one of the following values 0 (vote canceled), 1 (vote for), 2 (vote against), 3 (abstained), 4 (did not attend). We programmatically transformed the downloaded data into comma separated values (CSV), with each row representing a bill and each column representing a parliament member, so a cell value corresponds to the vote of a given parliament member for a given bill.
-
-\subsection{Data Preprocessing}
-During data processing, we noticed that more than half of all the vote values are missing despite the presence of value 4 for ``did not attend''. It raises questions regarding the data quality. We discovered another API endpoint which provides summary information for every bill, including total number of for votes, against votes, abstained votes, and if the bill is accepted. We downloaded bill summary data set for the 20th Knesset and used it to check against the tallied vote numbers from the individual vote data. We ended up discovering more inconsistencies:
-
-\begin{itemize}
-  \item Total bills checked: 7513,
-  \item Missing bills in the summary dataset: 2,
-  \item Number of bills with pass/reject status inconsistent: 26,
-  \item Number of bills with for count inconsistent : 273,
-  \item Number of bills with against count inconsistent : 402,
-  \item Number of bills with abstain count inconsistent : 2
-\end{itemize}
-
-We reached out to Knesset regarding the data inconsistency between two API endpoints, as well as the missing value issue. The Knesset data management team stated that the inconsistency is likely a result of manual vote entries instead of votes recorded as a result of pressing the electronic button. Such manual vote entries are captured by the bill summary data set but not individual member's vote data set.
-
-For the purpose of our research, we treat the data with individual member's votes on every bill as the ground truth since it has the level of granularity required for modeling.  We removed the 26 bills whose pass/reject status is inconsistent between the summary and invidual data sets, since it's most likely that the individual data is wrong.
-
 \section{Preliminaries}
 
 \subsection{Hedonic Games}
-Hedonic games are a sub-class of nontransferable utility cooperative games. A hedonic game is a coalition formation game with hedonic preferences. A coalition formation game aims to divide the set of all players $N$ into disjoint coalitions, formally known as a coalition structure, often denoted as $\pi$. Hedonic preferenfes means that every player only cares about the coalition they belong to, which implies that the inter-coalitional dependencies are completely ignored. The description of a hedonic game could be exponentially large in the number of players, as each player needs to rank all possible coalitions they may belong to.
+Hedonic games are a sub-class of nontransferable utility cooperative games. A hedonic game is a coalition formation game with hedonic preferences. A coalition formation game aims to divide the set of all players $N$ into disjoint coalitions, formally known as a coalition structure, often denoted as $\pi$. Hedonic preference means that every player only cares about the coalition they belong to, which implies that the inter-coalitional dependencies are completely ignored. The description of a hedonic game could be exponentially large in the number of players, as each player needs to rank all possible coalitions they may belong to.
 
 \begin{definition}
   A {\it hedonic game} is a pair $(N, P)$, where $N$ is a finite set of players $1, \cdots, n$ and $P$ is a {\it preference profile} consisting of preference relations $\succeq_i$ for every player $i \in N$: $P = (\succeq_1, \cdots, \succeq_n)$. A {\it preference relation} $\succeq_i$ is a reflective, complete, and transitive binary relation on $mathcal{N}_i$, where $mathcal{N}_i$ is the set of all non-empty subset of $N$ that includes player $i$: $mathcal{N}_i \{S \subseteq N: i \in S, S \neq \emptyset \}$
@@ -195,7 +176,7 @@ In this preference model, a player classifies other players as either friends or
 \cite{SuSu10} have shown that the domain of preference profiles based on appreciation of friends is a proper subdomain of top responsive preference profiles. Some top responsive games do not satisfy the requirements of appreciation of friends, for example, $N = \{1, 2, 3\}$, preference relation $\{1, 2\} \succ_1 \{1, 2, 3\} \succ_1 \{1, 3\}$ satisifies top responsiveness but not apprciation of friends.
 
 \subsection{Mutuality}
-Mutaulity in the context of top responsive games means that for all $i, j \in N$, for all coalition that contains $i$ and $j$: $S \in \mathcal{N}_i \cap \mathcal{N}_j$, $i \in ch(j, S)$ if and only if $j \in ch(i, S)$. Similarly, a strong bottom responsive game is mutual if $i \in av(j, S) \iff j \in av(i, S)$. Mutuality provides guarantees for solutions that satisfy stronger notion of stability, which we will discuss after the stability concepts defitions.
+Mutaulity in the context of top responsive games means that for all $i, j \in N$, for all coalition that contains $i$ and $j$: $S \in \mathcal{N}_i \cap \mathcal{N}_j$, $i \in ch(j, S)$ if and only if $j \in ch(i, S)$. Mutuality provides guarantees for solutions that satisfy stronger notion of stability, which we will discuss after the stability concepts defitions.
 
 \subsection{Stability Concepts}
 Core stable and strictly core stable are solution concepts useful for modeling real world scenarios because they represent a stable state where no subset of players can be better off by deviating from. A hedonic game solution $\pi$ is core stable when there is no strongly blocking coalition. A coalition $S \subseteq N$ strongly blocks a coalition structure $\pi$ if every player $i \in S$ strictly prefers $S$ over its current coalition $\pi(i)$. Similarly, a hedonic game is strictly core stable when there is no weakly blocking coalition. A coalition $S \subseteq N$ weakly blocks a coalition structure $\pi$ if every player $i \in S$ weakly prefers $S$ over its current coalition $\pi(i)$ and there exists at least one player $j \in S$ who strictly prefers $S$ over $\pi(j)$.
@@ -228,7 +209,7 @@ squarednode/.style={rectangle, draw=white!60, fill=white!5, very thick, minimum 
 \caption{Relationships between stability concepts for hedonic games: Strict strong Nash stable implies strict core and strong Nash stable. Strong Nash stable immplies core and Nash stable. Strict core implies core.}
 \end{figure}
 
-\subsection{Top Covering Algorithm}
+\subsection{Complete Preference Profile Algorithms} \label{section:top_covering}
 
 \cite{ALCALDE2004869} showed that top responsive games guarantee the existence of a core stable partition, which is discoverable through the Top Covering Algorithm. \cite{DIMITROV2007130} simplified the original Top Covering Algorithm and proved that it not only constructs a core, but a strict core. \cite{Dimitrov2006TopRA} also showed that adding the mutuality condition the simplified top covering algorithm produces a Nash stable partition. \cite{Aziz:2012:ESH:2343776.2343806} further proved that with mutuality the partition produced is in fact strict strong Nash stable for any top responsive game.
 
@@ -241,8 +222,8 @@ squarednode/.style={rectangle, draw=white!60, fill=white!5, very thick, minimum 
   \State $R^1 \leftarrow N$; $\pi \leftarrow \emptyset$.
 
   \For{$k=1$ to $|N|$}
-    \State Select $i\in R^k$ such that $|CC(i,R^k)| \leq |CC(j,R^k)|$ for each $j\in R^k$.
-    \State $S^k\leftarrow  CC(i,R^k)$; $\pi \leftarrow  \pi \cup \lbrace S^k \rbrace$;  and $R^{k+1} \leftarrow  R^k \setminus S^k$
+    \State \label{top_cover:select} Select $S^k$
+    \State \label{top_cover:remove} $\pi \leftarrow \pi \cup \lbrace S^k \rbrace$ and $R^{k+1} \leftarrow  R^k \setminus S^k$
     \If {$R^{k+1} = \emptyset$}
       \State \Return $\pi$
     \EndIf
@@ -252,9 +233,11 @@ squarednode/.style={rectangle, draw=white!60, fill=white!5, very thick, minimum 
  \end{algorithmic}
 \end{algorithm}
 
-Where $CC(i, S)$ denotes the connected component with $i$ as the root node, in the graph induced by $S$ as vertices and directed edges $E$, $(i, j) \in E$ if $j \in ch(i, S)$ for all $j \in S$.
+Step~\ref{top_cover:select} effectively selects the smallest ``connected component'' ($CC$) in the graph induced by the remaining players as nodes and their choice sets as edges. The set of vertices of the smallest $CC$ is assigned to $S^k$. Formally, select $i\in R^k$ such that $|CC(i,R^k)| \leq |CC(j,R^k)|$ for each $j\in R^k$; and $S^k\leftarrow CC(i,R^k)$, where $CC(i, S)$ denotes the connected component with $i$ as the root node, in the graph induced by $S$ as vertices and directed edges $E$, $(i, j) \in E$ if $j \in ch(i, S)$ for all $j \in S$.
 
-Note that the input of the top covering algorithm is the entire preference profile of all players, which is in the order of $O(2^{|N|})$. Finding the choice set for every player after each round of player removal at line 4 requires scanning through every remaining player's preference relation, which makes the most expensive part of this algorithm, so this algorithm is exponential time in the number of players.
+Note that the input of the top covering algorithm is the entire preference profile of all players, which is in the order of $O(2^{|N|})$. Finding the choice set for every player after each round of player removal at Step~\ref{top_cover:remove} requires scanning through every remaining player's preference relation, which makes the most expensive part of this algorithm, so this algorithm is exponential time in the number of players.
+
+\cite{Dimitrov2006} showed that given a preference profile based on appreciation of friends $P^f$, a strictly core stable coalition structure can be found in polynomialtime in the number of players. Their algorithm effectively replaces Step~\ref{top_cover:select} of Algorithm~\ref{alg:top_covering} with finding the largest strongly connected component (SCC) in the graph induced by $R^k$. Due to the the appreciation of friends preference profile, Step~\ref{top_cover:remove} no longer requires scanning through every remaining player's preference relation for removed players, making the partition equivalently a strong decomposition of the graph induced by $N$. TODO: known algorithm complexity
 
 \subsection{PAC Learning and PAC Stability}
 Probably Approximately Correct (PAC) learning is the canonical framework aimed at providing good probabilistic approximation to functions with polynormial number of samples. A good probabilistic approximation means that with high probability of at least $1 - \delta$, the selected function has low generalization error $\varepsilon$, where $0 < \varepsilon, \delta < 1$. A hypothesis class is efficiently PAC learnable if such a good probabilistic approximation can be produced by some algorithm that has both running time and input sample size be polynormial in $n$, $\frac{1}{\varepsilon}$, and $\log{\frac{1}{\delta}}$.
@@ -327,10 +310,29 @@ When both Step 1 and Step 2 are carried out to form $S$ from $\pi(i)$, since Ste
 
 The largest $SCC$ procedure provides a running time improvement over the smallest $CC$ procedure because finding the smallest $CC$ requires $O(V(V + E))$ time while the largest $SCC$ can be found using Tarjan's algorithm in linear time $O(V + E)$\cite{Tarjan72depthfirst}. This running time improvement is only meaningful for the PAC verison of the top covering algorithm due to the input size of the original top covering algorithm being exponential in the number of players. In addition, taking out more players in the earlier iterations also reduces the amount of computation required for the later iterations, making our experiments run much faster than what it would have been with the original $CC$ procedure.
 
+\section{Data}
+Knesset is the national legislative branch of the Israeli government. Knesset website provides data access through Open Data Protocol (OData) on all its parliament members, laws, and every member's votes on every law. We limit our dataset to the 20th Knesset (2015-2019), which is the last Knesset preseeding the current one. We downloaded all 147 parliament members' information including id, name, faction id, faction name and their votes for all 7515 bills deliberated. A vote can take on one of the following values 0 (vote canceled), 1 (vote for), 2 (vote against), 3 (abstained), 4 (did not attend). We programmatically transformed the downloaded data into comma separated values (CSV), with each row representing a bill and each column representing a parliament member, so a cell value corresponds to the vote of a given parliament member for a given bill.
+
+\subsection{Data Preprocessing}
+During data processing, we noticed that more than half of all the vote values are missing despite the presence of value 4 for ``did not attend''. It raises questions regarding the data quality. We discovered another API endpoint which provides summary information for every bill, including total number of for votes, against votes, abstained votes, and if the bill is accepted. We downloaded bill summary data set for the 20th Knesset and used it to check against the tallied vote numbers from the individual vote data. We ended up discovering more inconsistencies:
+
+\begin{itemize}
+  \item Total bills checked: 7513,
+  \item Missing bills in the summary dataset: 2,
+  \item Number of bills with pass/reject status inconsistent: 26,
+  \item Number of bills with for count inconsistent : 273,
+  \item Number of bills with against count inconsistent : 402,
+  \item Number of bills with abstain count inconsistent : 2
+\end{itemize}
+
+We reached out to Knesset regarding the data inconsistency between two API endpoints, as well as the missing value issue. The Knesset data management team stated that the inconsistency is likely a result of manual vote entries instead of votes recorded as a result of pressing the electronic button. Such manual vote entries are captured by the bill summary data set but not individual member's vote data set.
+
+For the purpose of our research, we treat the data with individual member's votes on every bill as the ground truth since it has the level of granularity required for modeling. We removed the 26 bills whose pass/reject status is inconsistent between the summary and invidual data sets, since it's most likely that the individual data is wrong.
+
 \section{Experiments}
 
 \subsection{Top Responsive Game Model}
-Top responsiveness models a preference profile where every player derives their utility for a given coalition from the most preferred subset players in their coalition. In the context of legislature, it captures that politicians care about whose votes they stand with – they want to vote with other politicians they like. Top responsiveness guarantees a core stable partition, which can be computed using Algorithm ~\ref{alg:top_covering} if the full preference profile is given. When the complete preference profile is not available, we can use Algorithm ~\ref{alg:pac_top_covering} to approximate a core stable partition. We then compare the resulting partitions to party affiliations to assess the quality of our models.
+Top responsiveness models a preference profile where every player derives their utility for a given coalition from the most preferred subset players in their coalition. In the context of legislature, it captures that politicians care about whose votes they stand with – they want to vote with other politicians they like. Since we do not observe quantifiable preferences of each Knesset member over other members, we will be deriving their preferences from the Knesset voting data assuming top responsiveness and mutuality. Top responsiveness guarantees a strictly core stable partition. With the addition of mutality, as discussed in \ref{section:top_covering}, a strict strong Nash stable partition can be computed using Algorithm ~\ref{alg:top_covering} if the full preference profile is given. When the complete preference profile is not available, we can use Algorithm ~\ref{alg:pac_top_covering} to approximate a strict strong Nash stable partition. We then compare the resulting partitions to party affiliations to assess the quality of our models.
 
 \subsection{Handcrafted Value Function}
 For each bill there are two natural coalitions: one formed by parliament members who voted ``for'', and the other formed by parliament members who voted ``against''. Note that the values assigned by members to their respective coalitions are not immediately well defined, so we define the player $i$'s value function for coalition $S$ as below:
@@ -366,7 +368,7 @@ Another set of experiments are based on the appreciation of friends model, which
 
 Compared to narrow disagreement, broad disagreement leads to every player being more selective of friends. For any player, those who are not friends are considered enemies.
 
-Note that as soon as the sets of friends and enemies are derived for each parliment member, we can expand them into a complete preference profile, and apply top covering algorithm to obtain a strict core stable partition with respect to the given preference profile. The broad disagreement setup produced a partition with 18 coalitions out of which there are two large coalitions with 66 and 58 members each. One of these two large coalitions is made of left wing party politicians, while the other of right wing party members. Together, over 84\% of the parliment members' political positions are revealed by this model. In contrast, by being slightly less selective of friends, the narrow disagreement setup resulted in the grand coalition as the core stable outcome. This shows that the appreciation of friends model is very sensitive to the definition of friends.
+Note that as soon as the sets of friends and enemies are derived for each parliment member, we can expand them into a complete preference profile, and apply top covering algorithm to obtain a strict strong Nash stable partition with respect to the given preference profile. The broad disagreement setup produced a partition with 18 coalitions out of which there are two large coalitions with 66 and 58 members each. One of these two large coalitions is made of left wing party politicians, while the other of right wing party members. Together, over 84\% of the parliment members' political positions are revealed by this model. In contrast, by being slightly less selective of friends, the narrow disagreement setup resulted in the grand coalition as the strict strong Nash stable outcome. This shows that the appreciation of friends model is very sensitive to the definition of friends.
 
 \begin{table}[h!]
 \centering
