@@ -166,3 +166,16 @@ Notes:
     what is the model? party members have preferences which we don't observe
     introduction: overview, roadmap of what we are doing
   - point out interesting case study. highlight things like the joint list, Lieberman and Orley Levy
+
+
+Notes (28 Aug)
+- put it in a theorom environment [DONE]
+- put a function in both algorithms and state in the proposition and thereom that replacing the function will also produce a core stable outcome
+- viz enemies model
+- abstract: what it is about, what's the main result
+  - improve algo
+  - partition by political position
+  - compares favorably with clustering algorithm
+- register and get a ticket number
+- fill in missing votes (later)
+
