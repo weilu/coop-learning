@@ -14,11 +14,30 @@
 \setlength{\pdfpagewidth}{8.5in}  % DO NOT CHANGE THIS
 \setlength{\pdfpageheight}{11in}  % DO NOT CHANGE THIS
 
+\usepackage{amsthm}
 \usepackage{mathtools}
-\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
 \usepackage{tikz}
 \usetikzlibrary{positioning}
-\usepackage{algorithm,algorithmic}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{algorithmicx}
+
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\newcommand{\tup}[1]{\langle #1 \rangle}
+\renewcommand{\cal}[1]{\mathcal{#1}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\Ch}{\mathit{Ch}}
+\newcommand{\ch}{\mathit{ch}}
+\newcommand{\CC}{\mathit{CC}}
+\newcommand{\core}{\mathit{Core}}
+\newcommand{\samples}{\omega}
+
+\newtheorem{definition}{Definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+
 \usepackage{multirow}
 %\nocopyright
 %PDF Info Is REQUIRED.
@@ -79,7 +98,7 @@
 % \vspace{- -- No negative value may be used in proximity of a caption, figure, table, section, subsection, subsubsection, or reference
 % \vskip{- -- No negative value may be used to alter spacing above or below a caption, figure, table, section, subsection, subsubsection, or reference
 
-\setcounter{secnumdepth}{0} %May be changed to 1 or 2 if section numbers are desired.
+\setcounter{secnumdepth}{2} %May be changed to 1 or 2 if section numbers are desired.
 
 % The file aaai20.sty is the style file for AAAI Press 
 % proceedings, working notes, and technical reports.
@@ -142,8 +161,12 @@ For the purpose of our research, we treat the data with individual member's vote
 \subsection{Hedonic Games}
 Hedonic games are a sub-class of nontransferable utility cooperative games. A hedonic game is a coalition formation game with hedonic preferences. A coalition formation game aims to divide the set of all players $N$ into disjoint coalitions, formally known as a coalition structure, often denoted as $\pi$. Hedonic preferenfes means that every player only cares about the coalition they belong to, which implies that the inter-coalitional dependencies are completely ignored. The description of a hedonic game could be exponentially large in the number of players, as each player needs to rank all possible coalitions they may belong to.
 
+\begin{definition}
+  A {\it hedonic game} is a pair $(N, P)$, where $N$ is a finite set of players $1, \cdots, n$ and $P$ is a {\it preference profile} consisting of preference relations $\succeq_i$ for every player $i \in N$: $P = (\succeq_1, \cdots, \succeq_n)$. A {\it preference relation} $\succeq_i$ is a reflective, complete, and transitive binary relation on $mathcal{N}_i$, where $mathcal{N}_i$ is the set of all non-empty subset of $N$ that includes player $i$: $mathcal{N}_i \{S \subseteq N: i \in S, S \neq \emptyset \}$
+\end{definition}
+
 \subsection{Top Responsive Games}
-The intuition behind top responsiveness is that every player derives their utility from the most preferred subset players of the coalition they belong. If two coalitions, with one containing the other, yield the same utility for a player, the tie is broken in favor of the smaller coalition. Formally, for a game to satisfy top responsiveness, it requires the following three conditions to hold true for any player $i \in N$, and any coalition that may contain player $i$: $S, T \in \mathcal{N}_i$:
+The intuition behind top responsiveness is that every player derives their utility from the most preferred subset players of the coalition they belong. If two coalitions, with one containing the other, yield the same utility for a player, the tie is broken in favor of the smaller coalition. Formally, for a game to satisfy {\it top responsiveness}, it requires the following three conditions to hold true for any player $i \in N$, and any coalition that may contain player $i$: $S, T \in \mathcal{N}_i$:
 \begin{enumerate}
   \item $|Ch(i, S)| = 1$.
   \item if $ch(i, S) \succ_i ch(i, T)$ then $S \succ_i T$
@@ -156,19 +179,20 @@ $Ch(i, S) = \{S' \subseteq S: (i \in S') \wedge (S' \succeq_i S'' \forall S'' \s
 
 The unique choice set in $Ch(i, S)$ is denoted as $ch(i, S)$.
 
-\subsection{Bottom Responsive Games}
-Bottom responsive games can be viewed as the counterpart of top responsive games, where a player's utility is derived from the absence of disliked players. For a game to satisfy bottom responsiveness, two conditions are required:
+\subsection{Appreciation of Friends Preference Profile}
+
+In this preference model, a player classifies other players as either friends or enemies, and prefers any coalition with more friends and fewer enemies:
+
+\begin{definition}
+  Let $G_i$ be player $i$'s set of friends, and $B_i$ the set of enemies. $G_i \cup B_i \cup i = N$ and $G_i \cap B_i = \emptyset$. A preference profile $P^f$ is based on {\it appreciation of friends} if for all player $i \in N$, $S \succeq_i T$ if and only if
 
 \begin{enumerate}
-  \item if for all $S' \in Av(i, S)$ $T' \in Av(i, T)$, $ S' \succ_i T'$ then $S \succ_i T$
-  \item if $Av(i, S) \cap Av(i, T) \neq \emptyset$ and $|S| \geq |T|$ then $S \succeq_i T$
+  \item $|S \cap G_i| > |T \cap G_i|$ or
+  \item $|S \cap G_i| = |T \cap G_i|$ and $|S \cap B_i| \leq |T \cap B_i|$
 \end{enumerate}
+\end{definition}
 
-Where $Av(i, S)$ denotes the avoid sets of player $i$ in coalition $S$, formally defined as:
-
-$Av(i, S) = \{S' \subseteq S: (i \in S') \wedge (S' \preceq_i S'' \forall S'' \subseteq S)\}$
-
-If in addition to the above two conditions, a game also satisfies $|Av(i, S)| = 1$ for all $i \in N$ and all $S \in \mathcal{N}_i$, then it is strongly bottom responsive.
+\cite{SuSu10} have shown that the domain of preference profiles based on appreciation of friends is a proper subdomain of top responsive preference profiles. Some top responsive games do not satisfy the requirements of appreciation of friends, for example, $N = \{1, 2, 3\}$, preference relation $\{1, 2\} \succ_1 \{1, 2, 3\} \succ_1 \{1, 3\}$ satisifies top responsiveness but not apprciation of friends.
 
 \subsection{Mutuality}
 Mutaulity in the context of top responsive games means that for all $i, j \in N$, for all coalition that contains $i$ and $j$: $S \in \mathcal{N}_i \cap \mathcal{N}_j$, $i \in ch(j, S)$ if and only if $j \in ch(i, S)$. Similarly, a strong bottom responsive game is mutual if $i \in av(j, S) \iff j \in av(i, S)$. Mutuality provides guarantees for solutions that satisfy stronger notion of stability, which we will discuss after the stability concepts defitions.
@@ -204,7 +228,7 @@ squarednode/.style={rectangle, draw=white!60, fill=white!5, very thick, minimum 
 \caption{Relationships between stability concepts for hedonic games: Strict strong Nash stable implies strict core and strong Nash stable. Strong Nash stable immplies core and Nash stable. Strict core implies core.}
 \end{figure}
 
-\subsection{Algorithms and Their Complexities}
+\subsection{Top Covering Algorithm}
 
 \cite{ALCALDE2004869} showed that top responsive games guarantee the existence of a core stable partition, which is discoverable through the Top Covering Algorithm. \cite{DIMITROV2007130} simplified the original Top Covering Algorithm and proved that it not only constructs a core, but a strict core. \cite{Dimitrov2006TopRA} also showed that adding the mutuality condition the simplified top covering algorithm produces a Nash stable partition. \cite{Aziz:2012:ESH:2343776.2343806} further proved that with mutuality the partition produced is in fact strict strong Nash stable for any top responsive game.
 
@@ -214,16 +238,17 @@ squarednode/.style={rectangle, draw=white!60, fill=white!5, very thick, minimum 
   \textbf{Input:} A hedonic game satisfying top responsiveness.
 
   \begin{algorithmic}[1]
-\STATE $R^1 \leftarrow N$; $\pi \leftarrow \emptyset$.
+  \State $R^1 \leftarrow N$; $\pi \leftarrow \emptyset$.
 
-\FOR{$k=1$ to $|N|$}
-\STATE \label{step:select} Select $i\in R^k$ such that $|CC(i,R^k)| \leq |CC(j,R^k)|$ for each $j\in R^k$.
-\STATE $S^k\leftarrow  CC(i,R^k)$; $\pi \leftarrow  \pi \cup \lbrace S^k \rbrace$;  and $R^{k+1} \leftarrow  R^k \setminus S^k$
- \IF{$R^{k+1} = \emptyset$}
-\RETURN $\pi$
-\ENDIF
-\ENDFOR
-\RETURN $\pi$
+  \For{$k=1$ to $|N|$}
+    \State Select $i\in R^k$ such that $|CC(i,R^k)| \leq |CC(j,R^k)|$ for each $j\in R^k$.
+    \State $S^k\leftarrow  CC(i,R^k)$; $\pi \leftarrow  \pi \cup \lbrace S^k \rbrace$;  and $R^{k+1} \leftarrow  R^k \setminus S^k$
+    \If {$R^{k+1} = \emptyset$}
+      \State \Return $\pi$
+    \EndIf
+  \EndFor
+
+  \State \Return $\pi$
  \end{algorithmic}
 \end{algorithm}
 
@@ -231,37 +256,61 @@ Where $CC(i, S)$ denotes the connected component with $i$ as the root node, in t
 
 Note that the input of the top covering algorithm is the entire preference profile of all players, which is in the order of $O(2^{|N|})$. Finding the choice set for every player after each round of player removal at line 4 requires scanning through every remaining player's preference relation, which makes the most expensive part of this algorithm, so this algorithm is exponential time in the number of players.
 
-Bottom Avoiding Algorithm
-
 \subsection{PAC Learning and PAC Stability}
 Probably Approximately Correct (PAC) learning is the canonical framework aimed at providing good probabilistic approximation to functions with polynormial number of samples. A good probabilistic approximation means that with high probability of at least $1 - \delta$, the selected function has low generalization error $\varepsilon$, where $0 < \varepsilon, \delta < 1$. A hypothesis class is efficiently PAC learnable if such a good probabilistic approximation can be produced by some algorithm that has both running time and input sample size be polynormial in $n$, $\frac{1}{\varepsilon}$, and $\log{\frac{1}{\delta}}$.
 
-In the context of hedonic games, based on a similar notion \cite{ijcai2017-380} defined that a class of hedonic games is PAC stablizable if there exists a polynormial time and input size algorithm in $n$, $\frac{1}{\varepsilon}$, and $\log{\frac{1}{\delta}}$ that produces a partition $\pi$ such that $\Pr_{S\sim D}[\text{S core blocks } \pi] < \varepsilon$. In the same paper, \cite{ijcai2017-380} also showed that top responsive games are efficiently PAC stablizable despite not PAC learnable. The PAC stable partition can be computed with Algorithm ~\ref{alg:pac_top_covering}.
+In the context of hedonic games, based on a similar notion \cite{ijcai2017-380} defined that a class of hedonic games is PAC stablizable if there exists a polynormial time and input size algorithm in $n$, $\frac{1}{\varepsilon}$, and $\log{\frac{1}{\delta}}$ that produces a partition $\pi$ such that $\Pr_{S\sim D}[\text{S core blocks } \pi] < \varepsilon$. In the same paper, \cite{ijcai2017-380} also showed that top responsive games are efficiently PAC stablizable despite not PAC learnable. The PAC stable partition can be computed with Algorithm~\ref{alg:pac_top_covering}.
 
 \begin{algorithm}[htb]
-  \caption{PAC Top Covering Algorithm:TODO complete}
+  \caption{PAC Top Covering Algorithm}
   \label{alg:pac_top_covering}
-  \textbf{Input:} $\varepsilon$, $\delta$, set $S$ of $m = (2n^4 + 2n^3)\ceil{\frac{1}{\epsilon}\log{\frac{2n^3}{\delta}}}$ samples from D
-
+  \textbf{Input:} $\eps$, $\delta$, set $\cal S$ of $m = (2n^4 + 2n^3)\ceil{\frac{1}{\eps}\log\frac{2n^3}{\delta}}$ samples from $\cal D$
   \begin{algorithmic}[1]
-\STATE $R^1 \leftarrow N$; $\pi \leftarrow \emptyset$.
 
-\FOR{$k=1$ to $|N|$}
-\STATE Select $i\in R^k$ such that $|CC(i,R^k)| \leq |CC(j,R^k)|$ for each $j\in R^k$.
-\STATE $S^k\leftarrow  CC(i,R^k)$; $\pi \leftarrow  \pi \cup \lbrace S^k \rbrace$;  and $R^{k+1} \leftarrow  R^k \setminus S^k$
- \IF{$R^{k+1} = \emptyset$}
-\RETURN $\pi$
-\ENDIF
-\ENDFOR
-\RETURN $\pi$
+  \State $R^1 \gets N$, $\pi \gets \emptyset$
+  \State $\samples \gets \ceil{2n^2 \frac{1}{\eps}\log\frac{2n^3}{\delta}}$
+  \For{$k=1$ to $|N|$}
+
+    \State $\cal S' \gets$ take and remove $\samples$ samples from $\cal S$
+    \State $\cal S' \gets \{T: T \in \cal S', T \subseteq R^k\}$
+    \For{$i \in R^k$}
+      \If{$i \notin \bigcup_{X \in \cal S'} X$}
+        \State$B_{i,k} \gets \{i\}$
+      \Else
+        \State $B_{i,k} \in \arg\max_{T \in \cal S'}{v_i(T)}$
+        \State $B_{i,k} \gets \underset{\{T \in \cal S' : \ch(i,T) = \ch(i,B_{i,k})\}}{\bigcap} T$.
+      \EndIf
+    \EndFor
+
+    \For{$j = 1,\dots,|R^k|$}
+      \State $\cal S'' \gets$ take and remove $\samples$ samples from $\cal S$
+      \State $\cal S'' \gets \{T: T \in \cal S'', T \subseteq R^k\}$
+      \For{$i \in R^k$}
+        \State $B_{i,k} \gets B_{i,k} \cap \underset{T \in \cal S'' : \ch(i,T) = \ch(i,B_{i,k})}{\bigcap} T$.
+      \EndFor
+    \EndFor
+
+    \State Select $i\in R^k$ such that $|CC(i,R^k)| \leq |CC(j,R^k)|$ for each $j\in R^k$.
+    \State $S^k\leftarrow  CC(i,R^k)$; $\pi \leftarrow  \pi \cup \lbrace S^k \rbrace$;  and $R^{k+1} \leftarrow  R^k \setminus S^k$
+    \If {$R^{k+1} = \emptyset$}
+      \State \Return $\pi$
+    \EndIf
+  \EndFor
+
+  \State \Return $\pi$
  \end{algorithmic}
 \end{algorithm}
 
-Where every sample consists of a coalition $S_j \subseteq N$, and the values assigned to $S_j$ by each of its member $\vec{v}(S_j) = (v_i(S_j))_{i \in S_j}$.
+Where every sample $j$ consists of a coalition $S_j \subseteq N$, and the values assigned to $S_j$ by each of its member $\vec{v}(S_j) = (v_i(S_j))_{i \in S_j}$.
 
-\subsection{Improvement to the PAC Top Covering Algorithm}
+\section{Improvemented PAC Top Covering Algorithm}
 We discovered that the PAC top covering algorithm can be made more efficient by replacing the step of finding the smallest $CC$ with finding the largest Strongly Connected Component ($SCC$). Since the PAC top covering algorithm is based on the top covering algorithm, we will show that the partition generated from finding and deleting the SCC is strictly core stable for the original top covering algorithm. Then we will analyse the running time complexity implication for the PAC version of the algorithm.
 
+\begin{theorem}
+  The modified top covering algorithm produces a strictly core stable partition given a top responsive preference profile
+\end{theorem}
+
+\begin{proof}
 Assuming the resulting partition of the $SCC$ procedure $\pi$ is not strictly core stable, then there exists at least one weakly blocking coalition $S \subseteq N$ and at least one player $i \in S$ prefers S over $\pi(i)$. Consider the step when the coalition $\pi(i)$ is generated – it was the largest strongly connected component in the directed graph induced by remaining players' choice sets. In order to form $S$ which is different from $\pi(i)$, either or both of the following steps must be carried out:
 
 \begin{enumerate}
@@ -274,10 +323,7 @@ When only Step 1 is carried out, since $\pi(i)$ is a strongly connected componen
 When only Step 2 is carried out, since player $k$ wasn't part of the strongly connected component that induces $\pi(i)$, $k$ only has incoming or outgoing edges between itself and the $SCC$ but not both types. If $k$ only has outgoing edges to $SCC$ it means adding $k$ to $\pi(i)$ will only make $k$ better off, but other players in $\pi(i)$ worse off because $S = \pi(i) \cup \{k\}$ is bigger in size $|S| > |\pi(i)$ while for any player $i' \in S, i' \neq k$ their choice set remains the same, therefore making $S$ less preferable than $\pi(i)$ for player $i' \in S, i' \neq k$ per definition of top responsiveness. Therefore $S$ is not blocking $\pi$ when $k$ only has outgoing edges to $SCC$. In the case $k$ only has incoming edges from $SCC$, it means adding $k$ to $\pi(i)$ will only make some player $i \in \pi(i)$ better off as $k$ is in their choice set. However $k$ will be made worse off by this move, since none of the player in $\pi(i)$ is in $k$'s choice set. As such, $S$ is not blocking $\pi$ when only Step 2 is carried out.
 
 When both Step 1 and Step 2 are carried out to form $S$ from $\pi(i)$, since Step 1 is bound to make some player $j' \in \pi(i)$ worse off, the only way to compensate $j'$ is by adding someone from their choice set to $\pi(i)$. Assuming $k$ is in $j'$'s choice set, then $k$ only has incoming edges from the $SCC$, which means $k$ will be worse off by joining $\pi(i)$, so $S$ cannot be blocking $\pi$.
-
-At any iteration, the largest $SCC$ needs to be extracted as the stable coalition $S$. Assume otherwise where a small $SCC$ was extracted at iteration $l$, as a result, player $i \in S$ ended up in coalitions $S'$ which is different from $S$. We claim that $S'$ is less preferable than $S$ for some player $i \in S$, because $S'$ is extracted from subsequent iteration $l' > l$, therefore their choice set at $l'$ is less preferable than that at $l$. TODO: make this better
-
-This concludes our proof that the largest $SCC$ procedure produces a strictly core stable partition for top responsive games.
+\end{proof}
 
 The largest $SCC$ procedure provides a running time improvement over the smallest $CC$ procedure because finding the smallest $CC$ requires $O(V(V + E))$ time while the largest $SCC$ can be found using Tarjan's algorithm in linear time $O(V + E)$\cite{Tarjan72depthfirst}. This running time improvement is only meaningful for the PAC verison of the top covering algorithm due to the input size of the original top covering algorithm being exponential in the number of players. In addition, taking out more players in the earlier iterations also reduces the amount of computation required for the later iterations, making our experiments run much faster than what it would have been with the original $CC$ procedure.
 

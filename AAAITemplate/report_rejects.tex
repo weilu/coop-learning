@@ -1,0 +1,18 @@
+
+\subsection{Bottom Responsive Games}
+Bottom responsive games can be viewed as the counterpart of top responsive games, where a player's utility is derived from the absence of disliked players. For a game to satisfy bottom responsiveness, two conditions are required:
+
+\begin{enumerate}
+  \item if for all $S' \in Av(i, S)$ $T' \in Av(i, T)$, $ S' \succ_i T'$ then $S \succ_i T$
+  \item if $Av(i, S) \cap Av(i, T) \neq \emptyset$ and $|S| \geq |T|$ then $S \succeq_i T$
+\end{enumerate}
+
+Where $Av(i, S)$ denotes the avoid sets of player $i$ in coalition $S$, formally defined as:
+
+$Av(i, S) = \{S' \subseteq S: (i \in S') \wedge (S' \preceq_i S'' \forall S'' \subseteq S)\}$
+
+If in addition to the above two conditions, a game also satisfies $|Av(i, S)| = 1$ for all $i \in N$ and all $S \in \mathcal{N}_i$, then it is strongly bottom responsive.
+
+
+Bottom Avoiding Algorithm
+
