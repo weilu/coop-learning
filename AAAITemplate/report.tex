@@ -34,9 +34,13 @@
 \newcommand{\core}{\mathit{Core}}
 \newcommand{\samples}{\omega}
 
-\newtheorem{definition}{Definition}
-\newtheorem{theorem}{Theorem}
-\newtheorem{proposition}{Proposition}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{definition}[theorem]{Definition}
 
 \usepackage{multirow}
 %\nocopyright
@@ -45,7 +49,8 @@
 % For /Title, add Title in Mixed Case. No accents or commands. Retain the parentheses.
  \pdfinfo{
 /Title (Learning Cooperative Solution Concepts from Data)
-/Author (Wei Lu, Alan Tsang, Yair Zick)
+% /Author (Wei Lu, Alan Tsang, Yair Zick)
+/Author (Anonymous)
 /Keywords (Game Theory)
 } %Leave this	
 % /Title ()
@@ -111,36 +116,46 @@
 % nouns, adverbs, adjectives should be capitalized, including both words in hyphenated terms, while
 % articles, conjunctions, and prepositions are lower case unless they
 % directly follow a colon or long dash
-\author{Wei Lu,\\
-School of Computing\\
-National University of Singapore\\
-weilu@u.nus.edu
-\And
-Alan Tsang,\\
-School of Computing\\
-National University of Singapore\\
-akhtsang@nus.edu.sg
-\And
-Yair Zick\\
-School of Computing\\
-National University of Singapore\\
-dcsyaz@nus.edu.sg
-}
-
+% \author{Wei Lu\\
+% School of Computing\\
+% National University of Singapore\\
+% weilu@u.nus.edu
+% \And
+% Alan Tsang\\
+% School of Computing\\
+% National University of Singapore\\
+% akhtsang@nus.edu.sg
+% \And
+% Yair Zick\\
+% School of Computing\\
+% National University of Singapore\\
+% dcsyaz@nus.edu.sg
+% }
+\author{Paper 4675}
  \begin{document}
 
 \maketitle
 
 \begin{abstract}
-Stability solutions are cornerstone concepts in hedonic games. However, most past work focuses on theory and assumes complete visibility of all agent preferences, which is impractical in real world settings. Recent work introduces the theoretical foundation of Probably Approximately Correct (PAC) stability to model stability under uncertainty through sampling. In this paper, we propose an algorithmic improvement for discovering PAC stable solutions. We apply the improved algorithm on data from the Israeli parliament (Knesset) and discover that the PAC stable solutions reflect Knesset members' political positions at large.  Moreover, it also reveals a few politicians whose voting behaviors break from party lines. We also demonstrate empirically that PAC hedonic games compare favorably to clustering for uncovering voting patterns.
+Stability solutions are cornerstone concepts in hedonic games.
+However, most past work focuses on theory and assumes complete visibility of all agent preferences, which is impractical in real world settings.
+Recent work introduces the theoretical foundation of Probably Approximately Correct (PAC) stability to model stability under uncertainty through sampling.
+In this paper, we propose an algorithmic improvement for discovering PAC stable solutions.
+We apply the improved algorithm on data from the Israeli parliament (Knesset) and discover that the PAC stable solutions reflect Knesset members' political positions at large.
+Moreover, it also reveals a few politicians whose voting behaviors break from party lines. We also demonstrate empirically that PAC hedonic games compare favorably to $k$-clustering for uncovering voting patterns.
 \end{abstract}
 
-\noindent Introduction TODO
+\section{Introduction}\label{sec:intro}
+\subsection{Our Contributions}\label{sec:contrib}
+\subsection{Related Work}\label{sec:related}
 
-\section{Preliminaries}
-
+\section{Preliminaries}\label{sec:prelim}
+Let us begin by briefly introducing the hedonic games model.
 \subsection{Hedonic Games}
-Hedonic games are a sub-class of nontransferable utility cooperative games. A hedonic game is a coalition formation game with hedonic preferences. A coalition formation game aims to divide the set of all players $N$ into disjoint coalitions, formally known as a coalition structure, often denoted as $\pi$. Hedonic preference means that every player only cares about the coalition they belong to, which implies that the inter-coalitional dependencies are completely ignored. The description of a hedonic game could be exponentially large in the number of players, as each player needs to rank all possible coalitions they may belong to.
+Hedonic games are a sub-class of cooperative games with nontransferable utility. 
+A hedonic game is a coalition formation game with hedonic preferences. 
+A coalition formation game aims to divide the set of all players $N$ into disjoint coalitions, formally known as a coalition structure, often denoted as $\pi$. 
+Hedonic preference means that every player only cares about the coalition they belong to, which implies that the inter-coalitional dependencies are completely ignored. The description of a hedonic game could be exponentially large in the number of players, as each player needs to rank all possible coalitions they may belong to.
 
 \begin{definition}
   A {\it hedonic game} is a pair $(N, P)$, where $N$ is a finite set of players $1, \cdots, n$ and $P$ is a {\it preference profile} consisting of preference relations $\succeq_i$ for every player $i \in N$: $P = (\succeq_1, \cdots, \succeq_n)$. A {\it preference relation} $\succeq_i$ is a reflective, complete, and transitive binary relation on $mathcal{N}_i$, where $mathcal{N}_i$ is the set of all non-empty subset of $N$ that includes player $i$: $mathcal{N}_i \{S \subseteq N: i \in S, S \neq \emptyset \}$
