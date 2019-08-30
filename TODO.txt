@@ -168,7 +168,7 @@ Notes:
   - point out interesting case study. highlight things like the joint list, Lieberman and Orley Levy
 
 
-Notes (28 Aug)
+Notes (29 Aug)
 - put it in a theorom environment [DONE]
 - put a function in both algorithms and state in the proposition and thereom that replacing the function will also produce a core stable outcome
 - viz enemies model
@@ -176,6 +176,34 @@ Notes (28 Aug)
   - improve algo
   - partition by political position
   - compares favorably with clustering algorithm
-- register and get a ticket number
+- register and get a ticket number [DONE]
 - fill in missing votes (later)
+
+Notes (30 Aug):
+- edits
+  - remove definition env, use italic
+  - make less verbose, replace intuition descriptions with example
+  - introduce data in introduction, then ref in preliminaries
+  - check the order or presentation of sections
+  - data section: general introduction of Knesset. People are not used to systems with more than two parties
+- add aggregation
+- introduction: 1 column and a bit
+  - what's the problem, why is it important, what we did
+  - take into account of strategic behavior. resistant to people acting in selfish ways.
+  - Both data driven and takes strategic behavior into account
+  - rich data in the preference data domain. Has ground truth political alliances, party affiliation.
+  - Liberman being singled out is bazaar (check attendance, check his individual votes against)
+  - first time showing efficacy of hedonic game in real world
+
+TODO:
+- check proof (Yair)
+- send related work on Basian coalition formation + other recent works on coalition formation (Yair)
+- DB scan for clustering (Alan)
+- need a better title: data driven approach to learning hedonic games: a case study with Knesset / voting data
+- add something about Knesset / Israel political: amnon rubinstein on structure of israel politics
+- check 19th Knesset see if ultra orthodox parties: Shas, United Torah Judaism still aligned with the right wing parties
+  - if align: deeper under current
+  - if not: it's just politics
+
+Ack: Tohah + an undergrad + my mother
 
