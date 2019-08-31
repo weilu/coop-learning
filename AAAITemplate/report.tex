@@ -48,7 +48,7 @@
 % For /Author, add all authors within the parentheses, separated by commas. No accents or commands.
 % For /Title, add Title in Mixed Case. No accents or commands. Retain the parentheses.
  \pdfinfo{
-/Title (Learning Cooperative Solution Concepts from Data)
+/Title (Learning Cooperative Solution Concepts From Voting Behavior: a Case Study on the Israeli Parliament)
 % /Author (Wei Lu, Alan Tsang, Yair Zick)
 /Author (Anonymous)
 /Keywords (Game Theory)
@@ -110,7 +110,7 @@
 %
 \setlength\titlebox{2.5in} % If your paper contains an overfull \vbox too high warning at the beginning of the document, use this
 % command to correct it. You may not alter the value below 2.5 in
-\title{Learning Cooperative Solution Concepts from Data}
+\title{Learning Cooperative Solution Concepts From Voting Behavior:\\ A Case Study on the Israeli Parliament}
 %Your title must be in mixed case, not sentence case. 
 % That means all verbs (including short verbs like be, is, using,and go), 
 % nouns, adverbs, adjectives should be capitalized, including both words in hyphenated terms, while
@@ -139,10 +139,12 @@
 \begin{abstract}
 Stability solutions are cornerstone concepts in hedonic games.
 However, most past work focuses on theory and assumes complete visibility of all agent preferences, which is impractical in real world settings.
+We are the first to apply data driven strategic models on sizable voting data, and show efficacy of such models by comparing the resulting coalition structures to the ground truth such as party affiliations.
 Recent work introduces the theoretical foundation of Probably Approximately Correct (PAC) stability to model stability under uncertainty through sampling.
 In this paper, we propose an algorithmic improvement for discovering PAC stable solutions.
 We apply the improved algorithm on data from the Israeli parliament (Knesset) and discover that the PAC stable solutions reflect Knesset members' political positions at large.
-Moreover, it also reveals a few politicians whose voting behaviors break from party lines. We also demonstrate empirically that PAC hedonic games compare favorably to $k$-clustering for uncovering voting patterns.
+Moreover, it also reveals a few politicians whose voting behaviors break from party lines.
+Different from the clustering and community detection approach, modeling voting activities using hedonic games takes into account of strategic behaviors. We demonstrate empirically that PAC hedonic games compare favorably to both $k$-means clustering and stochastic block model for uncovering voting patterns.
 \end{abstract}
 
 \section{Introduction}\label{sec:intro}
