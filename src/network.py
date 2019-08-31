@@ -35,7 +35,7 @@ def votes_to_graph(votes, allow_neg_edge=False):
                 for y in range(x+1, len(players)):
                     key = frozenset([players[x], players[y]])
                     together_counter[key] += 1
-                    assert together_counter[key] < len(votes)
+                    assert together_counter[key] <= len(votes), str(key) + ': ' + str(together_counter)
         if allow_neg_edge:
             for for_player in groups[1]:
                 for against_player in groups[2]:
