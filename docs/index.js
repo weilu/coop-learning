@@ -1,4 +1,4 @@
-function make_sankey_plot(exp_partitions, el_id) {
+function make_sankey_plot(exp_partitions, metric) {
   Plotly.d3.json("sankey.json", fig => {
 
     const party_list = ["The Jewish Home", "Shas", "United Torah Judaism", "Likud", "Yisrael Beiteinu", "Kulanu", "Yesh Atid", "Zionist Union", "Meretz", "Joint List"]
@@ -83,8 +83,12 @@ function make_sankey_plot(exp_partitions, el_id) {
         }
     })
 
+    var title = "Knesset Coalition Visualized"
+    if (metric) {
+      title = title + `: based on ${metric}`
+    }
     var layout = {
-      title: "Knesset Coalition Visualized",
+      title: title,
       width: 1000,
       height: 800,
       font: {
@@ -96,6 +100,11 @@ function make_sankey_plot(exp_partitions, el_id) {
       }]
     }
 
+    if (metric) {
+      var el_id = `sankey_reps_${metric}`
+    } else {
+      var el_id = 'sankey'
+    }
     Plotly.plot(el_id, data, layout)
   })
 }
@@ -135,11 +144,11 @@ function make_histogram(exp_partitions) {
   Plotly.newPlot('histogram', hist_data, hist_layout)
 }
 
-function make_k_means_line_plot(exp_partitions) {
+function make_line_plot(exp_partitions, method_name) {
   const k_means_keys = Object.keys(exp_partitions)
-    .filter(key => key.indexOf('k_means') >= 0)
+    .filter(key => key.indexOf(method_name) >= 0)
 
-  var plot_data = ['nvi', 'nid'].map(stats_name => {
+  var plot_data = ['vi', 'nvi', 'nid'].map(stats_name => {
     var x = []
     var y = []
     k_means_keys.forEach(key => {
@@ -157,7 +166,7 @@ function make_k_means_line_plot(exp_partitions) {
   })
 
   var layout = {
-    title: 'K-means clustering quality',
+    title: `${method_name} clustering quality`,
     xaxis: {
       title: 'Cluster size',
     },
@@ -166,16 +175,22 @@ function make_k_means_line_plot(exp_partitions) {
     }
   }
 
-  Plotly.newPlot('k_means_line_plot', plot_data, layout)
+  Plotly.newPlot(`${method_name}_line_plot`, plot_data, layout)
 }
 
 Plotly.d3.json("partitions.json", exp_partitions => {
   make_histogram(exp_partitions)
-  make_sankey_plot(exp_partitions, 'sankey')
-  make_k_means_line_plot(exp_partitions)
+  make_sankey_plot(exp_partitions)
+
+  make_line_plot(exp_partitions, 'k_means')
+  make_line_plot(exp_partitions, 'network_block_model_real-normal')
+  make_line_plot(exp_partitions, 'network_block_model_discrete-binomial')
 })
 
-Plotly.d3.json("partition_reps.json", exp_partitions => {
-  make_sankey_plot(exp_partitions, 'sankey_reps')
+Plotly.d3.json("partition_reps_nid.json", exp_partitions => {
+  make_sankey_plot(exp_partitions, 'nid')
 })
 
+Plotly.d3.json("partition_reps_vi.json", exp_partitions => {
+  make_sankey_plot(exp_partitions, 'vi')
+})
