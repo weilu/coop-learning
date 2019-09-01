@@ -8,6 +8,7 @@ function make_sankey_plot(exp_partitions, metric) {
     const colors = node_parties.map(color_fn)
 
     const members = fig.data[0].node.label.map((l, idx) => idx + ' ' + l)
+    const max_group_labels = members.map((_, idx) => 'Coalition ' + (idx + 1))
     const link_source = [...Array(members.length).keys()]
     const link_target = Array(members.length).fill().map((e,i)=>i+members.length)
     const link_value = Array(members.length).fill(1)
@@ -38,10 +39,8 @@ function make_sankey_plot(exp_partitions, metric) {
         var p = obj.data
         // shift partition index to skip the first two columns of nodes
         var partition = p.map(coal => coal.map(idx => idx + members.length * 2))
-        var coalition_labels = p.map((_, id) =>  'Coalition ' + (id + 1))
         var partition_name = partitions.length > 1 ?  key + ' partition ' + (id + 1) : key
-        return [partition_name, group_values.concat(partition),
-          members.concat(members).concat(members).concat(party_list).concat(coalition_labels)]
+        return [partition_name, group_values.concat(partition)]
       }))
     })
 
@@ -55,7 +54,7 @@ function make_sankey_plot(exp_partitions, metric) {
           color: "black",
           width: 0.5
         },
-        label: partition_tuples[0][2],
+        label: members.concat(members).concat(members).concat(party_list).concat(max_group_labels),
         color: colors.concat(colors).concat(colors).concat(group_colors),
         groups: partition_tuples[0][1]
       },
