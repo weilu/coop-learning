@@ -176,7 +176,10 @@ function make_line_plot(exp_partitions, method_name) {
     }
   }
 
-  Plotly.newPlot(`${method_name}_line_plot`, plot_data, layout)
+  var el_id = `line_plot_${method_name}`
+  const el_container = document.getElementById('line_plots')
+  el_container.insertAdjacentHTML('afterbegin', `<div id="${el_id}"></div>` )
+  Plotly.newPlot(el_id, plot_data, layout)
 }
 
 function make_bar_plot(exp_partitions, metric, max_y){
@@ -203,8 +206,10 @@ Plotly.d3.json("partitions.json", exp_partitions => {
   make_sankey_plot(exp_partitions)
 
   make_line_plot(exp_partitions, 'k_means')
-  make_line_plot(exp_partitions, 'network_block_model_real-normal')
-  make_line_plot(exp_partitions, 'network_block_model_discrete-binomial')
+  make_line_plot(exp_partitions, 'network_block_model_limit_B_real-normal')
+  make_line_plot(exp_partitions, 'network_block_model_limit_B_real-exponential')
+  make_line_plot(exp_partitions, 'network_block_model_limit_B_discrete-binomial')
+  make_line_plot(exp_partitions, 'network_block_model_limit_B_discrete-geometric')
 })
 
 Plotly.d3.json("partition_reps_nid.json", exp_partitions => {
