@@ -93,11 +93,14 @@ def select_representatives(grouped_partitions, metric):
     metric_fn = metric_to_fn[metric]
     reps = {}
     for key, partitions in grouped_partitions.items():
+        print_stats = True
         if len(partitions) < 2:
             if f'is_min_{metric}' in partitions[0]['stats'].keys():
                 reps[key] = partitions
             elif 'network_block_model_auto_B' in key:
                 reps[key] = partitions
+            else:
+                print_stats = False
         else:
             # pick the partition that minimizes the sum of nids to the rest of the group
             min_nid_sum = len(partitions)
@@ -112,7 +115,8 @@ def select_representatives(grouped_partitions, metric):
                     min_nid_sum = nid_sum
                     min_nid_part = me
             reps[key] = [min_nid_part]
-        print(key, partitions[0]['stats'][metric])
+        if print_stats:
+            print(key, partitions[0]['stats'][metric])
     return reps
 
 
