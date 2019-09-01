@@ -59,7 +59,7 @@ def gather_experiment_partitions():
         with open(filename) as f:
             for line in f:
                 partitions.append(partition_str_to_list(line))
-        if 'partitions_k_means' in filename or 'partitions_network_block_model' in filename:
+        if 'partitions_k_means' in filename or 'partitions_network_block_model_limit_B' in filename:
             key_prefix = re.search('partitions_(.*)\.txt', filename).group(1)
             for i, p in enumerate(partitions):
                 with_stats = build_partition_with_stats(p, party_partition)
@@ -73,7 +73,11 @@ def gather_experiment_partitions():
                 key = f'{key_prefix}_{max_num_cluster}_clusters'
                 filename_to_partitions[key] = [with_stats]
         else:
-            key = re.search('partitions_(.*)_\d+_run', filename).group(1)
+            match = re.search('partitions_(.*)_\d+_run', filename)
+            if not match:
+                print(f'unrecognized file name format: {filename}')
+                continue
+            key = match.group(1)
             with_stats = [build_partition_with_stats(p, party_partition) for p in partitions]
             filename_to_partitions[key] = with_stats
 
@@ -91,7 +95,8 @@ def select_representatives(grouped_partitions, metric):
     for key, partitions in grouped_partitions.items():
         if len(partitions) < 2:
             if f'is_min_{metric}' in partitions[0]['stats'].keys():
-                print(key, partitions[0]['stats'][metric])
+                reps[key] = partitions
+            elif 'network_block_model_auto_B' in key:
                 reps[key] = partitions
         else:
             # pick the partition that minimizes the sum of nids to the rest of the group
@@ -107,6 +112,7 @@ def select_representatives(grouped_partitions, metric):
                     min_nid_sum = nid_sum
                     min_nid_part = me
             reps[key] = [min_nid_part]
+        print(key, partitions[0]['stats'][metric])
     return reps
 
 

@@ -1,16 +1,19 @@
 from collections import defaultdict, Counter
 from graph_tool.all import *
 from knesset_test import read_votes_and_player_data
-import matplotlib
+import matplotlib.pyplot as plt
 import logging
 
 logging.basicConfig(format='%(asctime)s [%(levelname)s] %(message)s',
                     level=logging.INFO)
 
 
-def stochastic_block_model(g, B_max=None):
-    state_args = dict(recs=[g.ep.weight], rec_types=["real-normal"])
-    state = graph_tool.inference.minimize_blockmodel_dl(g, B_max=B_max, state_args=state_args)
+def stochastic_block_model(g, distribution, B=None):
+    state_args = dict(recs=[g.ep.weight], rec_types=[distribution])
+    if B:
+        state = graph_tool.inference.minimize_blockmodel_dl(g, B_max=B, B_min=B, state_args=state_args)
+    else:
+        state = graph_tool.inference.minimize_blockmodel_dl(g, state_args=state_args)
     blocks = state.get_blocks()
     block_map = defaultdict(list)
     for player, b in enumerate(blocks):
@@ -42,6 +45,9 @@ def votes_to_graph(votes, allow_neg_edge=False):
                     key = frozenset([for_player, against_player])
                     together_counter[key] -= 1
 
+    # # for visually aiding distribution selection
+    # plot_edge_weight_pmf(together_counter)
+
     edges = []
     for frozen_vertex_pair, weight in together_counter.items():
         vertex_pair = set(frozen_vertex_pair)
@@ -55,12 +61,20 @@ def votes_to_graph(votes, allow_neg_edge=False):
     return g
 
 
+def plot_edge_weight_pmf(together_counter):
+    counts = list(together_counter.values())
+    heights,bins = np.histogram(counts, bins=30)
+    heights = heights/sum(heights)
+    plt.bar(bins[:-1],heights,width=(max(bins) - min(bins))/len(bins), color="blue", alpha=0.5)
+    plt.show()
+
+
 if __name__ == '__main__':
     logging.info('Start reading votes data')
     votes, _ = read_votes_and_player_data()
     logging.info('Done reading votes data. Start constructing graph')
     g = votes_to_graph(votes)
     logging.info('Done constructing graph. Start building block model')
-    pi = stochastic_block_model(g)
+    pi = stochastic_block_model(g, "real-normal")
     print(pi)
     logging.info('All done')
