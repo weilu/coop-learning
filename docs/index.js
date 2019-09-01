@@ -88,14 +88,16 @@ function make_sankey_plot(exp_partitions, metric) {
     }
     var layout = {
       title: title,
-      width: 1000,
       height: 800,
       font: {
         size: 10
       },
       updatemenus: [{
         active: 0,
-        buttons: buttons
+        buttons: buttons,
+        xanchor: 'left',
+        yanchor: 'top',
+        pad: {'t': -30},
       }]
     }
 
@@ -177,6 +179,25 @@ function make_line_plot(exp_partitions, method_name) {
   Plotly.newPlot(`${method_name}_line_plot`, plot_data, layout)
 }
 
+function make_bar_plot(exp_partitions, metric, max_y){
+  const x = Object.keys(exp_partitions).sort()
+  const y = x.map(key => exp_partitions[key][0].stats[metric])
+  const data = [{ x: x, y: y, type: 'bar' }]
+  var layout = {
+    title: `Model ${metric} values`,
+    height: 700,
+    font: { size: 10 },
+    yaxis: {
+      range: [0, max_y]
+    },
+    xaxis: {
+      automargin: true
+    }
+  }
+  Plotly.newPlot(`bar_reps_${metric}`, data, layout);
+}
+
+
 Plotly.d3.json("partitions.json", exp_partitions => {
   make_histogram(exp_partitions)
   make_sankey_plot(exp_partitions)
@@ -188,8 +209,10 @@ Plotly.d3.json("partitions.json", exp_partitions => {
 
 Plotly.d3.json("partition_reps_nid.json", exp_partitions => {
   make_sankey_plot(exp_partitions, 'nid')
+  make_bar_plot(exp_partitions, 'nid', 1)
 })
 
 Plotly.d3.json("partition_reps_vi.json", exp_partitions => {
   make_sankey_plot(exp_partitions, 'vi')
+  make_bar_plot(exp_partitions, 'vi', Math.log2(147))
 })

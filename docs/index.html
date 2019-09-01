@@ -11,11 +11,23 @@
 #histogram {
   width: 50vw
 }
+
+.row>div {
+  display: inline-block;
+  width: 49vw;
+  vertical-align: top;
+}
   </style>
 </head>
 <body>
-  <div id="sankey_reps_nid"></div>
-  <div id="sankey_reps_vi"></div>
+  <div class="row">
+    <div id="sankey_reps_nid"></div>
+    <div id="bar_reps_nid"></div>
+  </div>
+  <div class="row">
+    <div id="sankey_reps_vi"></div>
+    <div id="bar_reps_vi"></div>
+  </div>
   <div id="histogram"></div>
   <div id="k_means_line_plot"></div>
   <div id="network_block_model_real-normal_line_plot"></div>
