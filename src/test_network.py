@@ -1,7 +1,13 @@
 import unittest
 import random
+import os.path as path
 from network import votes_to_graph, stochastic_block_model
 from knesset_test import read_votes_and_player_data
+import logging
+
+logging.basicConfig(format='%(asctime)s [%(levelname)s] %(message)s',
+                    level=logging.INFO)
+
 
 class TestNetwork(unittest.TestCase):
 
@@ -46,12 +52,16 @@ class TestNetwork(unittest.TestCase):
         votes, _ = read_votes_and_player_data()
         configs = [
             ('real-normal', True),
+            ('real-exponential', False),
             ('discrete-binomial', False),
-            ('real-exponential', False)
+            ('discrete-geometric', False),
         ]
         for distribution, allow_neg_edge in configs:
             g = votes_to_graph(votes, allow_neg_edge)
-            filename = f'data/partitions_network_block_model_auto_B_{distribution}_1_run.txt'
+            filename = f'data/partitions_network_block_model_auto_B_mcmc_sweep_{distribution}_1_run.txt'
+            if path.exists(filename):
+                logging.info(f'skipping {distribution} run because {filename} already exists')
+                continue
             with open(filename, 'w') as f:
                 pi = stochastic_block_model(g, distribution)
                 f.write(str(pi) + '\n')
@@ -62,18 +72,23 @@ class TestNetwork(unittest.TestCase):
         votes, _ = read_votes_and_player_data()
         configs = [
             ('real-normal', True),
+            ('real-exponential', False),
             ('discrete-binomial', False),
-            ('real-exponential', False)
+            ('discrete-geometric', False),
         ]
         for distribution, allow_neg_edge in configs:
             g = votes_to_graph(votes, allow_neg_edge)
             filename = f'data/partitions_network_block_model_limit_B_{distribution}.txt'
+            if path.exists(filename):
+                logging.info(f'skipping {distribution} run because {filename} already exists')
+                continue
             with open(filename, 'w') as f:
                 for k in range(2, 30):
-                    pi = stochastic_block_model(g, distribution, B=k)
+                    # disable mcmc_sweep because it'd take too long
+                    pi = stochastic_block_model(g, distribution, B=k, mcmc_sweep=False)
                     f.write(str(pi) + '\n')
                     if k % 10 == 0:
-                        print(f'done {distribution} cluster size: {k}')
+                        logging.info(f'done {distribution} cluster size: {k}')
 
 
 if __name__ == '__main__':

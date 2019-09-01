@@ -8,12 +8,19 @@ logging.basicConfig(format='%(asctime)s [%(levelname)s] %(message)s',
                     level=logging.INFO)
 
 
-def stochastic_block_model(g, distribution, B=None):
+def stochastic_block_model(g, distribution, B=None, mcmc_sweep=True):
     state_args = dict(recs=[g.ep.weight], rec_types=[distribution])
     if B:
         state = graph_tool.inference.minimize_blockmodel_dl(g, B_max=B, B_min=B, state_args=state_args)
     else:
         state = graph_tool.inference.minimize_blockmodel_dl(g, state_args=state_args)
+
+    # slow, takes 1-5 minutes
+    if mcmc_sweep:
+        logging.info(f'distribution {distribution} before mcmc sweep entropy: {state.entropy()}')
+        graph_tool.inference.mcmc_equilibrate(state, wait=1000, nbreaks=2, mcmc_args=dict(niter=10))
+        logging.info(f'after mcmc sweep entropy: {state.entropy()}')
+
     blocks = state.get_blocks()
     block_map = defaultdict(list)
     for player, b in enumerate(blocks):
