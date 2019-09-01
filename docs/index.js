@@ -33,7 +33,7 @@ function make_sankey_plot(exp_partitions, metric) {
 
     // partition groups
     var partition_tuples = []
-    Object.keys(exp_partitions).forEach(key => {
+    Object.keys(exp_partitions).sort().forEach(key => {
       var partitions = exp_partitions[key]
       partition_tuples = partition_tuples.concat(partitions.map((obj, id) => {
         var p = obj.data
