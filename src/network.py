@@ -14,6 +14,7 @@ def stochastic_block_model(g, distribution, B=None, mcmc_sweep=True):
         state = graph_tool.inference.minimize_blockmodel_dl(g, B_max=B, B_min=B, state_args=state_args)
     else:
         state = graph_tool.inference.minimize_blockmodel_dl(g, state_args=state_args)
+    logging.info(f'Done building {distribution} model')
 
     # slow, takes 1-5 minutes
     if mcmc_sweep:
