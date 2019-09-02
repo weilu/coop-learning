@@ -111,7 +111,7 @@ def read_votes_and_player_data():
         return votes, player_labels
 
 
-def calculate_players_left():
+def filter_infrequent_voters(min_num_votes):
     votes, player_labels = read_votes_and_player_data()
     vote_counter = Counter()
     for row in votes:
@@ -120,14 +120,14 @@ def calculate_players_left():
                 vote_counter[player] += 1
 
     all_players = set(player for player in vote_counter.keys())
-    last_player_count = sys.maxsize
-    for min_num_votes in range(4000):
-        remaining_players = set(player for player, num_votes in vote_counter.items() if num_votes > min_num_votes)
-        num_players_left = len(remaining_players)
-        if num_players_left != last_player_count:
-            print(f'threshold = {min_num_votes} votes, number of players left = {num_players_left}')
-            rejects = all_players - remaining_players
-            labelled_rejects = [player_labels[i] for i in rejects]
-            print(f'kicked out: {labelled_rejects}\n')
-            last_player_count = num_players_left
+    remaining_players = set(player for player, num_votes in vote_counter.items() if num_votes > min_num_votes)
+    rejects = sorted(list(all_players - remaining_players), reverse=True)
+    print(rejects)
+
+    for idx in rejects:
+        del player_labels[idx]
+        for row in votes:
+            del row[idx]
+
+    return votes, player_labels
 

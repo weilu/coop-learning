@@ -1,5 +1,6 @@
+import csv
 import unittest
-from votes_to_game import majority, value_function, get_coalition, value_matrix_to_preferences, partition_edit_distance, calculate_players_left, read_votes_and_player_data
+from votes_to_game import majority, value_function, get_coalition, value_matrix_to_preferences, partition_edit_distance, filter_infrequent_voters, read_votes_and_player_data
 
 
 class TestVotesToGame(unittest.TestCase):
@@ -100,8 +101,22 @@ class TestVotesToGame(unittest.TestCase):
             self.assertEqual(len(row), 147)
 
 
-    def test_calculate_players_left(self):
-        calculate_players_left()
+    def test_filter_infrequent_voters(self):
+        votes, player_labels = read_votes_and_player_data()
+        new_votes, new_player_labels = filter_infrequent_voters(0)
+        self.assertEqual(votes, new_votes)
+        self.assertEqual(player_labels, new_player_labels)
+
+        new_votes, new_player_labels = filter_infrequent_voters(1000)
+        self.assertEqual(len(new_player_labels), 130)
+        for row in new_votes:
+            self.assertEqual(len(row), 130)
+
+        with open('data/votes_names_cleaned_filtered.csv', 'w') as f:
+            csv_writer = csv.writer(f)
+            csv_writer.writerow(['vote_id'] + new_player_labels)
+            for i, row in enumerate(new_votes):
+                csv_writer.writerow([i] + row)
 
 if __name__ == '__main__':
     unittest.main()
