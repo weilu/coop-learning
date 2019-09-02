@@ -1,6 +1,9 @@
+import csv
+import sys
 import numpy as np
 from scipy.optimize import linear_sum_assignment
 from operator import itemgetter
+from collections import Counter
 
 def majority(votes):
     # 1 is for, 2 is against, others are ignored
@@ -97,3 +100,34 @@ def precalculate_valuations_and_coalitions(S):
         value_matrix.append(values)
         coalition_matrix.append(coalitions)
     return value_matrix, coalition_matrix
+
+
+def read_votes_and_player_data():
+    with open('data/votes_names_cleaned.csv') as f:
+        reader = csv.reader(f)
+        player_labels = next(reader, None)
+        player_labels = player_labels[1:]
+        votes = [[int(i) if i != '' else '' for i in row[1:]] for row in reader]
+        return votes, player_labels
+
+
+def calculate_players_left():
+    votes, player_labels = read_votes_and_player_data()
+    vote_counter = Counter()
+    for row in votes:
+        for player, vote in enumerate(row):
+            if vote in [1, 2]:
+                vote_counter[player] += 1
+
+    all_players = set(player for player in vote_counter.keys())
+    last_player_count = sys.maxsize
+    for min_num_votes in range(4000):
+        remaining_players = set(player for player, num_votes in vote_counter.items() if num_votes > min_num_votes)
+        num_players_left = len(remaining_players)
+        if num_players_left != last_player_count:
+            print(f'threshold = {min_num_votes} votes, number of players left = {num_players_left}')
+            rejects = all_players - remaining_players
+            labelled_rejects = [player_labels[i] for i in rejects]
+            print(f'kicked out: {labelled_rejects}\n')
+            last_player_count = num_players_left
+
