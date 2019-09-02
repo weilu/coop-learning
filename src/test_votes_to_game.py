@@ -1,5 +1,5 @@
 import unittest
-from votes_to_game import majority, value_function, get_coalition, value_matrix_to_preferences, partition_edit_distance, calculate_players_left
+from votes_to_game import majority, value_function, get_coalition, value_matrix_to_preferences, partition_edit_distance, calculate_players_left, read_votes_and_player_data
 
 
 class TestVotesToGame(unittest.TestCase):
@@ -91,6 +91,13 @@ class TestVotesToGame(unittest.TestCase):
                 {frozenset({1, 2, 3})},
                 {frozenset({})})
         self.assertEqual(dist, 3)
+
+
+    def test_read_votes_and_player_data(self):
+        votes, player_labels = read_votes_and_player_data()
+        self.assertEqual(len(votes), 7489)
+        for row in votes:
+            self.assertEqual(len(row), 147)
 
 
     def test_calculate_players_left(self):
