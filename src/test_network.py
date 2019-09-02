@@ -2,7 +2,7 @@ import unittest
 import random
 import os.path as path
 from network import votes_to_graph, stochastic_block_model
-from knesset_test import read_votes_and_player_data
+from votes_to_game import read_votes_and_player_data
 import logging
 
 logging.basicConfig(format='%(asctime)s [%(levelname)s] %(message)s',

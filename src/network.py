@@ -1,6 +1,6 @@
 from collections import defaultdict, Counter
 from graph_tool.all import *
-from knesset_test import read_votes_and_player_data
+from votes_to_game import read_votes_and_player_data
 import matplotlib.pyplot as plt
 import logging
 

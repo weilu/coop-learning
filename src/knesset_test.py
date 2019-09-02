@@ -5,7 +5,7 @@ import random
 from top_covering import top_cover
 from pac_top_covering import pac_top_cover
 from game_generator import check_core_stable, search_stable_partition, check_top_responsive
-from votes_to_game import value_matrix_to_preferences, partition_edit_distance, precalculate_valuations_and_coalitions
+from votes_to_game import value_matrix_to_preferences, partition_edit_distance, precalculate_valuations_and_coalitions, read_votes_and_player_data
 
 
 class KnessetTest(unittest.TestCase):
@@ -77,15 +77,6 @@ class KnessetTest(unittest.TestCase):
                 total_missing += missing
                 total += sum(1 for vote in row[1:])
         print(f'missing vote value: {total_missing}, total number of votes: {total}, missing percentage: {round(total_missing/total * 100, 2)}%')
-
-
-def read_votes_and_player_data():
-    with open('data/votes_names_cleaned.csv') as f:
-        reader = csv.reader(f)
-        player_labels = next(reader, None)
-        player_labels = player_labels[1:]
-        votes = [[int(i) if i != '' else '' for i in row[1:]] for row in reader]
-        return votes, player_labels
 
 
 def index_to_label(player_labels, pi):

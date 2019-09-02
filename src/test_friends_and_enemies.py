@@ -1,11 +1,11 @@
 import copy
 import random
 import unittest
-from knesset_test import read_votes_and_player_data, print_partition_stats, calculate_partition_edit_distances_and_print_stats
+from knesset_test import print_partition_stats, calculate_partition_edit_distances_and_print_stats
 from friends_and_enemies import stable_friends, find_friends, top_cover, to_avoid_sets, bottom_avoid, pac_top_cover, precalculate_coalitions
 from top_covering import largest_scc_from_pref
 from partition_ids_to_names import build_member_map, partition_id_str_to_names
-from votes_to_game import partition_edit_distance
+from votes_to_game import partition_edit_distance, read_votes_and_player_data
 
 
 class TestFriendsAndEnemies(unittest.TestCase):
