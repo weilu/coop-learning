@@ -6,11 +6,22 @@ import sys
 from collections import defaultdict
 from partition_ids_to_names import to_partition_index_strs
 from vi import variation_of_information, normalized_variation_of_information, normalized_information_distance
+from distance_measures import normalized_mutual_information, adjusted_mutual_information
+import warnings
+warnings.filterwarnings("ignore")
 
 metric_to_fn = {
     'vi': variation_of_information,
-    'nvi': normalized_variation_of_information,
-    'nid': normalized_information_distance
+    'nid': normalized_information_distance,
+    'nmi': normalized_mutual_information,
+    'ami': adjusted_mutual_information
+}
+
+metric_to_minimize = {
+    'vi': True,
+    'nid': True,
+    'nmi': False,
+    'ami': False
 }
 
 def read_knesset_partition_by_party():
@@ -39,7 +50,9 @@ def build_partition_with_stats(p, party_partition):
     vi = variation_of_information(p, party_partition)
     nvi = normalized_variation_of_information(p, party_partition)
     nid = normalized_information_distance(p, party_partition)
-    stats = {'vi': vi, 'nvi': nvi, 'nid': nid}
+    nmi = normalized_mutual_information(p, party_partition)
+    ami = adjusted_mutual_information(p, party_partition)
+    stats = {'vi': vi, 'nvi': nvi, 'nid': nid, 'nmi': nmi, 'ami': ami}
     part_with_stats = {'data': p, 'stats': stats}
     return part_with_stats
 
@@ -53,25 +66,33 @@ def gather_experiment_partitions():
 
     min_nid_part = defaultdict(dict)
     min_vi_part = defaultdict(dict)
+    max_nmi_part = defaultdict(dict)
+    max_ami_part = defaultdict(dict)
     filename_to_partitions = {}
     for filename in files:
         partitions = []
         with open(filename) as f:
             for line in f:
                 partitions.append(partition_str_to_list(line))
+        print(filename)
         if 'partitions_k_means' in filename or 'partitions_network_block_model_limit_B' in filename:
             key_prefix = re.search('partitions_(.*)\.txt', filename).group(1)
             for i, p in enumerate(partitions):
                 with_stats = build_partition_with_stats(p, party_partition)
+                key = f'{key_prefix}_{len(p)}_clusters'
+                filename_to_partitions[key] = [with_stats]
                 if with_stats['stats']['nid'] < min_nid_part[key_prefix].get('nid', sys.maxsize):
                     min_nid_part[key_prefix]['nid'] = with_stats['stats']['nid']
                     min_nid_part[key_prefix]['partition'] = with_stats
                 if with_stats['stats']['vi'] < min_vi_part[key_prefix].get('vi', sys.maxsize):
                     min_vi_part[key_prefix]['vi'] = with_stats['stats']['vi']
                     min_vi_part[key_prefix]['partition'] = with_stats
-                max_num_cluster = max(i+2, len(p))
-                key = f'{key_prefix}_{max_num_cluster}_clusters'
-                filename_to_partitions[key] = [with_stats]
+                if with_stats['stats']['nmi'] > max_nmi_part[key_prefix].get('nmi', -sys.maxsize):
+                    max_nmi_part[key_prefix]['nmi'] = with_stats['stats']['nmi']
+                    max_nmi_part[key_prefix]['partition'] = with_stats
+                if with_stats['stats']['ami'] > max_ami_part[key_prefix].get('ami', -sys.maxsize):
+                    max_ami_part[key_prefix]['ami'] = with_stats['stats']['ami']
+                    max_ami_part[key_prefix]['partition'] = with_stats
         else:
             match = re.search('partitions_(.*)_\d+_run', filename)
             if not match:
@@ -85,6 +106,10 @@ def gather_experiment_partitions():
         v['partition']['stats']['is_min_nid'] = True
     for k, v in min_vi_part.items():
         v['partition']['stats']['is_min_vi'] = True
+    for k, v in max_nmi_part.items():
+        v['partition']['stats']['is_max_nmi'] = True
+    for k, v in max_ami_part.items():
+        v['partition']['stats']['is_max_ami'] = True
 
     return filename_to_partitions
 
@@ -95,28 +120,44 @@ def select_representatives(grouped_partitions, metric):
     for key, partitions in grouped_partitions.items():
         print_stats = True
         if len(partitions) < 2:
-            if f'is_min_{metric}' in partitions[0]['stats'].keys():
+            stats_keys = partitions[0]['stats'].keys()
+            if f'is_min_{metric}' in stats_keys or f'is_max_{metric}' in stats_keys:
                 reps[key] = partitions
             elif 'network_block_model_auto_B' in key:
                 reps[key] = partitions
             else:
                 print_stats = False
         else:
-            # pick the partition that minimizes the sum of nids to the rest of the group
-            min_nid_sum = len(partitions)
-            min_nid_part = partitions[0]['data']
-            for i, me in enumerate(partitions):
-                nid_sum = 0
-                for j, other in enumerate(partitions):
-                    if i == j:
-                        continue
-                    nid_sum += metric_fn(me['data'], other['data'])
-                if nid_sum < min_nid_sum:
-                    min_nid_sum = nid_sum
-                    min_nid_part = me
-            reps[key] = [min_nid_part]
+            if metric_to_minimize[metric]:
+                # pick the partition that minimizes the sum of distance to the rest of the group
+                min_nid_sum = sys.maxsize
+                min_nid_part = None
+                for i, me in enumerate(partitions):
+                    nid_sum = 0
+                    for j, other in enumerate(partitions):
+                        if i == j:
+                            continue
+                        nid_sum += metric_fn(me['data'], other['data'])
+                    if nid_sum < min_nid_sum:
+                        min_nid_sum = nid_sum
+                        min_nid_part = me
+                reps[key] = [min_nid_part]
+            else:
+                max_metric_sum = -sys.maxsize
+                max_metric_part = None
+                for i, me in enumerate(partitions):
+                    metric_sum = 0
+                    for j, other in enumerate(partitions):
+                        if i == j:
+                            continue
+                        metric_sum += metric_fn(me['data'], other['data'])
+                    if metric_sum > max_metric_sum:
+                        max_metric_sum = metric_sum
+                        max_metric_part = me
+                reps[key] = [max_metric_part]
+
         if print_stats:
-            print(key, partitions[0]['stats'][metric])
+            print(metric, key, partitions[0]['stats'][metric])
     return reps
 
 
@@ -125,10 +166,8 @@ if __name__ == '__main__':
     with open('../docs/partitions.json', 'w') as f:
         json.dump(grouped_partitions, f)
 
-    representatives = select_representatives(grouped_partitions, 'nid')
-    with open('../docs/partition_reps_nid.json', 'w') as f:
-        json.dump(representatives, f)
-
-    representatives = select_representatives(grouped_partitions, 'vi')
-    with open('../docs/partition_reps_vi.json', 'w') as f:
-        json.dump(representatives, f)
+    for metric in metric_to_fn.keys():
+        representatives = select_representatives(grouped_partitions, metric)
+        with open(f'../docs/partition_reps_{metric}.json', 'w') as f:
+            json.dump(representatives, f)
+        print(f'Done {metric}\n')
