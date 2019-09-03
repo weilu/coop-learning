@@ -220,25 +220,11 @@ function create_sankey_and_bar_el(metric) {
   el_container.insertAdjacentHTML('beforeend', `<div class="row"><div id="sankey_reps_${metric}"></div><div id="bar_reps_${metric}"></div></div>`)
 }
 
-Plotly.d3.json("partition_reps_nid.json", exp_partitions => {
-  var metric = 'nid'
-  create_sankey_and_bar_el(metric)
-  make_sankey_plot(exp_partitions, metric)
-  make_bar_plot(exp_partitions, metric, 1)
-})
-
 Plotly.d3.json("partition_reps_vi.json", exp_partitions => {
   var metric = 'vi'
   create_sankey_and_bar_el(metric)
   make_sankey_plot(exp_partitions, metric)
   make_bar_plot(exp_partitions, metric, Math.log2(130))
-})
-
-Plotly.d3.json("partition_reps_nmi.json", exp_partitions => {
-  var metric = 'nmi'
-  create_sankey_and_bar_el(metric)
-  make_sankey_plot(exp_partitions, metric)
-  make_bar_plot(exp_partitions, metric, 1)
 })
 
 Plotly.d3.json("partition_reps_ami.json", exp_partitions => {
