@@ -209,10 +209,6 @@ Plotly.d3.json("partitions.json", exp_partitions => {
   make_sankey_plot(exp_partitions)
 
   make_line_plot(exp_partitions, 'k_means')
-  make_line_plot(exp_partitions, 'network_block_model_limit_B_real-normal')
-  make_line_plot(exp_partitions, 'network_block_model_limit_B_real-exponential')
-  make_line_plot(exp_partitions, 'network_block_model_limit_B_discrete-binomial')
-  make_line_plot(exp_partitions, 'network_block_model_limit_B_discrete-geometric')
 })
 
 function create_sankey_and_bar_el(metric) {
