@@ -149,7 +149,7 @@ function make_line_plot(exp_partitions, method_name) {
   const k_means_keys = Object.keys(exp_partitions)
     .filter(key => key.indexOf(method_name) >= 0)
 
-  var plot_data = ['vi', 'nvi', 'nid'].map(stats_name => {
+  var plot_data = ['vi', 'nvi', 'nid', 'nmi', 'ami'].map(stats_name => {
     var x = []
     var y = []
     k_means_keys.forEach(key => {
@@ -209,10 +209,6 @@ Plotly.d3.json("partitions.json", exp_partitions => {
   make_sankey_plot(exp_partitions)
 
   make_line_plot(exp_partitions, 'k_means')
-  make_line_plot(exp_partitions, 'network_block_model_limit_B_real-normal')
-  make_line_plot(exp_partitions, 'network_block_model_limit_B_real-exponential')
-  make_line_plot(exp_partitions, 'network_block_model_limit_B_discrete-binomial')
-  make_line_plot(exp_partitions, 'network_block_model_limit_B_discrete-geometric')
 })
 
 function create_sankey_and_bar_el(metric) {
@@ -220,25 +216,11 @@ function create_sankey_and_bar_el(metric) {
   el_container.insertAdjacentHTML('beforeend', `<div class="row"><div id="sankey_reps_${metric}"></div><div id="bar_reps_${metric}"></div></div>`)
 }
 
-Plotly.d3.json("partition_reps_nid.json", exp_partitions => {
-  var metric = 'nid'
-  create_sankey_and_bar_el(metric)
-  make_sankey_plot(exp_partitions, metric)
-  make_bar_plot(exp_partitions, metric, 1)
-})
-
 Plotly.d3.json("partition_reps_vi.json", exp_partitions => {
   var metric = 'vi'
   create_sankey_and_bar_el(metric)
   make_sankey_plot(exp_partitions, metric)
   make_bar_plot(exp_partitions, metric, Math.log2(147))
-})
-
-Plotly.d3.json("partition_reps_nmi.json", exp_partitions => {
-  var metric = 'nmi'
-  create_sankey_and_bar_el(metric)
-  make_sankey_plot(exp_partitions, metric)
-  make_bar_plot(exp_partitions, metric, 1)
 })
 
 Plotly.d3.json("partition_reps_ami.json", exp_partitions => {
