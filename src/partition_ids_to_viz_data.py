@@ -131,9 +131,7 @@ def select_representatives(grouped_partitions, metric):
         print_stats = True
         if len(partitions) < 2:
             stats_keys = partitions[0]['stats'].keys()
-            if f'is_min_{metric}' in stats_keys or f'is_max_{metric}' in stats_keys:
-                reps[key] = partitions
-            elif 'network_block_model_auto_B' in key:
+            if 'network_block_model_auto_B' in key or 'k_auto_mean' in key:
                 reps[key] = partitions
             else:
                 print_stats = False
