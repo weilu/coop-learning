@@ -19,7 +19,7 @@ class TestKMeans(unittest.TestCase):
     def test_knesset(self):
         filename = f'data/partitions_k_means.txt'
         with open(filename, 'w') as f:
-            for k in range(2, 147):
+            for k in range(2, 130):
                 pi = get_clustering_partition(k)
                 f.write(str(pi) + '\n')
                 if k % 10 == 0:

@@ -103,7 +103,7 @@ def precalculate_valuations_and_coalitions(S):
 
 
 def read_votes_and_player_data():
-    with open('data/votes_names_cleaned.csv') as f:
+    with open('data/votes_names_cleaned_filtered.csv') as f:
         reader = csv.reader(f)
         player_labels = next(reader, None)
         player_labels = player_labels[1:]

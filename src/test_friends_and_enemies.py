@@ -4,7 +4,6 @@ import unittest
 from knesset_test import print_partition_stats, calculate_partition_edit_distances_and_print_stats
 from friends_and_enemies import stable_friends, find_friends, top_cover, to_avoid_sets, bottom_avoid, pac_top_cover, precalculate_coalitions
 from top_covering import largest_scc_from_pref
-from partition_ids_to_names import build_member_map, partition_id_str_to_names
 from votes_to_game import partition_edit_distance, read_votes_and_player_data
 
 
@@ -40,20 +39,35 @@ class TestFriendsAndEnemies(unittest.TestCase):
 
 
     def test_pac_knesset(self):
-        member_map = build_member_map()
         random.seed(42)
         partitions = []
         original_votes, _ = read_votes_and_player_data()
         sample_size = int(0.75 * len(original_votes))
-        for _ in range(50):
-            votes = copy.deepcopy(original_votes)
-            pi = pac_top_cover(votes, sample_size)
-            print(pi)
-            print_partition_stats(pi)
-            partition_id_str_to_names(str(pi), member_map)
-            partitions.append(pi)
+        filename = f'data/partitions_pac_friends_50_runs.txt'
+        with open(filename, 'w') as f:
+            for k in range(50):
+                votes = copy.deepcopy(original_votes)
+                pi = pac_top_cover(votes, sample_size)
+                print(pi)
+                print_partition_stats(pi)
+                partitions.append(pi)
+                f.write(str(pi) + '\n')
 
-        calculate_partition_edit_distances_and_print_stats(partitions)
+
+    def test_pac_knesset_selective_friends(self):
+        random.seed(42)
+        partitions = []
+        original_votes, _ = read_votes_and_player_data()
+        sample_size = int(0.75 * len(original_votes))
+        filename = f'data/partitions_pac_selective_friends_50_runs.txt'
+        with open(filename, 'w') as f:
+            for k in range(50):
+                votes = copy.deepcopy(original_votes)
+                pi = pac_top_cover(votes, sample_size)
+                print(pi)
+                print_partition_stats(pi)
+                partitions.append(pi)
+                f.write(str(pi) + '\n')
 
 
     def test_knesset(self):

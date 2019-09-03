@@ -52,8 +52,6 @@ class KnessetTest(unittest.TestCase):
                 # print(f'core stable: {check_core_stable(self.game, pi)}')
                 partitions.append(pi)
 
-        calculate_partition_edit_distances_and_print_stats(partitions)
-
 
     def test_search_and_split(self):
         max_len = 0
