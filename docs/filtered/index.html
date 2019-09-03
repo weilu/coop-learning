@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>Knesset Partition Visualized</title>
+<head>
+  <script src="https://cdn.plot.ly/plotly-1.49.3.js"></script></script>
+  <script src="https://d3js.org/d3-color.v1.min.js"></script>
+  <script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
+  <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+  <script src="https://d3js.org/d3-scale.v3.min.js"></script>
+  <style>
+#histogram {
+  width: 50vw
+}
+
+.row>div {
+  display: inline-block;
+  width: 49vw;
+  vertical-align: top;
+}
+  </style>
+</head>
+<body>
+  <div id="sankeys"></div>
+  <div id="histogram"></div>
+  <div id="line_plots"></div>
+  <div id="sankey"></div>
+  <script src="index.js"></script>
+</body>
