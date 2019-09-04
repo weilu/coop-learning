@@ -461,6 +461,31 @@ The second SBM accounts for instances when a pair of politicians' votes disagree
 
 Given that we are analysing an empirical network, there could be more than one fit of the SBM with similar likelihood of generating the observed network. Therefore instead of finding the maximum, we sample partitions from the posterior distribution, take average weighted by posterior probabilities across different model fits. We use the SBM implemented in the graph-tool library, which supports model averaging using an efficient Markov chain Monte Carlo (MCMC) algorithm. This further optimizes the SBM models.
 
+\section{Experiment Analysis}
+
+The Israeli political system, in thanks, partially, to its use of proportional representation, is made of multiple parties. In the Knesset we explored there are 10 parties, but some parties are unions of smaller parties. In some cases the parties have merged (e.g., the Likud or Meretz), and in some cases, they have different organizational structure (e.g., he Jewish Home party or the Joint List).
+
+While in the past, this preponderance of parties led to a multi-dimensional party system, leading to unexpected coalitions and combinations, in the past few decades Israeli parties can be, in general, ordered along a single right-left axis, which has to do mainly with the parties' approach to the Israeli-Palestinian conflict. This simplifies the considerations we need to take into account when analyzing the outcomes, and allows for easier comparison between the different models, and allows to more easily discern unexpected coalition structures that need to be explained. This also a relative ideological cohesion between coalition parties as well as between opposition parties.
+
+No Israeli party has ever been elected with a majority of Knesset seats, which means all governments are made of coalitions. In the past few years (including the Knesset we investigate) governments have tightened their grip over coalition parties by having a government committee issue a generally mandatory voting instructions for every proposed bill. The opposition, of course, is under no such control, but due to its relative ideological, there is significant agreement.
+
+One technical note before we delve into analyzing the outcome: due to Knesset members resigning mid term, some Knesset members have only been able to participate in some of the votes, and therefore they will often be clustered separately. Moreover, some government ministers which are also Knesset members have a low rate of participation in the votes, and therefore, once again, their data is sometimes skewed.
+
+As noted above, the PAC model with the value function produces low quality results (in this case, a grouping of part of the government's coalition, and many singletons, containing only one Knesset member), as well as many of the k-means outcomes and the community models distributions. We shall focus in this comparison on the PAC models with friends and selective friends, the 2 group and 11 group k-means outcomes (minimizing VI and NID metrics, respectively), and the normal, exponential and geometric distributions for the community models.
+
+\paragraph{Coherence}
+Seeing whether the opposition and government coalition party members were well separated by the different models, resulting in a coherent and logical map.
+
+Under this criterion, the PAC model, particularly with selective friends was the only one which did not include several groups involving many members of different ideological hue. Both the k-means and the community models tended to join together members with fewer votes. However, the PAC selective friends model has only two such coalitions: One involving Knesset member which changed parties (so connecting her with the opposition group makes sense), and the other one creating a single group combining two low-attendance members, one on the right edge of the left wing, and the other, which switched between coalition and opposition.
+
+\paragraph{Overall structure}
+Both PAC models and the k-means one were able to figure out that there is a main government group and a main opposition group, to which most of their respective members were attached. This stresses the fact that despite their differences, even the opposition parties, which do not have a centralized binding instructions, still tend to vote together due to their relative ideological cohesion. The community based models, however, did not really pick up on the existence of generally quite coherent group of government and opposition Knesset members.
+
+Most other groups were created based on attendance, with the PAC models more clearly creating a few singleton coalitions for less present members, while clustering ministers, which tend to miss out on votes, together (though in two different coalitions). The k-means clusters tended to remove more ministers from the overall main government group, and divide them into more separate coalitions (this is also true for the community models).
+
+\paragraph{Sub groups}
+None of the models was able to differentiate between the subgroups inside parties, apart from identifying a significant change (e.g., a member switches parties). We believe this is more of an indication of the process of ideological coherence happening in Israeli parties. Parties that have been running sharing a similar location on the ideological spectrum and recently join together to run as a single ticket do not have many opportunities to flaunt their differences. Thus, even for a party (such as the Joint List) that did not run together in the following election, it does not seem that their Knesset members voted differently. Indeed, several of their Knesset members, despite being from different parties (and running separately in the following election) have not been assigned to different coalitions by any model, or even any run of the PAC models. As noted above, we believe this tells us a meaningful statement on the real, day to day, ideological difference between them, and is not a failure of the algorithms.
+
 \bibliography{references}
 \bibliographystyle{aaai}
 
