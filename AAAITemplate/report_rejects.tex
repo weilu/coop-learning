@@ -1,3 +1,15 @@
+\subsection{Hedonic Games}
+A coalition formation game aims to divide the set of all players $N$ into disjoint coalitions $\pi$, formally known as a {\it coalition structure}. A hedonic game is a coalition formation game with hedonic preferences. 
+Hedonic preference means that every player only cares about the coalition they belong to, which implies that the inter-coalitional dependencies are completely ignored. The description of a hedonic game could be exponentially large in the number of players, as each player needs to rank all possible coalitions they may belong to.
+
+\subsection{Appreciation of Friends Preferences}
+\citename{SuSu10} have shown that the domain of preference profiles based on appreciation of friends is a proper sub-domain of top responsive preference profiles. Some top responsive games do not satisfy the requirements of appreciation of friends, for example, $N = \{1, 2, 3\}$, preference relation $\{1, 2\} \succ_1 \{1, 2, 3\} \succ_1 \{1, 3\}$ satisfies top responsiveness but not appreciation of friends.
+
+\subsection{Mutuality}
+Mutuality in the context of top responsive games means that for all $i, j \in N$, for all coalition that contains $i$ and $j$: $S \in \mathcal{N}_i \cap \mathcal{N}_j$, $i \in ch(j, S)$ if and only if $j \in ch(i, S)$. Mutuality provides guarantees for solutions that satisfy stronger notion of stability, which we will discuss after the stability concepts definitions.
+
+\subsection{Stability Concepts}
+TODO: Example of Core that's not SNS, example of SNS that's not strict core
 
 \subsection{Bottom Responsive Games}
 Bottom responsive games can be viewed as the counterpart of top responsive games, where a player's utility is derived from the absence of disliked players. For a game to satisfy bottom responsiveness, two conditions are required:
@@ -16,3 +28,48 @@ If in addition to the above two conditions, a game also satisfies $|Av(i, S)| = 
 
 Bottom Avoiding Algorithm
 
+\subsection{Complete Preference Profile Algorithms} \label{section:top_covering}
+
+\citename{ALCALDE2004869} showed that top responsive games guarantee the existence of a core stable partition, which is discoverable through the Top Covering Algorithm. \citename{DIMITROV2007130} simplified the original Top Covering Algorithm and proved that it not only constructs a core, but a strict core. \citename{Dimitrov2006TopRA} also showed that adding the mutuality condition the simplified top covering algorithm produces a Nash stable partition. \citename{Aziz:2012:ESH:2343776.2343806} further proved that with mutuality the partition produced is in fact strict strong Nash stable for any top responsive game.
+
+\section{Data}
+We programmatically transformed the downloaded data into comma separated values (CSV), with each row representing a bill and each column representing a parliament member, so a cell value corresponds to the vote of a given parliament member for a given bill.
+
+\subsection{Data Preprocessing}
+During data processing, we noticed that more than half of all the vote values are missing despite the presence of value 4 for ``did not attend''. 
+It raises questions regarding the data quality. We discovered another API endpoint which provides summary information for every bill, including total number of for votes, against votes, abstained votes, and if the bill is accepted. We downloaded bill summary data set for the 20th Knesset and used it to check against the tallied vote numbers from the individual vote data. We ended up discovering more inconsistencies:
+
+\begin{itemize}
+  \item Total bills checked: 7513,
+  \item Missing bills in the summary dataset: 2,
+  \item Number of bills with pass/reject status inconsistent: 26,
+  \item Number of bills with for count inconsistent : 273,
+  \item Number of bills with against count inconsistent : 402,
+  \item Number of bills with abstain count inconsistent : 2
+\end{itemize}
+
+We reached out to Knesset regarding the data inconsistency between two API endpoints, as well as the missing value issue. The Knesset data management team stated that the inconsistency is likely a result of manual vote entries instead of votes recorded as a result of pressing the electronic button. Such manual vote entries are captured by the bill summary data set but not individual member's vote data set.
+
+For the purpose of our research, we treat the data with individual member's votes on every bill as the ground truth since it has the level of granularity required for modeling. We removed the 26 bills whose pass/reject status is inconsistent between the summary and individual data sets, since it's most likely that the individual data is wrong.
+
+\begin{figure}
+\centering
+\begin{tikzpicture}[
+squarednode/.style={rectangle, draw=white!60, fill=white!5, very thick, minimum size=5mm},
+]
+%Nodes
+\node[squarednode]      (SSNS)                             {SSNS};
+\node[squarednode]      (SNS)       [below left=of SSNS]   {SNS};
+\node[squarednode]      (NS)        [below=of SNS]         {NS};
+\node[squarednode]      (SC)        [below right=of SSNS]  {SC};
+\node[squarednode]      (C)         [below=of SC]          {C};
+
+%Lines
+\draw[->] (SSNS.south west) -- (SNS.north east);
+\draw[->] (SNS.south) -- (NS.north);
+\draw[->] (SSNS.south east) -- (SC.north west);
+\draw[->] (SC.south) -- (C.north);
+\draw[->] (SNS.south east) -- (C.north west);
+\end{tikzpicture}
+\caption{Relationships between stability concepts for hedonic games: Strict strong Nash stable implies strict core and strong Nash stable. Strong Nash stable implies core and Nash stable. Strict core implies core.}
+\end{figure}
