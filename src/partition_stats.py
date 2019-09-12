@@ -12,6 +12,7 @@ def print_stats(label, data):
                f'     min: {min(data)},\n'
                f'     median: {statistics.median(data)}, \n'
                f'     mean: {statistics.mean(data)}, \n'
+               f'     sd: {statistics.stdev(data)}, \n'
                f'     variance: {statistics.variance(data)}')
     else:
         out = f'  {label}: {data[0]}'
