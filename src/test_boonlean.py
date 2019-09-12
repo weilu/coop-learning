@@ -1,5 +1,5 @@
 import unittest
-from boonlean import votes_to_pref_tables
+from boonlean import votes_to_pref_tables, simplify_pref_tables
 
 
 class TestBoonlean(unittest.TestCase):
@@ -54,6 +54,52 @@ class TestBoonlean(unittest.TestCase):
         self.assertEqual(dislikes[0], [frozenset([0, 2])])
         self.assertEqual(dislikes[1], [frozenset([1, 2]), frozenset([1, 2])])
         self.assertEqual(dislikes[2], [frozenset([0, 1, 2]), frozenset([1, 2])])
+
+
+    def test_simplify_pref_tables(self):
+        likes = {
+            0: [frozenset({0, 1}), frozenset({0, 2}), frozenset({0, 1, 2})],
+            1: [frozenset({0, 1}), frozenset({1}), frozenset({0, 1, 2})],
+            2: [frozenset({2}), frozenset({0, 2}), frozenset({0, 1, 2})]
+        }
+        dislikes = {
+            0: [frozenset({0, 2}), frozenset({0, 1}), frozenset({0})],
+            1: [frozenset({1, 2}), frozenset({0, 1, 2}), frozenset({1})],
+            2: [frozenset({0, 1, 2}), frozenset({1, 2}), frozenset({2})]
+        }
+        sl, sd = simplify_pref_tables(likes, dislikes)
+        self.assertEqual(sl, {
+            0: [frozenset({0, 1, 2})],
+            1: [frozenset({0, 1})],
+            2: [frozenset({0, 2})]
+        })
+        self.assertEqual(sd, {
+            0: [frozenset({0, 1}), frozenset({0, 2}), frozenset({0})],
+            1: [frozenset({0, 1, 2}), frozenset({1, 2}), frozenset({1})],
+            2: [frozenset({0, 1, 2}), frozenset({1, 2}), frozenset({2})]
+        })
+
+        likes = {
+            0: [frozenset({0, 1})],
+            1: [frozenset({0, 1}), frozenset({1}), frozenset({1}), frozenset({1})],
+            2: [frozenset({2}), frozenset({2})]
+        }
+        dislikes = {
+            0: [frozenset({0, 2})],
+            1: [frozenset({1, 2}), frozenset({1, 2})],
+            2: [frozenset({0, 1, 2}), frozenset({1, 2})]
+        }
+        sl, sd = simplify_pref_tables(likes, dislikes)
+        self.assertEqual(sl, {
+            0: [frozenset({0, 1})],
+            1: [frozenset({0, 1}), frozenset({1})],
+            2: [frozenset({2})]
+        })
+        self.assertEqual(sd, {
+            0: [frozenset({0, 2})],
+            1: [frozenset({1, 2})],
+            2: [frozenset({0, 1, 2}), frozenset({1, 2})]
+        })
 
 
 if __name__ == '__main__':
