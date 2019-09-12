@@ -204,6 +204,28 @@ TODO:
 - check 19th Knesset see if ultra orthodox parties: Shas, United Torah Judaism still aligned with the right wing parties
   - if align: deeper under current
   - if not: it's just politics
+Ack: Tohah + an undergrad + my mother + knesset data team
 
-Ack: Tohah + an undergrad + my mother
+Notes to self (1 Sept)
+- update viz parliament member names [DONE]
+- Add to writing
+  - metric
+  - model agg
 
+2 Sep
+TODO:
+- throw out members who voted less than 50 times -> at least 100 members left
+- metric -> normalized MI by sklearn [DONE]
+- address Yair comments [DONE]
+  - make it more concise
+- format bib consistently
+- select between friends & pac friends
+
+4 Sep
+- pac models: put stability above all, do not care about efficiency. playing it safe. social cohesion
+  - writing, bad data with lots of noise pac model
+- push filter threshold up and see if k-means does better
+- additional parliament data:
+  - German,
+  - Netherlands polarizing voting pattern (coalition government, people know eventual outcome will be watered down),
+  - US congress might be interesting due to regional effect
