@@ -53,3 +53,41 @@ def simplify_pref_tables(likes, dislikes):
         sd[i].sort(key=len, reverse=True)
 
     return sl, sd
+
+
+def find_core(likes, dislikes):
+    stable_partition = set()
+    all_likes = set()
+    all_dislikes = set()
+    for liked_groups in likes.values():
+        all_likes |= set(liked_groups)
+    for disliked_groups in dislikes.values():
+        all_dislikes |= set(disliked_groups)
+    potentially_stable_likes = all_likes - all_dislikes
+
+    num_assigned = 0
+    while potentially_stable_likes:
+        sorted_potential = sorted(potentially_stable_likes, key=len, reverse=True)
+        print(sorted_potential)
+        stable_coalition = sorted_potential[0]
+        stable_partition.add(stable_coalition)
+        num_assigned += len(stable_coalition)
+
+        updated_potentially_stable_likes = set()
+        for p in potentially_stable_likes:
+            if len(stable_coalition & p) == 0:
+                updated_potentially_stable_likes.add(p)
+        potentially_stable_likes = updated_potentially_stable_likes
+
+    num_players = len(likes.keys())
+    if num_assigned != num_players:
+        print(f'some agents are unassigned : {num_players - num_assigned}')
+
+    return stable_partition
+
+
+if __name__ == '__main__':
+    votes, _ = read_votes_and_player_data()
+    likes, dislikes = votes_to_pref_tables(votes)
+    likes, dislikes = simplify_pref_tables(likes, dislikes)
+

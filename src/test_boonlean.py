@@ -1,5 +1,5 @@
 import unittest
-from boonlean import votes_to_pref_tables, simplify_pref_tables
+from boonlean import votes_to_pref_tables, simplify_pref_tables, find_core
 
 
 class TestBoonlean(unittest.TestCase):
@@ -100,6 +100,47 @@ class TestBoonlean(unittest.TestCase):
             1: [frozenset({1, 2})],
             2: [frozenset({0, 1, 2}), frozenset({1, 2})]
         })
+
+
+    def test_find_core(self):
+        likes = {
+            0: [frozenset({0, 1})],
+            1: [frozenset({0, 1}), frozenset({1})],
+            2: [frozenset({2})]
+        }
+        dislikes = {
+            0: [frozenset({0, 2})],
+            1: [frozenset({1, 2})],
+            2: [frozenset({0, 1, 2}), frozenset({1, 2})]
+        }
+        pi = find_core(likes, dislikes)
+        self.assertEqual(pi, {frozenset({0, 1}), frozenset({2})})
+
+        likes = {
+            0: [frozenset({0, 1, 2})],
+            1: [frozenset({0, 1})],
+            2: [frozenset({0, 2})]
+        }
+        dislikes = {
+            0: [frozenset({0, 1}), frozenset({0, 2}), frozenset({0})],
+            1: [frozenset({0, 1, 2}), frozenset({1})],
+            2: [frozenset({0, 1, 2}), frozenset({2})]
+        }
+        pi = find_core(likes, dislikes)
+        self.assertEqual(pi, {frozenset({0}), frozenset({1, 2})})
+
+        likes = {
+            0: [frozenset({0, 1, 2})],
+            1: [frozenset({0, 1})],
+            2: [frozenset({0, 2})]
+        }
+        dislikes = {
+            0: [frozenset({0, 1}), frozenset({0, 2}), frozenset({0})],
+            1: [frozenset({0, 1, 2}), frozenset({1, 2}), frozenset({1})],
+            2: [frozenset({0, 1, 2}), frozenset({1, 2}), frozenset({2})]
+        }
+        pi = find_core(likes, dislikes)
+        self.assertEqual(pi, {frozenset({0}), frozenset({1}), frozenset({2})})
 
 
 if __name__ == '__main__':
