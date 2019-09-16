@@ -1,8 +1,8 @@
 import unittest
-from boonlean import votes_to_pref_tables, simplify_pref_tables, find_core
+from boolean import votes_to_pref_tables, simplify_pref_tables, find_core
 
 
-class TestBoonlean(unittest.TestCase):
+class TestBoolean(unittest.TestCase):
 
     def test_votes_to_pref_tables(self):
         votes = [
