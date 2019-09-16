@@ -1,4 +1,5 @@
 from collections import defaultdict, Counter
+from itertools import combinations
 from votes_to_game import read_votes_and_player_data
 
 
@@ -65,13 +66,12 @@ def find_core(likes, dislikes):
         all_dislikes |= set(disliked_groups)
     potentially_stable_likes = all_likes - all_dislikes
 
-    num_assigned = 0
+    remaining_players = set(likes.keys())
     while potentially_stable_likes:
         sorted_potential = sorted(potentially_stable_likes, key=len, reverse=True)
-        print(sorted_potential)
         stable_coalition = sorted_potential[0]
         stable_partition.add(stable_coalition)
-        num_assigned += len(stable_coalition)
+        remaining_players = remaining_players - stable_coalition
 
         updated_potentially_stable_likes = set()
         for p in potentially_stable_likes:
@@ -79,12 +79,27 @@ def find_core(likes, dislikes):
                 updated_potentially_stable_likes.add(p)
         potentially_stable_likes = updated_potentially_stable_likes
 
-    num_players = len(likes.keys())
-    if num_assigned != num_players:
-        print(f'some agents are unassigned : {num_players - num_assigned}')
+    while remaining_players:
+        p = find_implicit_stable_coalition(all_likes, all_dislikes, remaining_players)
+        if not p: # all singleton coalitions
+            for i in remaining_players:
+                p = frozenset([i])
+                stable_partition.add(p)
+                remaining_players = remaining_players - p
+            break
+        stable_partition.add(p)
+        remaining_players = remaining_players - p
 
     return stable_partition
 
+
+def find_implicit_stable_coalition(all_likes, all_dislikes, remaining_players):
+    for i in range(len(remaining_players)):
+        k = len(remaining_players) - i # num_players, ... , 2, 1
+        for coal in combinations(remaining_players, k):
+            coal = frozenset(coal)
+            if coal not in all_likes and coal not in all_dislikes:
+                return coal
 
 if __name__ == '__main__':
     votes, _ = read_votes_and_player_data()
