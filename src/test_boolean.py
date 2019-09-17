@@ -143,6 +143,17 @@ class TestBoolean(unittest.TestCase):
         self.assertEqual(pi, {frozenset({0}), frozenset({1}), frozenset({2})})
 
 
+    def test_knesset(self):
+        votes, _ = read_votes_and_player_data()
+        logging.info('done reading votes data')
+        likes, dislikes = votes_to_pref_tables(votes)
+        logging.info('done constructing pref tables')
+        likes, dislikes = simplify_pref_tables(likes, dislikes)
+        logging.info('done simplifying pref tables')
+        pi = find_core(likes, dislikes)
+        print_partition_stats(pi)
+
+
 if __name__ == '__main__':
     unittest.main()
 
