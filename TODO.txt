@@ -229,3 +229,12 @@ TODO:
   - German,
   - Netherlands polarizing voting pattern (coalition government, people know eventual outcome will be watered down),
   - US congress might be interesting due to regional effect
+
+12 Sep
+Questions:
+- more experiments, which direction?
+  - PACify more algorithms: Boolean [DO THIS]
+  - modify value function
+  - existing models on past Knesset
+  - existing models on other country's parliaments
+  - filter knesset members
