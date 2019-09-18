@@ -180,7 +180,11 @@ class TestBoolean(unittest.TestCase):
         likes, dislikes = simplify_pref_tables(likes, dislikes)
         logging.info('done simplifying pref tables')
         pi = find_core(likes, dislikes)
+        print(pi)
         print_partition_stats(pi)
+
+        with open('data/partitions_boolean_1_runs.txt', 'w') as f:
+            f.write(str(pi))
 
 
 if __name__ == '__main__':
