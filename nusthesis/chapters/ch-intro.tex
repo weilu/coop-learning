@@ -3,60 +3,41 @@
 \chapter{Introduction}
 \vspace{2em}
 
-\lipsum[1]
+Cluster analysis is an essential task of exploratory data mining.
+It has been studied extensively by the machine learning community.
+However, most works that took the data driven approach completely ignore an individual player's utility and their strategic behaviors.
+Meanwhile in the field of game theory, the computational social choice community puts in considerable efforts studying stability related solution concepts of coalition formation games with hedonic preferences;
+however most works are purely theoretical.
+In addition, existing stable solution finding algorithms require full visibility of all agents' preferences, which is a major obstacle in applying the research on real-world collaborative activities.
 
-\section{Overview}
+Recent research by \citename{ijcai2017-380} lays down the theoretical foundation of Probably Approximately Correct (PAC) stability;
+they provide an algorithm which produces a partition that is likely resistant to deviation given limited knowledge of agents' hedonic preferences as input.
+This opens the possibility of constructing models taking the data driven approach, at the same time accounts for agents' strategic behaviors.
 
-This section includes some tricks extracted from my years' experience of using \LaTeX{}.
-Rule of thumb: Doing the right things in the right way can your efforts. 
-And I am just the right person telling you this. 
+We present the first application of strategic hedonic games models on real-world data.
+We answer the following research questions: Can we use hedonic games to model real-world collaborative activities?
+How well does the outcome compare to ground truth?
+How well does the outcome compare to that of canonical clustering and community detection models'?
 
-\subsection{Citing, Referring and Hyperlinks}
-
-A book~\cite{BOOK:Gray} is cited.
-
-\begin{figure}[!t]
-  \centering
-  \includegraphics[width=.6\linewidth]{\Pic{pdf}{vege}}
-  \vspace{\BeforeCaptionVSpace}
-  \caption{A collection of food.}
-  \label{intro:fig:vege}
-\end{figure}
-
-An online article~\cite{tpc-c} is cited.
-
-\autoref{intro:fig:vege} demonstrates a collection of vegetables. 
-There are broccoli, carrot, pea, onion, snow bean, scallion, etc.
-They are healthy food characteristic of high-fiber and low-calorie. 
-
-\begin{align}
-  Q_{a}^{b} &= \sum_{x=1}^{\infty} \dfrac{\prod_{y=1}^{x} f(y) - a}{\lim_{z \to x} g(z) + b} + 
-               \int_{a}^{b} x^2 dx \label{eq:sample:1}\\
-            &= H_{1}(a, b) + H_{2}(a, b) \nonumber\\
-            &= \gamma(a, b) \label{eq:sample:2}
-\end{align}
-
-\autoref{eq:sample:1}, albeit complex, is equivalent to \autoref{eq:sample:2}.
-Note that we do not label the second line of the derivation process.
-Given $f(x) = x^{2}$ and $0 < x \leq 1$, we have
-\[
-  f(1) = 1^{2} = 1
-\]
-and the result is quite simple. 
-
-You may go to \href{https://github.com/streamjoin/nusthesis}{my GitHub repository} by searching for ``nus latex template'' in Google or accessing the url  \url{https://github.com/streamjoin/nusthesis} directly. 
-
-You may refer to the \href{run:./src/references.bib}{bibliography file} to see its organization.  
-
-\subsection{Hyphenation}
-
-The compound word ``ingredient\zz{}insensitive'', where the hyphen is generated through command \CMD{\zz{}} will be hyphenated for individual words rather than the compound word as a whole. 
-In contrast, ``nutrition-oriented'' with normal hyphen will be hyphenated as a whole compound word, which is unlikely to be recognized by \LaTeX\ and therefore no hyphenation will be carried out unless you provide customized hyphenation for it. 
 
 \section{Thesis Synopsis}
 
-The rest of this thesis is organized as follows. 
-In \autoref{ch:review}, we conduct a literature review. 
-\autoref{ch:rice} provides the study on rice. 
-\autoref{ch:noodle} describes noodles. 
-We conclude the entire thesis as well as discuss further directions for future research in \autoref{ch:concl}.
+Our contribution includes an algorithmic improvement for finding a PAC stable solution for top responsive games --- a sub-class of hedonic games
+% (Section~\ref{sec:improved_algo})
+.  We take the Israeli parliament (the Knesset) members' past voting records on legislative bills 
+% (Section~\ref{subsec:data}),
+construct top responsive preference models, and apply the improved algorithm to produce PAC stable partitions
+% (Section~\ref{subsec:exp_pac_models})
+.  We detail in our analysis 
+% (Section~\ref{subsec:exp_analysis})
+, by using the party affiliations as the ground truth partition,
+our PAC partitions are able to reveal the Knesset members' political positions at large. 
+Comparing to $k$-means clustering and stochastic block models 
+% (Section~\ref{subsec:exp_comparison_models})
+, one of our PAC models reveals politicians whose voting behaviors are known to break from their party affiliations and whose allegiance is fickle.
+
+% The rest of this thesis is organized as follows. 
+% In \autoref{ch:review}, we conduct a literature review. 
+% \autoref{ch:rice} provides the study on rice. 
+% \autoref{ch:noodle} describes noodles. 
+% We conclude the entire thesis as well as discuss further directions for future research in \autoref{ch:concl}.
