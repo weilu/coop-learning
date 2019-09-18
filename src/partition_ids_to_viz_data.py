@@ -114,6 +114,13 @@ def gather_experiment_partitions():
     return filename_to_partitions
 
 
+SINGLE_RUN_MODELS = [
+    'network_block_model_auto_B_discrete-geometric_mcmc_sweep_True',
+    'network_block_model_auto_B_real-normal_mcmc_sweep_True',
+    'k_auto_means',
+    'boolean'
+]
+
 def select_representatives(grouped_partitions, metric):
     metric_fn = metric_to_fn[metric]
     reps = {}
@@ -121,7 +128,7 @@ def select_representatives(grouped_partitions, metric):
         print_stats = True
         if len(partitions) < 2:
             stats_keys = partitions[0]['stats'].keys()
-            if 'network_block_model_auto_B' in key or 'k_auto_mean' in key:
+            if key in SINGLE_RUN_MODELS:
                 reps[key] = partitions
             else:
                 print_stats = False
