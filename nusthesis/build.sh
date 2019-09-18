@@ -37,3 +37,5 @@ export TRIMBIB_ARGS=("--pages")
 # Run build_latex.sh with the above settings
 # shellcheck disable=SC1090
 source "${FAIRY_HOME}/latex/build_latex.sh"
+
+./texcount.pl -inc  main.tex
