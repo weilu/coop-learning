@@ -1,7 +1,7 @@
 \ifdefined\DoubleSided
-  \documentclass[twoside,openright,a4paper]{nusthesis}
+  \documentclass[twoside,openright,a4paper,dvipsnames]{nusthesis}
 \else
-  \documentclass[a4paper]{nusthesis}
+  \documentclass[a4paper,dvipsnames]{nusthesis}
 \fi
 
 \dsp % pseudo double spacing
@@ -83,7 +83,7 @@
 \DeclareMathOperator*{\argmin}{arg\,min}
 \DeclareMathOperator*{\argmax}{arg\,max}
 
-\usepackage{interval}
+\usepackage{pgf,interval}
 \intervalconfig{soft open fences}
 \newcommand{\intervalO}{\interval[open]}
 \newcommand{\intervalOL}{\interval[open left]}
@@ -119,7 +119,7 @@
 \newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
 
 \usepackage{color}
-\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{xcolor}
 \usepackage{soul}
 \soulregister\cite7
 \soulregister\ref7
