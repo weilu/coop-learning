@@ -118,7 +118,8 @@ SINGLE_RUN_MODELS = [
     'network_block_model_auto_B_discrete-geometric_mcmc_sweep_True',
     'network_block_model_auto_B_real-normal_mcmc_sweep_True',
     'k_auto_means',
-    'boolean'
+    'boolean',
+    'value_function'
 ]
 
 def select_representatives(grouped_partitions, metric):
