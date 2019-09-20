@@ -29,6 +29,9 @@ class KnessetTest(unittest.TestCase):
 
         self.assertEqual(pi, pi_pac)
 
+        with open('data/partitions_value_function_1_runs.txt', 'w') as f:
+            f.write(str(pi))
+
         # check partition is stable
         self.assertTrue(check_core_stable(self.game, pi))
 
