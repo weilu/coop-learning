@@ -1,11 +1,78 @@
 \SetPicSubDir{ch-Hedonic}
 \SetExpSubDir{ch-Hedonic}
 
-\chapter{Hedonic Game Stability Based Models}
+\chapter{Hedonic Game Stability Models}
 \label{ch:hedonic}
 \vspace{2em}
 
 \section{Handcrafted Value Function}
+
+First we attempt to formulate a generic top responsive preference model
+through representing every player's utility model using a value function.
+For each bill there are two natural coalitions:
+one formed by parliament members who voted ``for'',
+and the other formed by parliament members who voted ``against''.
+Note that the values assigned by members to their respective coalitions
+are not immediately well defined,
+so we define the player $i$'s value function for coalition $S$ as follow:
+
+Let $S_f$ be the set of members who voted ``for'' and
+$S_a$ the set of members who voted ``against''.
+$S$ can take on one of the two values $\{S_f, S_a\}$ at a time.
+$S_p$ denotes the set of parliament members who participated: $S_p = S_f \cup S_a$.
+
+\[
+  v_i(S) =
+  \begin{dcases}
+      1 + \frac{1}{|S|} + \frac{|S_p|}{|N|},& \text{if $S$ is the winning majority}\\
+      0,              & \text{otherwise}
+  \end{dcases}
+\]
+
+$S_f$ is the winning majority if $|S_f| > |S_a|$, vice versa. When $|S_f| = |S_a|$, $S_a$ is considered to be the winning majority.
+
+The conditional value function captures that a winning coalition,
+being successfully passing a bill or successfully blocking a bill,
+is always worth more than a losing coalition.
+$\frac{1}{|S|}$ reflects that a win is considered more valuable when it's
+achieved with fewer members, which is also conceptually consistent with
+top responsive game's preference for smaller coalitions.
+The partition term $\frac{|S_p|}{|N|}$ gives a win more value when more
+parliament members voted for or against the bill.
+For simplicity, we assume every member in a given coalition assigns
+equal value to their coalition.
+
+This handcrafted value function allows us to construct a partial preference
+relation for every parliament member.
+Note that the handcrafted value function does not guarantee that the generated partial preference profile satisfies top responsiveness.
+It makes this approach analogous to improper learning (a.k.a.\ representation independent learning).
+In learning theory, improper learning is when a learning algorithm is not
+restricted to output a hypothesis from the given hypothesis class,
+but should output a hypothesis with error not too far from that of
+the best hypothesis from the given hypothesis class.
+Similar to the rationale behind improper learning, allowing the
+partial preference profile to be not strictly top responsive gives us
+the flexibility to choose an approperiate representation of the problem.
+
+Although the original top covering algorithm takes the full preference
+profile as input, it would still terminate and produce a partition
+if the input is a partial preference profile.
+The produced partition is core stable with respect to the provided partial
+preference profile.
+
+In our implementation, we assume any omitted coalition is less preferred
+than those explicitly stated, because the existence of an observed
+coalition is evidence that every members in that coalition prefers to be
+a part of that coalition than some unobserved coalition.
+Upon discovery of the smallest $\CC$ in each iteration, we also remove any coalition that contains any of the removed player from the remaining player's preference relation. This quickly shrinks the number of preference relations for each remaining member in every iteration of the algorithm.
+
+For the PAC version of the algorithm, we do not have nearly enough samples
+as required by the algorithm --- The algorithm requires $O(2n^4)$ samples
+which is in the order of $10^5$; we only have 7489 bills in total.
+Therefore we simulate i.i.d by sampling $\frac{3}{4}$ of the bills
+with replacement and repeated the algorithm run 50 times to check
+the consistency of the partitions produced.
+
 \section{Appreciation of Friends}
 \section{Aversion to enemies}
 \section{Boolean Hedonic Game}
@@ -57,12 +124,4 @@ Therefore we can merge the preferences derived from bill 1, 2, and 3:
 $\{1, 3\} \sim \{1\} \succ_1 \{1, 2\} \sim \{1, 2, 3\}$,
 $\{2, 3\} \succ_2 \{2\} \sim \{1, 2\} \sim \{1, 2, 3\}$,
 $\{2, 3\} \succ_3 \{1, 3\} \sim \{3\}$
-
-% \begin{figure}[!t]
-%   \centering
-%   \includegraphics[width=.5\linewidth]{\Pic{jpg}{noodle}}
-%   \vspace{\BeforeCaptionVSpace}
-%   \caption{A bowl of noodles.}
-%   \label{Noodle:fig:bowl_of_noodles}
-% \end{figure}
 

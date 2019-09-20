@@ -6,4 +6,35 @@
 \vspace{2em}
 
 \section{Results}
+
+\subsection{Handcrafted Value Function}
+
+\begin{figure}[!t]
+  \centering
+  \includegraphics[width=\linewidth]{\Pic{png}{value_function}}
+  \vspace{\BeforeCaptionVSpace}
+  \caption{Coalition structure produced by the value function model}
+  \label{Analysis:fig:value_function}
+\end{figure}
+
+Out of the 50 runs of the algorithm we observe that the resulting partition
+is consistent with little variability.
+It is not core stable with respect to the partial preference profile.
+This is unsurprising due to the PAC model.
+The partition has one large coalition consisting of around 60 members
+and the rest are all singleton coalitions.
+All members of the only large coalition are from right wing parties.
+
+\begin{figure}[!t]
+  \centering
+  \includegraphics[width=\linewidth]{\Pic{png}{pac_value_function}}
+  \vspace{\BeforeCaptionVSpace}
+  \caption{Coalition structure produced by the PAC value function model}
+  \label{Analysis:fig:pac_value_function}
+\end{figure}
+
+% TODO: doublecheck if this makes sense
+The singleton coalitions are likely a result of the limited size of the derived partial preference profile --- Upon discovery of the smallest $\CC$ in each iteration, we also remove any coalition that contains any of the removed player from the remaining player's preference relation. Since we took away a large number of players in one of the first few iterations, many coalitions are removed from remaining players' preference relations, resulting in isolated nodes in the updated graph which leads to singleton coalitions.
+% END TODO: doublecheck if this makes sense
+
 \section{Discussion}
