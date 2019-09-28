@@ -119,7 +119,9 @@ SINGLE_RUN_MODELS = [
     'network_block_model_auto_B_real-normal_mcmc_sweep_True',
     'k_auto_means',
     'boolean',
-    'value_function'
+    'value_function',
+    'friends',
+    'selective_friends',
 ]
 
 def select_representatives(grouped_partitions, metric):
