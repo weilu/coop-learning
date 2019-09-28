@@ -65,7 +65,7 @@ TODO (29 Jul)
 TODO (2 Aug)
 - run with loop 100 times with sampling p1 [DONE]
 - writing p2
-- how many cases of violation in preferrence profile p4
+- how many cases of violation in preference profile p4
 - implement friends & enemy model p3
 - check out Haris Aziz research
 - include data -> pref -> solution vs data -> solution approach in writing [DONE]
