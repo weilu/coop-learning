@@ -6,6 +6,7 @@
 \vspace{2em}
 
 \section{Handcrafted Value Function}
+\label{sec:handcrafted_value_function}
 
 First we attempt to formulate a generic top responsive preference model
 through representing every player's utility model using a value function.
@@ -62,7 +63,7 @@ preference profile.
 
 In our implementation, we assume any omitted coalition is less preferred
 than those explicitly stated, because the existence of an observed
-coalition is evidence that every members in that coalition prefers to be
+coalition is evidence that every member in that coalition prefers to be
 a part of that coalition than some unobserved coalition.
 Upon discovery of the smallest $\CC$ in each iteration, we also remove any coalition that contains any of the removed player from the remaining player's preference relation. This quickly shrinks the number of preference relations for each remaining member in every iteration of the algorithm.
 
@@ -73,7 +74,76 @@ Therefore we simulate i.i.d by sampling $\frac{3}{4}$ of the bills
 with replacement and repeated the algorithm run 50 times to check
 the consistency of the partitions produced.
 
+Note that when we make the sample size $100\%$ of all bills and sample
+with replacement, the PAC algorithm should produce the same partition
+as the original top covering algorithm.
+Aside from the test cases we manually constructed, we also use this property to parameterize the PAC implementation and verify correctness of
+our top covering algorithm implementation.
+
+
 \section{Appreciation of Friends}
+\label{sec:appreciation_of_friends}
+
+Our next set of experiments are based on the appreciation of friends model,
+which is a proper subset of top responsive games.
+We define friends of a player's as anyone whose votes agreed with the given
+player's votes more times than disagreed.
+Agreed votes are only counted if the given player voted ``for'' or ``against''.
+We experimented with two different ways of counting the disagreed votes:
+
+\begin{enumerate}
+  \item Narrow disagreement (general friends): the other player's vote is different from mine, and is either ``for'' or ``against''
+  \item Broad disagreement (selective friends): the other player's vote is different from mine
+\end{enumerate}
+
+Compared to narrow disagreement, broad disagreement leads to every player being
+more selective of friends; it may also break the symmetry of the friend relationship.
+In both cases, for any player, those who are not friends are considered enemies.
+
+For example, given 3 players and 3 bills, their votes are as follow:
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c|c|c|c|}
+\hline
+       & player 1 & player 2 & player 3 \\ \hline
+bill 1 & 1 & 1 & 2 \\
+bill 2 & 3 & 1 & 3 \\
+bill 3 & 3 & 2 & 3 \\
+\hline
+\end{tabular}
+\end{table}
+
+Under general friends, player 1 and 2 are friends because they agreed on bill 1.
+In comparison, under selective friends, from player 1's point of view, player 2
+is still a friend due to bill 1, while player 2 considers player 1 an enemy
+because player 1 did not vote with her for bill 2 and 3.
+
+As soon as the sets of friends and enemies are derived for each parliament member,
+we can expand them into a complete preference profile, and apply the top covering
+algorithm to obtain a strict strong Nash stable partition for the general friends
+preference profile, and a strict core stable partition for the selective friends
+preference profile. The notion of stability is weaker for the selective friends case
+due to the lack of symmetry.
+
+Aside from the two partitions yielded from the complete preference profiles,
+we implement and run two sets of PAC experiments based on the general friends
+and selective friends preference assumptions respectively.
+Similar to our approach in Section~\ref{sec:handcrafted_value_function}, we simulate
+i.i.d. by sampling with replacement $3/4$ of all bills; repeat the run 50 times
+to evaluate the consistency between different runs and for producing a robust
+PAC stable partition minimizing the chance of luck.
+
+For the PAC version of the experiments, due to sampling we do not observe all
+the bills every time we approximate players' preferences,
+therefore, for a given player, the sets of friends and enemies can be different
+from the complete preference profile cases, and also different between samples.
+Since we take the intersections of the best coalitions for any player across
+multiple sampling iterations, intuitively the PAC versions are more conservative
+in choosing friends compared to their complete profile preference conterpart.
+As a result, we expect to observe smaller and more coalitions in comparison.
+
+
 \section{Aversion to enemies}
 \section{Boolean Hedonic Game}
 
