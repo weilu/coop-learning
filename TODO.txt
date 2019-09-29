@@ -278,3 +278,8 @@ TODO:
   - A PAC framework for aggregating agents' judgements AAAI 19
   - A voting based system for ethical decision making
 - intuitive examples should be voting scenario
+
+Sep 29 Notes:
+- PAC algo: What exactly is D? D represents prob distribution of likelihood of each coalition observed?
+  what's the point of "informative utility model"?
+- how to use abb.bib?
