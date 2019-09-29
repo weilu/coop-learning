@@ -1,0 +1,91 @@
+\SetPicSubDir{ch-Analysis}
+\SetExpSubDir{ch-Analysis}
+
+\chapter{Experiment Analysis}
+\label{ch:analysis}
+\vspace{2em}
+
+\section{Results}
+
+\subsection{Handcrafted Value Function}
+
+\begin{figure}[!t]
+  \centering
+  \includegraphics[width=\linewidth]{\Pic{png}{value_function}}
+  \vspace{\BeforeCaptionVSpace}
+  \caption{Coalition structure produced by the value function model}
+  \label{Analysis:fig:value_function}
+\end{figure}
+
+Out of the 50 runs of the algorithm we observe that the resulting partition
+is consistent with little variability.
+It is not core stable with respect to the partial preference profile.
+This is unsurprising due to the PAC model.
+The partition has one large coalition consisting of around 60 members
+and the rest are all singleton coalitions.
+All members of the only large coalition are from right wing parties.
+
+\begin{figure}[!t]
+  \centering
+  \includegraphics[width=\linewidth]{\Pic{png}{pac_value_function}}
+  \vspace{\BeforeCaptionVSpace}
+  \caption{Coalition structure produced by the PAC value function model}
+  \label{Analysis:fig:pac_value_function}
+\end{figure}
+
+% TODO: doublecheck if this makes sense
+The singleton coalitions are likely a result of the limited size of the derived partial preference profile --- Upon discovery of the smallest $\CC$ in each iteration, we also remove any coalition that contains any of the removed player from the remaining player's preference relation. Since we took away a large number of players in one of the first few iterations, many coalitions are removed from remaining players' preference relations, resulting in isolated nodes in the updated graph which leads to singleton coalitions.
+% END TODO: doublecheck if this makes sense
+
+\section{Appreciation of Friends}
+
+\subsection{Complete Preference Profiles}
+
+\begin{figure}[!t]
+  \centering
+  \includegraphics[width=\linewidth]{\Pic{png}{friends}}
+  \vspace{\BeforeCaptionVSpace}
+  \caption{Coalition structure produced by the general friends model}
+  \label{Analysis:fig:friends}
+\end{figure}
+
+\begin{figure}[!t]
+  \centering
+  \includegraphics[width=\linewidth]{\Pic{png}{selective_friends}}
+  \vspace{\BeforeCaptionVSpace}
+  \caption{Coalition structure produced by the selective friends model}
+  \label{Analysis:fig:selective_friends}
+\end{figure}
+
+The broad disagreement (aka general friends) setup produced a partition with 18
+coalitions out of which there are two large coalitions with 66 and 58 members,
+respectively.
+One of these two large coalitions is made of left wing party politicians,
+while the other of right wing party members.
+In contrast, by being slightly less selective of friends, the narrow disagreement
+(aka selective friends) setup resulted in the grand coalition as the strict core
+stable outcome.
+This shows that the appreciation of friends model is very sensitive to the
+definition of friends.
+This outcome further motivates our experiments with the PAC version of these
+two friends models, in hope that sampling would dampen such sensitivity.
+
+\begin{figure}[!t]
+  \centering
+  \includegraphics[width=\linewidth]{\Pic{png}{pac_friends}}
+  \vspace{\BeforeCaptionVSpace}
+  \caption{Coalition structure produced by the PAC general friends model}
+  \label{Analysis:fig:pac_friends}
+\end{figure}
+
+\begin{figure}[!t]
+  \centering
+  \includegraphics[width=\linewidth]{\Pic{png}{pac_selective_friends}}
+  \vspace{\BeforeCaptionVSpace}
+  \caption{Coalition structure produced by the PAC selective friends model}
+  \label{Analysis:fig:pac_selective_friends}
+\end{figure}
+
+TODO: comment on results of PAC friends and selective friends
+
+\section{Discussion}
