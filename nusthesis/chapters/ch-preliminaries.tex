@@ -6,119 +6,113 @@
 \vspace{2em}
 
 We will discuss the technical details of top responsive games,
-various stability concepts, mutuality, relevant algorithms, and PAC stability in this chapter.
+various stability concepts, mutuality, and PAC stability in this chapter.
 
 \section{Hedonic Game}
-A \textit{hedonic game} is a pair $(N, P)$, where $N$ is a finite set of players $\{1, \cdots, n\}$ and $P$ is a \textit{preference profile} consisting of preference relations $\succeq_i$ for every player $i \in N$: $P = (\succeq_1, \cdots, \succeq_n)$. A \textit{preference relation} $\succeq_i$ is a reflective, complete, and transitive binary relation on $\mathcal{N}_i$, where $\mathcal{N}_i$ is the set of all non-empty subset of $N$ that includes player $i$; i.e., $\mathcal{N}_i = \{S \subseteq N: i \in S, S \neq \emptyset \}$
+A \textit{hedonic game} is a pair $(N, P)$, where $N$ is a finite set of players
+$\{1, \cdots, n\}$ and $P$ is a \textit{preference profile} consisting of
+preference relations $\succeq_i$ for every player $i \in N$:
+$P = (\succeq_1, \cdots, \succeq_n)$.
+A \textit{preference relation} $\succeq_i$ is a reflective, complete, and
+transitive binary relation on $\mathcal{N}_i$, where $\mathcal{N}_i$ is the set
+of all non-empty subset of $N$ that includes player $i$;
+i.e., $\mathcal{N}_i = \{S \subseteq N: i \in S, S \neq \emptyset \}$
 
-Consider a parliament; who are "natural allies"? One way to model this is by assuming that each member has a preference relation over various groups they wish to be part of; our objective is to identify partitions (also known as \textit{coalition structures}) that satisfy certain desirable properties, such as stability.
+Consider a parliament; who are "natural allies"? One way to model this is by
+assuming that each member has a preference relation over various groups they
+wish to be part of; our objective is to identify partitions
+(also known as \textit{coalition structures}) that satisfy certain desirable
+properties, such as stability.
 
 \subsection{Hedonic Preference Models}
-We are learning preferences from data, but still need to make certain assumptions about a player's utility model. We now describe the two preference models our study is built upon.
+We are learning preferences from data, but still need to make certain
+assumptions about a player's utility model.
+We now describe the two classes of preference models our study is built upon.
 
 \paragraph{Top Responsive Preferences}
-The intuition behind top responsiveness is that every player derives their utility from the most preferred subset players of the coalition they belong. If two coalitions, with one containing the other, yield the same utility for a player, the tie is broken in favor of the smaller coalition. 
+The intuition behind top responsiveness is that every player derives their
+utility from the most preferred subset players of the coalition they belong.
+If two coalitions, with one containing the other, yield the same utility for
+a player, the tie is broken in favor of the smaller coalition.
 
-A player $i$'s most preferred sets of coalitions is called \textit{choice sets}: $\Ch(i, S) = \{S' \subseteq S: (i \in S') \wedge (S' \succeq_i S'' \forall S'' \subseteq S)\}$. The unique choice set in $\Ch(i, S)$ is denoted as $\ch(i, S)$. A {\em top responsive} preference profile requires that for any player $i \in N$, and any coalition that may contain player $i$: $S, T \in \mathcal{N}_i$:
+In the context of our dataset, it captures the following idea:
+politicians care about whose votes they stand with;
+they want to vote with other politicians they like.
+If they can manage to pass a bill with fewer members involved,
+it is more efficient therefore more preferable.
+
+A player $i$'s most preferred sets of coalitions is called \textit{choice sets}:
+$\Ch(i, S) = \{S' \subseteq S: (i \in S') \wedge (S' \succeq_i S'' \forall S'' \subseteq S)\}$.
+The unique choice set in $\Ch(i, S)$ is denoted as $\ch(i, S)$.
+A {\em top responsive} preference profile requires that for any player $i \in N$,
+and any coalition that may contain player $i$: $S, T \in \mathcal{N}_i$:
 \begin{enumerate}
   \item $|\Ch(i, S)| = 1$.
   \item if $\ch(i, S) \succ_i \ch(i, T)$ then $S \succ_i T$
   \item if $\ch(i, S) = \ch(i, T)$ and $S \subset T$ then $S \succ_i T$
 \end{enumerate}
 
-\paragraph{Appreciation of Friends Preferences}
-The description of a generic top responsive preference profile is exponentially large in the number of players, as each player needs to rank all possible coalitions they may belong to, therefore we turn our attention to a sub-class of top responsive preferences –-- appreciation of friends preferences.
+The description of a generic top responsive preference profile is exponentially
+large in the number of players, as each player needs to rank all possible
+coalitions they may belong to.
+In our implementation and experiments in Chapter~\ref{ch:hedonic}, we will
+explore top responsive models in both its generic form
+(Section~\ref{subsec:handcrafted_value_function}) and specific sub-classes of
+this preference model (Section~\ref{subsec:appreciation_of_friends},
+Section~\ref{subsec:aversion_to_enemies}).
 
-In this preference model, a player classifies other players as either friends or enemies, and prefers any coalition with more friends and fewer enemies: Let $G_i$ be player $i$'s set of friends, and $B_i$ the set of enemies. $G_i \cup B_i \cup i = N$ and $G_i \cap B_i = \emptyset$. A preference profile $P^f$ is based on \textit{appreciation of friends} if for all player $i \in N$, $S \succeq_i T$ if and only if $|S \cap G_i| > |T \cap G_i|$ or $|S \cap G_i| = |T \cap G_i|$ and $|S \cap B_i| \leq |T \cap B_i|$.
+\paragraph{Boolean Preferences}
+TODO
 
 \subsection{Stability Concepts} \label{subsec:stability}
-We are particularly interested in models that produce partitions that satisfy strategic considerations; specifically, we focus our attention on stability concepts that capture the idea that no group of players can be better off by leaving and forming their own coalition. Group based stability notions are stronger than those based on individual deviation, such as Nash stability, because individual based stability concepts do not account for the disutility of the group an individual player is joining or leaving.
+We are particularly interested in models that produce partitions that satisfy
+strategic considerations; specifically, we focus our attention on stability
+concepts that capture the idea that no group of players can be better off by
+leaving and forming their own coalition.
+Group based stability notions are stronger than those based on individual deviation,
+such as Nash stability, because individual based stability concepts do not account
+for the disutility of the group an individual player is joining or leaving.
 
 \paragraph{Core \& Strict Core}
-A coalition $S \subseteq N$ \textit{strongly blocks} a coalition structure $\pi$ if every player $i \in S$ strictly prefers $S$ over its current coalition $\pi(i)$; a coalition structure $\pi$ is \textit{core stable} when there is no strongly blocking coalition $S$. 
-A coalition $S \subseteq N$ \textit{weakly blocks} a coalition structure $\pi$ if every player $i \in S$ weakly prefers $S$ over its current coalition $\pi(i)$ and there exists at least one player $j \in S$ who strictly prefers $S$ over $\pi(j)$; a coalition structure is strictly core stable when there is no weakly blocking coalition.
+A coalition $S \subseteq N$ \textit{strongly blocks} a coalition structure $\pi$
+if every player $i \in S$ strictly prefers $S$ over its current coalition $\pi(i)$;
+a coalition structure $\pi$ is \textit{core stable} when there is no strongly
+blocking coalition $S$.
+A coalition $S \subseteq N$ \textit{weakly blocks} a coalition structure $\pi$
+if every player $i \in S$ weakly prefers $S$ over its current coalition $\pi(i)$
+and there exists at least one player $j \in S$ who strictly prefers $S$
+over $\pi(j)$; a coalition structure is strictly core stable when there is no
+weakly blocking coalition.
 
 \paragraph{Strong Nash \& Strict Strong Nash}
-Next we cover two solution concepts with even stronger notions of stability based on group deviation. 
-If a partition $\pi' \neq \pi$ exists with movement of players $S \subseteq N$ and $S \neq \emptyset$ (denoted as $\pi \xrightarrow{S} \pi'$), where $\forall i \in S$, $\pi'(i) \succ_i \pi(i)$, and $\forall j \in N\text{\textbackslash}S$, $\pi'(j) = \pi(j)$, then $S$ strongly Nash blocks $\pi$. 
-A partition that admits no strongly Nash blocking set $S \subseteq N$ is said to be strong Nash stable (SNS). A non-empty set of players $S \subseteq N$ weakly Nash blocks $\pi$ if $\forall i \in S$, $\pi'(i) \succeq_i \pi(i)$ and $\exists j \in S$, $\pi'(j) \succ_j \pi(j)$. 
-A partition that admits no weakly Nash blocking set $S \subseteq N$ is said to be strict strong Nash stable (SSNS).
+Next we cover two solution concepts with even stronger notions of stability
+based on group deviation.
+If a partition $\pi' \neq \pi$ exists with movement of players $S \subseteq N$
+and $S \neq \emptyset$ (denoted as $\pi \xrightarrow{S} \pi'$), where
+$\forall i \in S$, $\pi'(i) \succ_i \pi(i)$,
+and $\forall j \in N\text{\textbackslash}S$, $\pi'(j) = \pi(j)$,
+then $S$ strongly Nash blocks $\pi$.
+A partition that admits no strongly Nash blocking set $S \subseteq N$ is said
+to be strong Nash stable (SNS).
+A non-empty set of players $S \subseteq N$ weakly Nash blocks $\pi$ if
+$\forall i \in S$, $\pi'(i) \succeq_i \pi(i)$ and $\exists j \in S$,
+$\pi'(j) \succ_j \pi(j)$.
+A partition that admits no weakly Nash blocking set $S \subseteq N$ is said to
+be strict strong Nash stable (SSNS).
 
-\paragraph{} 
-A top responsive preference profile guarantees the existence of a strict core partition. Moreover, top responsiveness also warrants a strict strong Nash stable partition if all players preference relations are \textit{mutual} ––– for all $i, j \in N$, for all coalition that contains $i$ and $j$: $S \in \mathcal{N}_i \cap \mathcal{N}_j$, $i \in ch(j, S)$ if and only if $j \in ch(i, S)$. This means if we can model empirical data with mutual preferences, we can achieve the strongest notion of group based notion of stability.
+\paragraph{}
+A top responsive preference profile guarantees the existence of a strict core partition.
+Moreover, top responsiveness also warrants a strict strong Nash stable partition
+if all players preference relations are \textit{mutual} ––– for all $i, j \in N$,
+for all coalition that contains $i$ and $j$:
+$S \in \mathcal{N}_i \cap \mathcal{N}_j$, $i \in ch(j, S)$ if and only if
+$j \in ch(i, S)$.
+This means if we can model empirical data with mutual preferences,
+we can achieve the strongest notion of group based notion of stability.
 
-\subsection{Complete Preference Profile Algorithms} \label{subsec:full_pref_algos}
-The top covering algorithm computes a strict core stable partition for top responsive games.
-
-\begin{algorithm}[htb]
-  \caption{Top Covering Algorithm}
-  \label{alg:top_covering}
-  \textbf{Input:} A hedonic game satisfying top responsiveness.
-
-  \begin{algorithmic}[1]
-  \State $R^1 \leftarrow N$; $\pi \leftarrow \emptyset$.
-
-  \For{$k=1$ to $|N|$}
-    \State \label{top_cover:select} Select $S^k$
-    \State \label{top_cover:remove} $\pi \leftarrow \pi \cup \lbrace S^k \rbrace$ and $R^{k+1} \leftarrow  R^k \setminus S^k$
-    \If {$R^{k+1} = \emptyset$}
-      \State \Return $\pi$
-    \EndIf
-  \EndFor
-
-  \State \Return $\pi$
- \end{algorithmic}
-\end{algorithm}
-
-Step~\ref{top_cover:select} effectively selects the smallest ``connected component'' ($\CC$) in the undirected graph induced by the remaining players as nodes and their choice sets as edges. The set of vertices of the smallest $CC$ is assigned to $S^k$. Formally, select $i\in R^k$ such that $|\CC(i,R^k)| \leq |\CC(j,R^k)|$ for each $j\in R^k$; and $S^k\leftarrow \CC(i,R^k)$, where $\CC(i, S)$ denotes the connected component with $i$ as the root node, in the graph induced by $S$ as vertices and directed edges $E$, $(i, j) \in E$ if $j \in \ch(i, S)$ for all $j \in S$.
-
-Note that the input of the top covering algorithm is the entire preference profile of all players, which is in the order of $O(2^{|N|})$. Finding the choice set for every player after each round of player removal at Step~\ref{top_cover:remove} requires scanning through every remaining player's preference relation, which makes the most expensive part of this algorithm, so this algorithm is exponential time in the number of players.
-
-\citename{Dimitrov2006} propose a similar algorithm for finding a strict core stable coalition structure in polynomial time in the number of players specifically for appreciation-of-friends preference profiles. Their algorithm effectively replaces Step~\ref{top_cover:select} of Algorithm~\ref{alg:top_covering} with finding the largest strongly connected component (SCC) in the graph induced by $R^k$. Due to the the appreciation of friends preference profile, Step~\ref{top_cover:remove} no longer requires scanning through every remaining player's preference relation for removed players, making the partition equivalently a strong decomposition of the graph induced by $N$.
 
 \subsection{PAC Learning and PAC Stability}
 Probably Approximately Correct (PAC) learning is the canonical framework for provable probabilistic approximations to functions. In this framework, a learner receives samples and selects a function from a class of possible functions. The selected function is called the \textit{hypothesis}, which should be likely to predict new samples from the same distribution. A good probabilistic approximation means that with probability of at least $1 - \delta$, the selected function's output has an average error less than or equal to $\varepsilon$, where $0 < \varepsilon, \delta < 1$. A hypothesis class is efficiently PAC learnable if such a good probabilistic approximation can be produced by some algorithm that has both running time and input sample size be polynomial in $n$, $\frac{1}{\varepsilon}$, and $\log{\frac{1}{\delta}}$.
 
-\citename{ijcai2017-380} define that a class of hedonic games is PAC stablizable if there exists an algorithm that produces a partition $\pi$ such that $\Pr_{S\sim D}[\text{S core blocks } \pi] < \varepsilon$; both the number of samples required by the algorithm to provide this PAC guarantee, and the running time of producing a consistent solution are polynomial in $n$, $\frac{1}{\varepsilon}$, and $\log{\frac{1}{\delta}}$. In the same paper, \citename{ijcai2017-380} also showed that top responsive games are efficiently PAC stablizable even though they are not PAC learnable. The PAC stable partition can be computed with Algorithm~\ref{alg:pac_top_covering}.
-
-\begin{algorithm}[htb]
-  \caption{PAC Top Covering Algorithm}
-  \label{alg:pac_top_covering}
-  \textbf{Input:} $\eps$, $\delta$, set $\cal S$ of $m = (2n^4 + 2n^3)\ceil{\frac{1}{\eps}\log\frac{2n^3}{\delta}}$ samples from $\cal D$
-  \begin{algorithmic}[1]
-
-  \State $R^1 \gets N$, $\pi \gets \emptyset$
-  \State $\samples \gets \ceil{2n^2 \frac{1}{\eps}\log\frac{2n^3}{\delta}}$
-  \For{$k=1$ to $|N|$}
-
-    \State \label{pac_top_cover:sample_begin} $\cal S' \gets$ take and remove $\samples$ samples from $\cal S$
-    \State $\cal S' \gets \{T: T \in \cal S', T \subseteq R^k\}$
-    \For{$i \in R^k$}
-      \If{$i \notin \bigcup_{X \in \cal S'} X$}
-        \State$B_{i,k} \gets \{i\}$
-      \Else
-        \State $B_{i,k} \in \arg\max_{T \in \cal S'}{v_i(T)}$
-        \State $B_{i,k} \gets \underset{\{T \in \cal S' : \ch(i,T) = \ch(i,B_{i,k})\}}{\bigcap} T$.
-      \EndIf
-    \EndFor
-
-    \For{$j = 1,\dots,|R^k|$}
-      \State $\cal S'' \gets$ take and remove $\samples$ samples from $\cal S$
-      \State $\cal S'' \gets \{T: T \in \cal S'', T \subseteq R^k\}$
-      \For{$i \in R^k$}
-        \State $B_{i,k} \gets B_{i,k} \cap \underset{T \in \cal S'' : \ch(i,T) = \ch(i,B_{i,k})}{\bigcap} T$.
-      \EndFor
-    \EndFor \label{pac_top_cover:sample_end}
-
-    \State Select $i\in R^k$ such that $|\CC(i,R^k)| \leq |\CC(j,R^k)|$ for each $j\in R^k$.
-    \State $S^k\leftarrow  \CC(i,R^k)$; $\pi \leftarrow  \pi \cup \lbrace S^k \rbrace$;  and $R^{k+1} \leftarrow  R^k \setminus S^k$
-    \If {$R^{k+1} = \emptyset$}
-      \State \Return $\pi$
-    \EndIf
-  \EndFor
-
-  \State \Return $\pi$
- \end{algorithmic}
-\end{algorithm}
-
-In Algorithm~\ref{alg:pac_top_covering}, every sample $j$ consists of a coalition $S_j \subseteq N$, and the values assigned to $S_j$ by each of its member $\vec{v}(S_j) = (v_i(S_j))_{i \in S_j}$.
+\citename{ijcai2017-380} define that a class of hedonic games is PAC stablizable if there exists an algorithm that produces a partition $\pi$ such that $\Pr_{S\sim D}[\text{S core blocks } \pi] < \varepsilon$; both the number of samples required by the algorithm to provide this PAC guarantee, and the running time of producing a consistent solution are polynomial in $n$, $\frac{1}{\varepsilon}$, and $\log{\frac{1}{\delta}}$. In the same paper, \citename{ijcai2017-380} also showed that top responsive games are efficiently PAC stablizable even though they are not PAC learnable.
+A PAC stable partition can be computed with Algorithm~\ref{alg:pac_top_covering} which we will describe in detail in Chapter~\ref{ch:hedonic} Section~\ref{sec:top_responsive_game} Subsection~\ref{subsec:algorithms}.
