@@ -29,6 +29,8 @@
   dashed=false,
   doi=false]{biblatex}
 \DeclareFieldFormat*{title}{``#1''\newunitpunct} % move comma outside the quotation mark
+\addbibresource{abb.bib}
+\addbibresource{abbshort.bib}
 \addbibresource{references.bib}
 
 \usepackage{microtype} % Better typography
@@ -89,29 +91,29 @@
 \newcommand{\intervalOL}{\interval[open left]}
 \newcommand{\intervalOR}{\interval[open right]}
 
-\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
-\SetAlgorithmName{Algorithm}{Algorithm}{Algorithm}
-\newcommand{\AlgoFontSize}{\small} % \scriptsize \footnotesize \small \normalsize
-\IncMargin{0.5em}
-\SetCommentSty{textnormal}
-\SetNlSty{}{}{:}
-\SetAlgoNlRelativeSize{0}
-\SetKwInput{KwGlobal}{Global}
-\SetKwInput{KwPrecondition}{Precondition}
-\SetKwProg{Proc}{Procedure}{:}{}
-\SetKwProg{Func}{Function}{:}{}
-\SetKw{And}{and}
-\SetKw{Or}{or}
-\SetKw{To}{to}
-\SetKw{DownTo}{downto}
-\SetKw{Break}{break}
-\SetKw{Continue}{continue}
-\SetKw{SuchThat}{\textit{s.t.}}
-\SetKw{WithRespectTo}{\textit{wrt}}
-\SetKw{Iff}{\textit{iff.}}
-\SetKw{MaxOf}{\textit{max of}}
-\SetKw{MinOf}{\textit{min of}}
-\SetKwBlock{Match}{match}{}{}
+% \usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+% \SetAlgorithmName{Algorithm}{Algorithm}{Algorithm}
+% \newcommand{\AlgoFontSize}{\small} % \scriptsize \footnotesize \small \normalsize
+% \IncMargin{0.5em}
+% \SetCommentSty{textnormal}
+% \SetNlSty{}{}{:}
+% \SetAlgoNlRelativeSize{0}
+% \SetKwInput{KwGlobal}{Global}
+% \SetKwInput{KwPrecondition}{Precondition}
+% \SetKwProg{Proc}{Procedure}{:}{}
+% \SetKwProg{Func}{Function}{:}{}
+% \SetKw{And}{and}
+% \SetKw{Or}{or}
+% \SetKw{To}{to}
+% \SetKw{DownTo}{downto}
+% \SetKw{Break}{break}
+% \SetKw{Continue}{continue}
+% \SetKw{SuchThat}{\textit{s.t.}}
+% \SetKw{WithRespectTo}{\textit{wrt}}
+% \SetKw{Iff}{\textit{iff.}}
+% \SetKw{MaxOf}{\textit{max of}}
+% \SetKw{MinOf}{\textit{min of}}
+% \SetKwBlock{Match}{match}{}{}
 
 \usepackage{array}
 \newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
@@ -157,3 +159,30 @@
 %%% For example code used only
 \usepackage{lipsum} % for generating dummy text
 \newcommand{\CMD}[1]{\texttt{\string#1}} % for typing a command
+
+% from AAAI paper
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{algorithmicx}
+
+\newcommand{\tup}[1]{\langle #1 \rangle}
+\renewcommand{\cal}[1]{\mathcal{#1}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\Ch}{\mathit{Ch}}
+\newcommand{\ch}{\mathit{ch}}
+\newcommand{\CC}{\mathit{CC}}
+\newcommand{\SCC}{\mathit{SCC}}
+\newcommand{\core}{\mathit{Core}}
+\newcommand{\samples}{\omega}
+\newcommand{\citenameyear}[1]{\citeauthor{#1}, (\citeyear{#1})}
+
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{definition}[theorem]{Definition}
+

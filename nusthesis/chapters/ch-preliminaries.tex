@@ -1,0 +1,230 @@
+\SetPicSubDir{ch-Preliminaries}
+\SetExpSubDir{ch-Preliminaries}
+
+\chapter{Preliminaries}
+\label{ch:preliminaries}
+\vspace{2em}
+
+In this chapter, we recall some definitions relating to hedonic games,
+coalition structures, stability solution concepts, and PAC stability.
+These technical details are important foundation for our data driven experiments.
+
+\section{Hedonic Game}
+\label{sec:hedonic_game}
+A \textit{hedonic game} is a pair $(N, P)$, where $N$ is a finite set of players
+$\{1, \cdots, n\}$ and $P$ is a \textit{preference profile} consisting of
+preference relations $\succeq_i$ for every player $i \in N$:
+$P = (\succeq_1, \cdots, \succeq_n)$.
+A \textit{preference relation} $\succeq_i$ is a reflective, complete, and
+transitive binary relation on $\mathcal{N}_i$, where $\mathcal{N}_i$ is the set
+of all non-empty subset of $N$ that includes player $i$;
+i.e., $\mathcal{N}_i = \{S \subseteq N: i \in S, S \neq \emptyset \}$
+
+Consider a parliament; who are "natural allies"? One way to model this is by
+assuming that each member has a preference relation over various groups they
+wish to be part of; our objective is to identify partitions
+(also known as \textit{coalition structures}) that satisfy certain desirable
+properties, such as stability.
+
+We are learning preferences from data, but still need to make certain
+assumptions about a player's utility model.
+We now describe the two classes of preference models our study is built upon.
+
+\subsection{Top Responsive Preferences}
+\label{subsec:top_responsive_preferences}
+The intuition behind top responsiveness is that every player derives their
+utility from the most preferred subset players of the coalition they belong.
+If two coalitions, with one containing the other, yield the same utility for
+a player, the tie is broken in favor of the smaller coalition.
+
+In the context of our dataset, it captures the following idea:
+politicians care about whose votes they stand with;
+they want to vote with other politicians they like.
+If they can manage to pass a bill with fewer members involved,
+it is more efficient therefore more preferable.
+
+A player $i$'s most preferred sets of coalitions is called \textit{choice sets}:
+$\Ch(i, S) = \{S' \subseteq S: (i \in S') \wedge (S' \succeq_i S'' \forall S'' \subseteq S)\}$.
+The unique choice set in $\Ch(i, S)$ is denoted as $\ch(i, S)$.
+A {\em top responsive} preference profile requires that for any player $i \in N$,
+and any coalition that may contain player $i$: $S, T \in \mathcal{N}_i$:
+\begin{enumerate}
+  \item $|\Ch(i, S)| = 1$.
+  \item if $\ch(i, S) \succ_i \ch(i, T)$ then $S \succ_i T$
+  \item if $\ch(i, S) = \ch(i, T)$ and $S \subset T$ then $S \succ_i T$
+\end{enumerate}
+
+\begin{example}
+\label{example:not_top_responsive_pref}
+  Consider the classic ``love triangle'' preference profile, where player 1 wants
+  to be with player 2, player 2 wants to be with player 3, and player 3 wants to
+  be with player 1. All players prefer two-player coalitions over the three-player
+  coalition over being alone.
+  The resulting preference profile is a hednoic game however not a top responsive
+  game:
+
+  player 1: $\{1, 2\} \succ_1 \{1, 3\} \succ_1 \{1, 2, 3\} \succ_1  \{1\}$
+
+  player 2: $\{2, 3\} \succ_2 \{1, 2\} \succ_2 \{1, 2, 3\} \succ_2  \{2\}$
+
+  player 3: $\{1, 3\} \succ_3 \{2, 3\} \succ_3 \{1, 2, 3\} \succ_3  \{3\}$
+
+  It does not satisfy top responsiveness because the grand coalition $\{1, 2, 3\}$
+  contains every player's top choice, which is their choice set when all players
+  are considered, but is outranked by another two-player coalition every time.
+\end{example}
+
+\begin{example}
+\label{example:top_responsive_pref}
+  If we modify Example~\ref{example:not_top_responsive_pref} by making every player
+  rank the three-player coalition as their second most preferred coalition, the
+  resulting preference profile is top responsive:
+
+  player 1: $\{1, 2\} \succ_1 \{1, 2, 3\} \succ_1 \{1, 3\} \succ_1  \{1\}$
+
+  player 2: $\{2, 3\} \succ_2 \{1, 2, 3\} \succ_2 \{1, 2\} \succ_2  \{2\}$
+
+  player 3: $\{1, 3\} \succ_3 \{1, 2, 3\} \succ_3 \{2, 3\} \succ_3  \{3\}$
+
+\end{example}
+
+The description of a generic top responsive preference profile is exponentially
+large in the number of players, as each player needs to rank all possible
+coalitions they may belong to.
+In our implementation and experiments in Chapter~\ref{ch:hedonic}, we will
+explore top responsive models in both its generic form
+(Subsection~\ref{subsec:handcrafted_value_function}) and specific sub-classes of
+this preference model (Subsection~\ref{subsec:appreciation_of_friends},
+Subsection~\ref{subsec:aversion_to_enemies}).
+
+\subsection{Boolean Preferences}
+\label{subsec:boolean_preferences}
+Boolean preference model assumes dichotomous preferences of every player ---
+a player view any coalition she may belong to as either satisfactory or
+unsatisfactory.
+A player is indifferent among all satisfactory coalitions and indifferent
+among all unsatisfactory coalitions, however strictly prefers any satisfactory
+coalition over any unsatisfactory coalition.
+
+\begin{example}
+\label{example:boolean_pref}
+  The following preference profile describes a Boolean hedonic game where
+  player 1 is only happy with the grand coalition, player 2 only likes coalitions
+  of size 2, while player 3 only finds it satisfactory when she is alone:
+
+  player 1: $\{1, 2, 3\} \succ_1 \{1, 2\}, \{1, 3\}, \{1\}$
+
+  player 2: $\{1, 2\}, \{2, 3\} \succ_2 \{1, 2, 3\}, \{2\}$
+
+  player 3: $\{3\} \succ_3 \{1, 2, 3\}, \{1, 3\}, \{2, 3\}$
+\end{example}
+
+A Boolean preference profile is not necessarily top responsive --- 
+Example~\ref{example:boolean_pref} is not top responsive.
+Player 3 has choice sets
+$\ch(3, \{1, 2, 3\}) = \ch(3, \{1, 3\}) = \ch(3, \{2, 3\}) = \{3\}$.
+To satisfy top responsiveness, player 3 would prefer $\{1, 3\}, \{2, 3\}$ over
+$\{1, 2, 3\}$, however in Example~\ref{example:boolean_pref} she is indifferent
+among these three coalitions.
+
+When we observe voting data of parliament members, Boolean preference model
+allows us to simply group those members whose votes are the same into a coalition
+for any given bill, and label this coalition as satisfactory for everyone who is
+a part of.
+Intuitively it reflects the idea that a politician is approval of any group they
+have ever voted with.
+We will investigate Boolean preference model with our empirical voting data in
+Chapter~\ref{ch:hedonic} Section~\ref{sec:boolean_hedonic_game}.
+
+
+\section{Stability Concepts}
+\label{sec:stability_concepts}
+We are particularly interested in models that produce partitions that satisfy
+strategic considerations; specifically, we focus our attention on stability
+concepts that capture the idea that no group of players can be better off by
+leaving and forming their own coalition.
+Group based stability notions are stronger than those based on individual deviation,
+such as Nash stability, because individual based stability concepts do not account
+for the disutility of the group an individual player is joining or leaving.
+
+\subsection{Core \& Strict Core}
+\label{subsec:core_strict_core}
+A coalition $S \subseteq N$ \textit{strongly blocks} a coalition structure $\pi$
+if every player $i \in S$ strictly prefers $S$ over its current coalition $\pi(i)$;
+a coalition structure $\pi$ is \textit{core stable} when there is no strongly
+blocking coalition $S$.
+A coalition $S \subseteq N$ \textit{weakly blocks} a coalition structure $\pi$
+if every player $i \in S$ weakly prefers $S$ over its current coalition $\pi(i)$
+and there exists at least one player $j \in S$ who strictly prefers $S$
+over $\pi(j)$; a coalition structure is strictly core stable when there is no
+weakly blocking coalition.
+
+Example~\ref{example:not_top_responsive_pref} does not have any core stable
+partition: the grand coalition $\{1, 2, 3\}$ is strongly blocked by any two-player
+coalition; the partition made of a two-player coalition and a one-player
+coalition is strongly blocked by another two-player coalition, for example,
+$\pi = \{\{1, 2\}, \{3\}\}$ is strongly blocked by $\{2, 3\}$; the partition made
+of single players is strongly blocked by any two-player coalition.
+
+Example~\ref{example:top_responsive_pref}, on the other hand, has a strict core
+stable partition: $\{1, 2, 3\}$ as no subset of players can be better off by
+deviating together.
+
+\subsection{Strong Nash \& Strict Strong Nash}
+\label{subsec:strong_nash_strict_strong_nash}
+Next we cover two solution concepts with even stronger notions of stability
+based on group deviation.
+If a partition $\pi' \neq \pi$ exists with movement of players $S \subseteq N$
+and $S \neq \emptyset$ (denoted as $\pi \xrightarrow{S} \pi'$), where
+$\forall i \in S$, $\pi'(i) \succ_i \pi(i)$,
+and $\forall j \in N\text{\textbackslash}S$, $\pi'(j) = \pi(j)$,
+then $S$ strongly Nash blocks $\pi$.
+A partition that admits no strongly Nash blocking set $S \subseteq N$ is said
+to be strong Nash stable (SNS).
+A non-empty set of players $S \subseteq N$ weakly Nash blocks $\pi$ if
+$\forall i \in S$, $\pi'(i) \succeq_i \pi(i)$ and $\exists j \in S$,
+$\pi'(j) \succ_j \pi(j)$.
+A partition that admits no weakly Nash blocking set $S \subseteq N$ is said to
+be strict strong Nash stable (SSNS).
+
+For Example~\ref{example:top_responsive_pref}, the strict core stable solution
+$\{1, 2, 3\}$ is also SSNS.
+
+\paragraph{}
+A top responsive preference profile guarantees the existence of a strict core partition.
+Moreover, top responsiveness also warrants a strict strong Nash stable partition
+if all players preference relations are \textit{mutual} ––– for all $i, j \in N$,
+for all coalition that contains $i$ and $j$:
+$S \in \mathcal{N}_i \cap \mathcal{N}_j$, $i \in ch(j, S)$ if and only if
+$j \in ch(i, S)$.
+This means if we can model empirical data with mutual preferences,
+we can achieve the strongest notion of group based notion of stability.
+
+
+\section{PAC Learning \& PAC Stability}
+\label{sec:pac_learning_pac_stability}
+Probably Approximately Correct (PAC) learning is the canonical framework for
+provable probabilistic approximations to functions.
+In this framework, a learner receives samples and selects a function from a class
+of possible functions.
+The selected function is called the \textit{hypothesis}, which should be likely
+to predict new samples from the same distribution.
+A good probabilistic approximation means that with probability of at least
+$1 - \delta$, the selected function's output has an average error less than or
+equal to $\varepsilon$, where $0 < \varepsilon, \delta < 1$.
+A hypothesis class is efficiently PAC learnable if such a good probabilistic
+approximation can be produced by some algorithm that has both running time and
+input sample size be polynomial in $n$, $\frac{1}{\varepsilon}$, and
+$\log{\frac{1}{\delta}}$.
+
+\citenameyear{ijcai2017-380} define that a class of hedonic games is PAC stablizable
+if there exists an algorithm that produces a partition $\pi$ such that
+$\Pr_{S\sim D}[\text{S core blocks } \pi] < \varepsilon$;
+both the number of samples required by the algorithm to provide this PAC guarantee,
+and the running time of producing a consistent solution are polynomial in $n$,
+$\frac{1}{\varepsilon}$, and $\log{\frac{1}{\delta}}$.
+In the same paper, \citenameyear{ijcai2017-380} also show that top responsive games
+are efficiently PAC stablizable even though they are not PAC learnable.
+A PAC stable partition can be computed with Algorithm~\ref{alg:pac_top_covering}
+which we will describe in detail in Chapter~\ref{ch:hedonic}
+Section~\ref{sec:top_responsive_game} Subsection~\ref{subsec:algorithms}.
