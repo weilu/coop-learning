@@ -5,8 +5,9 @@
 \label{ch:preliminaries}
 \vspace{2em}
 
-We will discuss the technical details of top responsive games,
-various stability concepts, mutuality, and PAC stability in this chapter.
+In this chapter, we recall some definitions relating to hedonic games,
+coalition structures, stability solution concepts, and PAC stability.
+These technical details are important foundation for our data driven experiments.
 
 \section{Hedonic Game}
 \label{sec:hedonic_game}
@@ -202,7 +203,28 @@ we can achieve the strongest notion of group based notion of stability.
 
 \section{PAC Learning \& PAC Stability}
 \label{sec:pac_learning_pac_stability}
-Probably Approximately Correct (PAC) learning is the canonical framework for provable probabilistic approximations to functions. In this framework, a learner receives samples and selects a function from a class of possible functions. The selected function is called the \textit{hypothesis}, which should be likely to predict new samples from the same distribution. A good probabilistic approximation means that with probability of at least $1 - \delta$, the selected function's output has an average error less than or equal to $\varepsilon$, where $0 < \varepsilon, \delta < 1$. A hypothesis class is efficiently PAC learnable if such a good probabilistic approximation can be produced by some algorithm that has both running time and input sample size be polynomial in $n$, $\frac{1}{\varepsilon}$, and $\log{\frac{1}{\delta}}$.
+Probably Approximately Correct (PAC) learning is the canonical framework for
+provable probabilistic approximations to functions.
+In this framework, a learner receives samples and selects a function from a class
+of possible functions.
+The selected function is called the \textit{hypothesis}, which should be likely
+to predict new samples from the same distribution.
+A good probabilistic approximation means that with probability of at least
+$1 - \delta$, the selected function's output has an average error less than or
+equal to $\varepsilon$, where $0 < \varepsilon, \delta < 1$.
+A hypothesis class is efficiently PAC learnable if such a good probabilistic
+approximation can be produced by some algorithm that has both running time and
+input sample size be polynomial in $n$, $\frac{1}{\varepsilon}$, and
+$\log{\frac{1}{\delta}}$.
 
-\citename{ijcai2017-380} define that a class of hedonic games is PAC stablizable if there exists an algorithm that produces a partition $\pi$ such that $\Pr_{S\sim D}[\text{S core blocks } \pi] < \varepsilon$; both the number of samples required by the algorithm to provide this PAC guarantee, and the running time of producing a consistent solution are polynomial in $n$, $\frac{1}{\varepsilon}$, and $\log{\frac{1}{\delta}}$. In the same paper, \citename{ijcai2017-380} also showed that top responsive games are efficiently PAC stablizable even though they are not PAC learnable.
-A PAC stable partition can be computed with Algorithm~\ref{alg:pac_top_covering} which we will describe in detail in Chapter~\ref{ch:hedonic} Section~\ref{sec:top_responsive_game} Subsection~\ref{subsec:algorithms}.
+\citename{ijcai2017-380} define that a class of hedonic games is PAC stablizable
+if there exists an algorithm that produces a partition $\pi$ such that
+$\Pr_{S\sim D}[\text{S core blocks } \pi] < \varepsilon$;
+both the number of samples required by the algorithm to provide this PAC guarantee,
+and the running time of producing a consistent solution are polynomial in $n$,
+$\frac{1}{\varepsilon}$, and $\log{\frac{1}{\delta}}$.
+In the same paper, \citename{ijcai2017-380} also show that top responsive games
+are efficiently PAC stablizable even though they are not PAC learnable.
+A PAC stable partition can be computed with Algorithm~\ref{alg:pac_top_covering}
+which we will describe in detail in Chapter~\ref{ch:hedonic}
+Section~\ref{sec:top_responsive_game} Subsection~\ref{subsec:algorithms}.
