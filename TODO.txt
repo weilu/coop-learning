@@ -65,7 +65,7 @@ TODO (29 Jul)
 TODO (2 Aug)
 - run with loop 100 times with sampling p1 [DONE]
 - writing p2
-- how many cases of violation in preferrence profile p4
+- how many cases of violation in preference profile p4
 - implement friends & enemy model p3
 - check out Haris Aziz research
 - include data -> pref -> solution vs data -> solution approach in writing [DONE]
@@ -238,3 +238,48 @@ Questions:
   - existing models on past Knesset
   - existing models on other country's parliaments
   - filter knesset members
+
+19 Sep
+- review boolean models
+- thesis structure:
+
+  - Introduction
+    - Research Questions
+  - Literature review
+  - Preliminaries
+  - Experiment Methodology
+    - Data
+    - Quantitative Measurements
+    - Qualitative Assessment Criteria
+  - Hedonic Game Stability Based Models
+      - Handcrafted Value Function
+        - Deterministic
+        - PAC
+      - Appreciation of Friends
+        - Deterministic
+        - PAC
+      - Aversion to enemies
+        - Deterministic
+        - PAC
+      - Boolean Hedonic Game
+        - Deterministic
+  - Comparison Machine Learning Models
+    - k-means Clustering
+    - Stochastic Block Models
+  - Experiment Analysis
+    - Results
+    - Discussion
+  - Conclusion
+    - Summary
+    - Future Work
+
+TODO:
+- check out papers:
+  - A PAC framework for aggregating agents' judgements AAAI 19
+  - A voting based system for ethical decision making
+- intuitive examples should be voting scenario
+
+Sep 29 Notes:
+- PAC algo: What exactly is D? D represents prob distribution of likelihood of each coalition observed?
+  what's the point of "informative utility model"?
+- how to use abb.bib?
