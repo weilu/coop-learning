@@ -1,0 +1,465 @@
+\SetPicSubDir{ch-Hedonic}
+\SetExpSubDir{ch-Hedonic}
+
+\chapter{Hedonic Game Stability Models}
+\label{ch:hedonic}
+\vspace{2em}
+
+\section{Top Responsive Game}
+\label{sec:top_responsive_game}
+Recall that top responsiveness models a preference profile where every player
+derives their utility for a given coalition based on only the most preferred
+subset of players in their coalition.
+In the context of our dataset, it models the idea that politicians care about
+whose votes they stand with; they want to vote with other politicians they like.
+Since we do not observe quantifiable preferences of each of the Knesset member
+over other members, we derive their preferences from the Knesset voting data
+assuming top responsiveness.
+Top responsiveness guarantees a strictly core stable partition.
+With the addition of mutuality, as discussed in Section~\ref{sec:stability_concepts},
+a strict strong Nash stable partition can be computed if the full preference
+profile is given.
+When the complete preference profile is not available, we can approximate
+a strict strong Nash stable partition.
+
+We will first introduce existing top responsive game algorithms for producing a
+stable parition and a PAC stable partition in Subsection~\ref{subsec:algorithms},
+followed by our improved PAC algorithm in
+Subsection~\ref{subsec:improved_pac_algorithm}.
+We then present three specific top responsive game models that we formulate
+and implement as part of our experiments in
+Subsection~\ref{subsec:handcrafted_value_function},
+Subsection~\ref{subsec:appreciation_of_friends},
+and Subsection~\ref{subsec:aversion_to_enemies}.
+
+\subsection{Existing Algorithms}
+\label{subsec:algorithms}
+In this section we describe two classes of algorithms which we implement and adapt
+for every top responsive preference models of our choice.
+The complete preference profile algorithms require the full preference profile as
+input, whereas the PAC algorithm requires samples of coalitions observed as input.
+
+\paragraph{Full Information Algorithms}
+\label{para:full_pref_algos}
+The top covering algorithm computes a strict core stable partition for top
+responsive games.
+The algorithm works by discovering a stable coalition, adding this coalition
+to the output partition, removing players of this coalition from the pool
+of all players, then repeating the coalition discovery, addition to output
+partition, and player removal steps among the remaining players, until there is
+no more player left to be assigned.
+
+\begin{algorithm}[htb]
+  \caption{Top Covering Algorithm}
+  \label{alg:top_covering}
+  \textbf{Input:} A hedonic game satisfying top responsiveness.
+
+  \begin{algorithmic}[1]
+  \State $R^1 \leftarrow N$; $\pi \leftarrow \emptyset$.
+
+  \For{$k=1$ to $|N|$}
+    \State \label{top_cover:select} Select $S^k$
+    \State \label{top_cover:remove} $\pi \leftarrow \pi \cup \lbrace S^k \rbrace$ and $R^{k+1} \leftarrow  R^k \setminus S^k$
+    \If {$R^{k+1} = \emptyset$}
+      \State \Return $\pi$
+    \EndIf
+  \EndFor
+
+  \State \Return $\pi$
+ \end{algorithmic}
+\end{algorithm}
+
+Let $\CC(i, S)$ denotes the connected component with $i$ as the root node,
+in the graph induced by $S$ as vertices and directed edges $E$,
+$(i, j) \in E$ if $j \in \ch(i, S)$ for all $j \in S$.
+Step~\ref{top_cover:select} then expands to the following: select $i\in R^k$ such
+that $|\CC(i,R^k)| \leq |\CC(j,R^k)|$ for each $j\in R^k$;
+and $S^k\leftarrow \CC(i,R^k)$
+
+Note that the input of the top covering algorithm is the entire preference profile
+of all players, which is in the order of $O(2^{|N|})$.
+Finding the choice set for every player after each round of player removal at
+Step~\ref{top_cover:remove} requires scanning through every remaining player's
+preference relation, which makes the most expensive part of this algorithm,
+so this algorithm is exponential time in the number of players.
+
+\citenameyear{Dimitrov2006} propose a similar algorithm for finding a strict core
+stable coalition structure in polynomial time in the number of players
+specifically for appreciation-of-friends preference profiles.
+Their algorithm effectively replaces Step~\ref{top_cover:select} of
+Algorithm~\ref{alg:top_covering} with finding the largest strongly connected
+component (SCC) in the graph induced by $R^k$.
+We refer to their algorithm as \textit{appreciation-of-friends algorithm}.
+Due to the definition of appreciation-of-friends preference profile,
+Step~\ref{top_cover:remove} no longer requires scanning through every remaining
+player's preference relation for removed players, making the partition
+equivalently the strongly connected components of the graph induced by $N$.
+
+
+\paragraph{PAC Algorithm}
+\label{para:pac_algo}
+
+When we do not have full information about the preference profile, but we have
+sufficient number of observations of coalitions that are i.i.d. samples from
+the probability distribution of all possible coalitions and how much each player
+value each coalition in this sample set, a PAC stable partition can be computed
+using the following algorithm:
+
+\begin{algorithm}[htb]
+  \caption{PAC Top Covering Algorithm}
+  \label{alg:pac_top_covering}
+  \textbf{Input:} $\eps$, $\delta$, set $\cal S$ of $m = (2n^4 + 2n^3)\ceil{\frac{1}{\eps}\log\frac{2n^3}{\delta}}$ samples from $\cal D$
+  \begin{algorithmic}[1]
+
+  \State $R^1 \gets N$, $\pi \gets \emptyset$
+  \State $\samples \gets \ceil{2n^2 \frac{1}{\eps}\log\frac{2n^3}{\delta}}$
+  \For{$k=1$ to $|N|$}
+
+    \State \label{pac_top_cover:sample_begin} $\cal S' \gets$ take and remove $\samples$ samples from $\cal S$
+    \State $\cal S' \gets \{T: T \in \cal S', T \subseteq R^k\}$
+    \For{$i \in R^k$}
+      \If{$i \notin \bigcup_{X \in \cal S'} X$}
+        \State$B_{i,k} \gets \{i\}$
+      \Else
+        \State \label{pac_top_cover:argmax} $B_{i,k} \in \arg\max_{T \in \cal S'}{v_i(T)}$
+        \State $B_{i,k} \gets \underset{\{T \in \cal S' : \ch(i,T) = \ch(i,B_{i,k})\}}{\bigcap} T$.
+      \EndIf
+    \EndFor
+
+    \For{$j = 1,\dots,|R^k|$}
+      \State $\cal S'' \gets$ take and remove $\samples$ samples from $\cal S$
+      \State $\cal S'' \gets \{T: T \in \cal S'', T \subseteq R^k\}$
+      \For{$i \in R^k$}
+        \State $B_{i,k} \gets B_{i,k} \cap \underset{T \in \cal S'' : \ch(i,T) = \ch(i,B_{i,k})}{\bigcap} T$.
+      \EndFor
+    \EndFor \label{pac_top_cover:sample_end}
+
+    \State \label{pac_top_cover:select} Select $S^k$
+    \State $\pi \leftarrow  \pi \cup \lbrace S^k \rbrace$; and $R^{k+1} \leftarrow  R^k \setminus S^k$
+    \If {$R^{k+1} = \emptyset$}
+      \State \Return $\pi$
+    \EndIf
+  \EndFor
+
+  \State \Return $\pi$
+ \end{algorithmic}
+\end{algorithm}
+
+Step~\ref{pac_top_cover:select} is identical to that of
+Algorithm~\ref{alg:top_covering}'s Step~\ref{top_cover:select}, which expands to:
+select $i\in R^k$ such that $|\CC(i,R^k)| \leq |\CC(j,R^k)|$ for each $j\in R^k$;
+and $S^k\leftarrow \CC(i,R^k)$
+
+In Algorithm~\ref{alg:pac_top_covering}, every sample $j$ consists of a coalition
+$S_j \subseteq N$, and the values assigned to $S_j$ by each of its member
+$\vec{v}(S_j) = (v_i(S_j))_{i \in S_j}$.
+In practice, exact valuation of each coalition by every player is not necessary;
+it is sufficient to have preference rankings of all coalitions in the sample set
+for every player, because such rankings allow us to identify the coalition that
+maximizes each player's utility (Step~\ref{pac_top_cover:argmax}).
+
+
+\subsection{Improved PAC Algorithm}
+\label{subsec:improved_pac_algorithm}
+We discover that we can make Algorithm~\ref{alg:pac_top_covering} more efficient
+by replacing the step of finding the smallest $\CC$ with finding the largest
+Strongly Connected Component ($\SCC$).
+We name the resulting algorithm \textit{$\SCC$ based PAC top covering algorithm}.
+Our improvement is based on \citenameyear{Dimitrov2006}'s appreciation-of-friends
+strict core partition discovery algorithm (See Subsection~\ref{subsec:algorithms},
+Paragraph~\ref{para:full_pref_algos}).
+
+We first show that the appreciation-of-friends algorithm generalizes to all top
+responsive games; then we demonstrate that making the same modification to the
+PAC top covering algorithm (Algorithm~\ref{alg:pac_top_covering}) still produces
+a PAC stable partition but with improved running time complexity.
+
+\begin{proposition}
+\label{prop:scc_generalizes}
+  The appreciation-of-friends algorithm produces a strictly core stable partition
+  given any top responsive preference profile.
+\end{proposition}
+
+\begin{proof}
+Assuming the resulting partition of the $SCC$ procedure $\pi$ is not strictly core
+stable, then there exists at least one weakly blocking coalition $S \subseteq N$
+and at least one player $i \in S$ prefers $S$ over $\pi(i)$.
+Consider the step when the coalition $\pi(i)$ is generated --- it was the largest
+strongly connected component in the directed graph induced by remaining players'
+choice sets.
+In order to form $S$ which is different from $\pi(i)$, either or both of the
+following steps must be carried out:
+
+\begin{enumerate}
+  \item at least one player $j \in \pi(i)$ needs to be removed from $\pi(i)$
+  \item at least one player $k \notin \pi(i)$ needs to be added to $\pi(i)$
+\end{enumerate}
+
+When only Step 1 is carried out, since $\pi(i)$ is a strongly connected component,
+$j$ has at least one incoming edge, which means it is in the choice set of at
+least one other player $j' \in \pi(i)$, therefore its removal makes player
+$j' \in S$ worse off, therefore $S$ cannot be weakly blocking $\pi$.
+
+When only Step 2 is carried out, since player $k$ was not part of the strongly
+connected component that induces $\pi(i)$, $k$ only has incoming or outgoing edges
+between itself and the $\SCC$ but not both.
+If $k$ only has outgoing edges to $\SCC$ it means adding $k$ to $\pi(i)$ will only
+make $k$ better off, but other players in $\pi(i)$ worse off because
+$S = \pi(i) \cup \{k\}$ is bigger in size $|S| > |\pi(i)|$ while for any player
+$i' \in S, i' \neq k$ their choice set remains the same, therefore making $S$ less
+preferable than $\pi(i)$ for player $i' \in S, i' \neq k$ per definition of top
+responsiveness.
+Therefore $S$ is not blocking $\pi$ when $k$ only has outgoing edges to $\SCC$.
+In the case $k$ only has incoming edges from $\SCC$, it means adding $k$ to
+$\pi(i)$ will only make some player $i \in \pi(i)$ better off as $k$ is in their
+choice set.
+However $k$ will be made worse off by this move, since none of the player in
+$\pi(i)$ is in $k$'s choice set.
+As such, $S$ is not blocking $\pi$ when only Step 2 is carried out.
+
+When both Step 1 and Step 2 are carried out to form $S$ from $\pi(i)$, since
+Step 1 is bound to make some player $j' \in \pi(i)$ worse off, the only way to
+compensate $j'$ is by adding someone from their choice set to $\pi(i)$.
+Assuming $k$ is in $j'$'s choice set, then $k$ only has incoming edges from the
+$\SCC$, which means $k$ will be worse off by joining $\pi(i)$, so $S$ cannot be
+blocking $\pi$.
+\end{proof}
+
+\begin{theorem}
+  The $\SCC$ based PAC top covering algorithm produces a PAC stable partition
+  for any top responsive game.
+\end{theorem}
+
+\begin{proof}[Proof Sketch]
+\citenameyear{ijcai2017-380} already prove that their PAC algorithm efficiently PAC
+stabilizes top responsive games.
+The correctness of their PAC algorithm relies on the fact that the coalition
+selection and deletion procedure based on finding the smallest $\CC$ produces
+a core stable partition when there's full visibility to players' choice sets;
+the PAC guarantee is an artefact of choice set approximation through sampling
+(Algorithm~\ref{alg:pac_top_covering} Step~\ref{pac_top_cover:sample_begin} to
+Step~\ref{pac_top_cover:sample_end}).
+Our modification to their algorithm does not change how players' choice sets
+are approximated; we only modified how coalitions are selected.
+We show in Proposition~\ref{prop:scc_generalizes} that modifying the coalition
+selection procedure from $\CC$ to $\SCC$ still produces a strict core stable
+partition for top responsive games, therefore the $\SCC$ based PAC algorithm
+still produces a PAC stable partition.
+\end{proof}
+
+The largest $\SCC$ procedure provides a running time improvement over the
+smallest $\CC$ procedure because finding the smallest $\CC$ requires
+$\mathcal{O}(|V|(|V| + |E|))$ time while the largest $\SCC$ can be found using
+Tarjan's algorithm in linear time $\mathcal{O}(|V| + |E|)$\cite{Tarjan72depthfirst}.
+This running time improvement is only meaningful for the PAC version of the
+top covering algorithm due to the input size of the original top covering
+algorithm being exponential in the number of players.
+In addition, taking out more players in the earlier iterations also reduces
+the amount of computation required for the later iterations, making our
+experiments run much faster than what it would have been with the original
+$\CC$ procedure.
+
+
+\subsection{Handcrafted Value Function}
+\label{subsec:handcrafted_value_function}
+
+First we attempt to formulate a generic top responsive preference model
+through representing every player's utility model using a value function.
+For each bill there are two natural coalitions:
+one formed by parliament members who voted ``for'',
+and the other formed by parliament members who voted ``against''.
+Note that the values assigned by members to their respective coalitions
+are not immediately well defined,
+so we define the player $i$'s value function for coalition $S$ as follow:
+
+Let $S_f$ be the set of members who voted ``for'' and
+$S_a$ the set of members who voted ``against''.
+$S$ can take on one of the two values $\{S_f, S_a\}$ at a time.
+$S_p$ denotes the set of parliament members who participated: $S_p = S_f \cup S_a$.
+
+\[
+  v_i(S) =
+  \begin{dcases}
+      1 + \frac{1}{|S|} + \frac{|S_p|}{|N|},& \text{if $S$ is the winning majority}\\
+      0,              & \text{otherwise}
+  \end{dcases}
+\]
+
+$S_f$ is the winning majority if $|S_f| > |S_a|$, vice versa. When $|S_f| = |S_a|$, $S_a$ is considered to be the winning majority.
+
+The conditional value function captures that a winning coalition,
+being successfully passing a bill or successfully blocking a bill,
+is always worth more than a losing coalition.
+$\frac{1}{|S|}$ reflects that a win is considered more valuable when it's
+achieved with fewer members, which is also conceptually consistent with
+top responsive game's preference for smaller coalitions.
+The partition term $\frac{|S_p|}{|N|}$ gives a win more value when more
+parliament members voted for or against the bill.
+For simplicity, we assume every member in a given coalition assigns
+equal value to their coalition.
+
+This handcrafted value function allows us to construct a partial preference
+relation for every parliament member.
+Note that the handcrafted value function does not guarantee that the generated partial preference profile satisfies top responsiveness.
+It makes this approach analogous to improper learning (a.k.a.\ representation independent learning).
+In learning theory, improper learning is when a learning algorithm is not
+restricted to output a hypothesis from the given hypothesis class,
+but should output a hypothesis with error not too far from that of
+the best hypothesis from the given hypothesis class.
+Similar to the rationale behind improper learning, allowing the
+partial preference profile to be not strictly top responsive gives us
+the flexibility to choose an approperiate representation of the problem.
+
+Although the original top covering algorithm takes the full preference
+profile as input, it would still terminate and produce a partition
+if the input is a partial preference profile.
+The produced partition is core stable with respect to the provided partial
+preference profile.
+
+In our implementation, we assume any omitted coalition is less preferred
+than those explicitly stated, because the existence of an observed
+coalition is evidence that every member in that coalition prefers to be
+a part of that coalition than some unobserved coalition.
+Upon discovery of the smallest $\CC$ in each iteration, we also remove any coalition that contains any of the removed player from the remaining player's preference relation. This quickly shrinks the number of preference relations for each remaining member in every iteration of the algorithm.
+
+For the PAC version of the algorithm, we do not have nearly enough samples
+as required by the algorithm --- The algorithm requires $O(2n^4)$ samples
+which is in the order of $10^5$; we only have 7489 bills in total.
+Therefore we simulate i.i.d by sampling $\frac{3}{4}$ of the bills
+with replacement and repeated the algorithm run 50 times to check
+the consistency of the partitions produced.
+
+Note that when we make the sample size $100\%$ of all bills and sample
+with replacement, the PAC algorithm should produce the same partition
+as the original top covering algorithm.
+Aside from the test cases we manually constructed, we also use this property to parameterize the PAC implementation and verify correctness of
+our top covering algorithm implementation.
+
+
+\subsection{Appreciation of Friends}
+\label{subsec:appreciation_of_friends}
+
+Our next set of experiments are based on the appreciation of friends model,
+which is a proper subset of top responsive games.
+
+\paragraph{Preference Model}
+
+In this preference model, a player classifies other players as either friends
+or enemies, and prefers any coalition with more friends and fewer enemies:
+
+Let $G_i$ be player $i$'s set of friends, and $B_i$ the set of enemies. $G_i \cup B_i \cup i = N$ and $G_i \cap B_i = \emptyset$. A preference profile $P^f$ is based on \textit{appreciation of friends} if for all player $i \in N$, $S \succeq_i T$ if and only if $|S \cap G_i| > |T \cap G_i|$ or $|S \cap G_i| = |T \cap G_i|$ and $|S \cap B_i| \leq |T \cap B_i|$.
+
+\paragraph{Implementation}
+
+We define friends of a player's as anyone whose votes agreed with the given
+player's votes more times than disagreed.
+Agreed votes are only counted if the given player voted ``for'' or ``against''.
+We experimented with two different ways of counting the disagreed votes:
+
+\begin{enumerate}
+  \item Narrow disagreement (general friends): the other player's vote is different from mine, and is either ``for'' or ``against''
+  \item Broad disagreement (selective friends): the other player's vote is different from mine
+\end{enumerate}
+
+Compared to narrow disagreement, broad disagreement leads to every player being
+more selective of friends; it may also break the symmetry of the friend relationship.
+In both cases, for any player, those who are not friends are considered enemies.
+
+For example, given 3 players and 3 bills, their votes are as follow:
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c|c|c|c|}
+\hline
+       & player 1 & player 2 & player 3 \\ \hline
+bill 1 & 1 & 1 & 2 \\
+bill 2 & 3 & 1 & 3 \\
+bill 3 & 3 & 2 & 3 \\
+\hline
+\end{tabular}
+\end{table}
+
+Under general friends, player 1 and 2 are friends because they agreed on bill 1.
+In comparison, under selective friends, from player 1's point of view, player 2
+is still a friend due to bill 1, while player 2 considers player 1 an enemy
+because player 1 did not vote with her for bill 2 and 3.
+
+As soon as the sets of friends and enemies are derived for each parliament member,
+we can expand them into a complete preference profile, and apply the top covering
+algorithm to obtain a strict strong Nash stable partition for the general friends
+preference profile, and a strict core stable partition for the selective friends
+preference profile. The notion of stability is weaker for the selective friends case
+due to the lack of symmetry.
+
+Aside from the two partitions yielded from the complete preference profiles,
+we implement and run two sets of PAC experiments based on the general friends
+and selective friends preference assumptions respectively.
+Similar to our approach in Section~\ref{subsec:handcrafted_value_function},
+we simulate i.i.d. by sampling with replacement $3/4$ of all bills;
+repeat the run 50 times to evaluate the consistency between different runs and
+for producing a robust PAC stable partition minimizing the chance of luck.
+
+For the PAC version of the experiments, due to sampling we do not observe all
+the bills every time we approximate players' preferences,
+therefore, for a given player, the sets of friends and enemies can be different
+from the complete preference profile cases, and also different between samples.
+Since we take the intersections of the best coalitions for any player across
+multiple sampling iterations, intuitively the PAC versions are more conservative
+in choosing friends compared to their complete profile preference conterpart.
+As a result, we expect to observe smaller and more coalitions in comparison.
+
+
+\subsection{Aversion to Enemies}
+\label{subsec:aversion_to_enemies}
+
+\section{Boolean Hedonic Game}
+\label{sec:boolean_hedonic_game}
+
+Boolean hedonic preferences means that each player partitions all possible
+coalitions they may be part of into two equivalence classes:
+satisfactory or unsatisfactory; in other words, a player either likes to be
+a member of a coalition or dislikes it.
+
+We can naturally derive such preferences from parliament members' past voting
+activities --- whenever a member votes with either ``for'' (or ``against''), they
+express their preference to be with other members whose votes are the same
+as theirs, and not to be with the group that voted differently.
+
+For example, given 3 players and 3 bills, their votes are as follow:
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c|c|c|c|}
+\hline
+       & player 1 & player 2 & player 3 \\ \hline
+bill 1 & 1 & 2 & 1 \\
+bill 2 & 3 & 1 & 1 \\
+bill 3 & 1 & 2 & 2 \\
+\hline
+\end{tabular}
+\end{table}
+
+From bill 1, we have $\{1, 3\} \succ_1 \{1, 2\}$, $\{2\} \succ_2 \{1, 2, 3\}$,
+$\{1, 3\} \succ_3 \{2, 3\}$.
+From bill 2, we have $\{2, 3\} \succ_2 \{2\}$, $\{2, 3\} \succ_3 \{3\}$.
+Player 1 is not involved as they voted abstained.
+Since there is nobody voted ``2 - against'', both player 2 and player 3 dislike
+joining an empty coalition.
+From bill 3, we have $\{1\} \succ_1 \{1, 2, 3\}$, $\{2, 3\} \succ_2 \{1, 2\}$,
+$\{2, 3\} \succ_3 \{1, 3\}$.
+
+In order to combine the preferences from bill 1, 2 and 3, we need to handle
+the cases when a coalition is both liked and disliked by a player, for example,
+player 3 likes $\{1, 3\}$ according to bill 1 but dislikes it according to bill 3;
+player 3 also likes $\{2, 3\}$ according to bill 2 and 3 but dislikes it according to bill 1.
+We tally the number of times a given coalition is liked and disliked by a player and
+rule according to the preference with more occurrences. When there are equal number of
+likes and dislikes, we break tie in favor of dislike.
+As such, in the above example, player 3 dislikes $\{1, 3\}$ and likes $\{2, 3\}$.
+
+Therefore we can merge the preferences derived from bill 1, 2, and 3:
+
+$\{1, 3\} \sim \{1\} \succ_1 \{1, 2\} \sim \{1, 2, 3\}$,
+$\{2, 3\} \succ_2 \{2\} \sim \{1, 2\} \sim \{1, 2, 3\}$,
+$\{2, 3\} \succ_3 \{1, 3\} \sim \{3\}$
+

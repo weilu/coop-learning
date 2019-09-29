@@ -1,0 +1,90 @@
+\SetPicSubDir{ch-Experiment}
+\SetExpSubDir{ch-Experiment}
+
+\chapter{Experiment Methodology}
+\label{ch:experiment}
+\vspace{2em}
+
+\section{Data}
+\label{sec:data}
+
+The Israeli political system, in thanks partially to its use of
+proportional representation, is made of multiple parties.
+The Israeli Knesset is the national legislative branch of the Israeli government.
+We limit our study to the 20th Knesset (2015-2019), which is the last
+Knesset preceding the current one.
+In this Knesset there are 10 parties, but some parties are unions of smaller parties.
+In some cases the parties have merged (e.g., the Likud or Meretz),
+and in some cases, they have different organizational structure
+(e.g., the Jewish Home party or the Joint List).
+
+While in the past, this preponderance of parties led to a multi-dimensional
+party system, leading to unexpected coalitions and combinations,
+in the past few decades Israeli parties can be, in general,
+ordered along a single right-left axis, which has to do mainly with
+the parties' approach to the Israeli-Palestinian conflict.
+This simplifies the considerations we need to take into account when analyzing
+the outcomes, and allows for easier comparison between the different models.
+More over, it allows us to more easily discern
+unexpected coalition structures that need to be explained.
+There is also relative ideological cohesion between coalition parties
+as well as between opposition parties.
+
+No Israeli party has ever been elected with a majority of Knesset seats,
+which means all governments are made of coalitions.
+In the past few years (including the Knesset we investigate)
+governments have tightened their grip over coalition parties
+by having a government committee issue a generally mandatory
+voting instructions for every proposed bill.
+The opposition, of course, is under no such control,
+but due to their relative ideologies, there is significant agreement.
+
+The Knesset website provides data access through Open Data Protocol (OData)
+on all its parliament members, laws, and every member's votes on every law.
+The Kenesset has 120 seats, but the 20th Knesset has 147 parliament members
+due to some Knesset members resigning or joining mid-term.
+We download all 147 parliament members' information including name,
+party affiliation and their votes for all 7515 bills deliberated.
+A vote can take on one of the following values
+0 (vote canceled), 1 (vote for), 2 (vote against),
+3 (abstained), 4 (did not attend).
+
+
+\subsection{Data Preprocessing}
+
+During data processing, we notice that more than half of all the vote values
+are missing despite the presence of value 4 for ``did not attend''.
+It raises questions regarding the data quality.
+We discover another API endpoint which provides summary information for
+every bill, including total number of ``for'' votes, ``against'' votes,
+``abstained'' votes, and if the bill is accepted.
+We download bill summary data set for the 20th Knesset and use it
+to check against the tallied vote numbers from the individual vote data.
+We end up discovering more inconsistencies:
+
+\begin{itemize}
+  \item Total bills checked: 7513,
+  \item Missing bills in the summary dataset: 2,
+  \item Number of bills with pass/reject status inconsistent: 26,
+  \item Number of bills with for count inconsistent : 273,
+  \item Number of bills with against count inconsistent : 402,
+  \item Number of bills with abstain count inconsistent : 2
+\end{itemize}
+
+We reach out to Knesset regarding the data inconsistency between
+two API endpoints, as well as the missing value issue.
+The Knesset data management team state that the inconsistency
+is likely a result of manual vote entries instead of votes recorded
+as a result of pressing the electronic button.
+Such manual vote entries are captured by the bill summary dataset
+but not individual member's vote dataset.
+
+For the purpose of our research, we treat the data with individual member's
+votes on every bill as the ground truth since it has the level of granularity
+required for modeling.
+We remove the 26 bills whose pass/reject status is inconsistent between
+the summary and individual data sets, since it's most likely that
+the individual data is wrong.
+
+\section{Quantitative Measurements}
+\section{Qualitative Assessment Criteria}
