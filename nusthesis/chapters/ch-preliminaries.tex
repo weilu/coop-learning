@@ -9,8 +9,10 @@ In this chapter, we recall some definitions relating to hedonic games,
 coalition structures, stability solution concepts, and PAC stability.
 These technical details are important foundation for our data driven experiments.
 
-\section{Hedonic Game}
+\section{Hedonic Games}
 \label{sec:hedonic_game}
+
+
 A \textit{hedonic game} is a pair $(N, P)$, where $N$ is a finite set of players
 $\{1, \cdots, n\}$ and $P$ is a \textit{preference profile} consisting of
 preference relations $\succeq_i$ for every player $i \in N$:
@@ -20,20 +22,20 @@ transitive binary relation on $\mathcal{N}_i$, where $\mathcal{N}_i$ is the set
 of all non-empty subset of $N$ that includes player $i$;
 i.e., $\mathcal{N}_i = \{S \subseteq N: i \in S, S \neq \emptyset \}$
 
-Consider a parliament; who are "natural allies"? One way to model this is by
+Consider a parliament; who are ``natural allies''? One way to model this is by
 assuming that each member has a preference relation over various groups they
-wish to be part of; our objective is to identify partitions
+wish to be part of; 
+our objective is to identify partitions
 (also known as \textit{coalition structures}) that satisfy certain desirable
 properties, such as stability.
 
-We are learning preferences from data, but still need to make certain
-assumptions about a player's utility model.
+We are learning preferences from data, but still need to make certain assumptions about player utility models.
 We now describe the two classes of preference models our study is built upon.
 
 \subsection{Top Responsive Preferences}
 \label{subsec:top_responsive_preferences}
 The intuition behind top responsiveness is that every player derives their
-utility from the most preferred subset players of the coalition they belong.
+utility from a most preferred subset of players from the coalition they belong to.
 If two coalitions, with one containing the other, yield the same utility for
 a player, the tie is broken in favor of the smaller coalition.
 
@@ -43,7 +45,7 @@ they want to vote with other politicians they like.
 If they can manage to pass a bill with fewer members involved,
 it is more efficient therefore more preferable.
 
-A player $i$'s most preferred sets of coalitions is called \textit{choice sets}:
+A player $i$'s most preferred sets of coalitions are called \textit{choice sets}:
 $\Ch(i, S) = \{S' \subseteq S: (i \in S') \wedge (S' \succeq_i S'' \forall S'' \subseteq S)\}$.
 The unique choice set in $\Ch(i, S)$ is denoted as $\ch(i, S)$.
 A {\em top responsive} preference profile requires that for any player $i \in N$,
