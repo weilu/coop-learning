@@ -141,6 +141,7 @@ prepare_bib() {
   fi
   
   ln -s "${WORK_DIR}/${TGT_BIB}" "${BUILD_DIR}/${TGT_BIB}"
+  ln -s "${WORK_DIR}/${ADD_TGT_BIB_NAME}.bib" "${BUILD_DIR}/${ADD_TGT_BIB_NAME}.bib"
   
   find_and_link_files_by_ext "bst" "${WORK_DIR}" "${BUILD_DIR}" || true
 }
