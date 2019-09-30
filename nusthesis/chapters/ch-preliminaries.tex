@@ -93,9 +93,58 @@ large in the number of players, as each player needs to rank all possible
 coalitions they may belong to.
 In our implementation and experiments in Chapter~\ref{ch:hedonic}, we will
 explore top responsive models in both its generic form
-(Subsection~\ref{subsec:handcrafted_value_function}) and specific sub-classes of
-this preference model (Subsection~\ref{subsec:appreciation_of_friends},
-Subsection~\ref{subsec:aversion_to_enemies}).
+(Subsection~\ref{subsec:handcrafted_value_function}) and a specific sub-class of
+this preference model named Appreciation of Friends
+(Subsection~\ref{subsec:appreciation_of_friends}).
+
+\subsection{Bottom Responsive Preferences}
+\label{subsec:bottom_responsive_preferences}
+
+Bottom responsive games can be viewed as the counterpart of top responsive games,
+where a player's utility is derived from the absence of disliked players.
+In the context of parliment voting data, it models the idea that politicians wants
+to avoid voting with those whose ideologies they disagree with.
+
+Similiar to top responsive game's choice sets, bottom responsive game formalizes
+``most disliked players'' with the concept of \textit{avoid sets};
+$\Av(i, S)$ denotes the avoid sets of player $i$ in coalition $S$: $\Av(i, S) =
+\{S' \subseteq S: (i \in S') \wedge (S' \preceq_i S'' \forall S'' \subseteq S)\}$
+
+For a game to satisfy bottom responsiveness, two conditions are required:
+
+\begin{enumerate}
+  \item if for all $S' \in \Av(i, S)$ $T' \in \Av(i, T)$, $ S' \succ_i T'$
+    then $S \succ_i T$
+  \item if $\Av(i, S) \cap \Av(i, T) \neq \emptyset$ and $|S| \geq |T|$
+    then $S \succeq_i T$
+\end{enumerate}
+
+Different from top responsive game which breaks ``ties'' in favor of
+smaller coalitions, condition 2 of bottom responsive game breaks ``ties'' in
+favor of larger coalitions.
+
+If in addition to the above two conditions, a game also satisfies
+$|\Av(i, S)| = 1$ for all $i \in N$ and all $S \in \mathcal{N}_i$,
+then it is strongly bottom responsive. The unique avoid set in $\Av(i, S)$
+is denoted $\av(i, S)$.
+
+\begin{example}
+\label{example:bottom_responsive_pref}
+  If we invert the ``love triangle'' preference profile to ``despise triangle'',
+  where player 1 wants to avoid being with player 3,
+  player 2 wants to avoid player 1, and player 3 wants to avoid player 2.
+  We can formulate the preference profile as follow to be stronly bottom
+  responsive:
+
+  player 1: $\{1, 2\} \succ_1 \{1\} \succ_1 \{1, 2, 3\} \succ_1 \{1, 3\}$
+
+  player 2: $\{2, 3\} \succ_2 \{2\} \succ_2 \{1, 2, 3\} \succ_2 \{1, 2\}$
+
+  player 3: $\{1, 3\} \succ_3 \{3\} \succ_3 \{1, 2, 3\} \succ_3 \{2, 3\}$
+\end{example}
+
+We will discuss applying the bottom responsive preference model on parliment
+voting data in Chapter~\ref{ch:hedonic}, Section~\ref{sec:aversion_to_enemies}.
 
 \subsection{Boolean Preferences}
 \label{subsec:boolean_preferences}
@@ -119,13 +168,15 @@ coalition over any unsatisfactory coalition.
   player 3: $\{3\} \succ_3 \{1, 2, 3\}, \{1, 3\}, \{2, 3\}$
 \end{example}
 
-A Boolean preference profile is not necessarily top responsive --- 
-Example~\ref{example:boolean_pref} is not top responsive.
+A Boolean preference profile is not necessarily top or bottom responsive --- 
+Example~\ref{example:boolean_pref} is neither.
 Player 3 has choice sets
-$\ch(3, \{1, 2, 3\}) = \ch(3, \{1, 3\}) = \ch(3, \{2, 3\}) = \{3\}$.
+$\ch(3, \{1, 2, 3\}) = \ch(3, \{1, 3\}) = \ch(3, \{2, 3\}) = \{3\}$ and avoid sets 
+$\av(3, \{1, 2, 3\}) = \{1, 2\}, \av(3, \{1, 3\}) = \{1\},
+\av(3, \{2, 3\}) = \{2\}$.
 To satisfy top responsiveness, player 3 would prefer $\{1, 3\}, \{2, 3\}$ over
-$\{1, 2, 3\}$, however in Example~\ref{example:boolean_pref} she is indifferent
-among these three coalitions.
+$\{1, 2, 3\}$; to satisfy bottom responsiveness, player 3 would prefer
+$\{1, 2, 3\}$ over $\{1, 3\}, \{2, 3\}$, however in Example~\ref{example:boolean_pref} she is indifferent among these three coalitions.
 
 When we observe voting data of parliament members, Boolean preference model
 allows us to simply group those members whose votes are the same into a coalition
@@ -167,8 +218,10 @@ $\pi = \{\{1, 2\}, \{3\}\}$ is strongly blocked by $\{2, 3\}$; the partition mad
 of single players is strongly blocked by any two-player coalition.
 
 Example~\ref{example:top_responsive_pref}, on the other hand, has a strict core
-stable partition: $\{1, 2, 3\}$ as no subset of players can be better off by
+stable partition: $\{\{1, 2, 3\}\}$ as no subset of players can be better off by
 deviating together.
+Similarly Example~\ref{example:bottom_responsive_pref} also has a strict core
+stable partition which is $\{\{1\}, \{2\}, \{3\}\}$.
 
 \subsection{Strong Nash \& Strict Strong Nash}
 \label{subsec:strong_nash_strict_strong_nash}
@@ -187,8 +240,9 @@ $\pi'(j) \succ_j \pi(j)$.
 A partition that admits no weakly Nash blocking set $S \subseteq N$ is said to
 be strict strong Nash stable (SSNS).
 
-For Example~\ref{example:top_responsive_pref}, the strict core stable solution
-$\{1, 2, 3\}$ is also SSNS.
+For both Example~\ref{example:top_responsive_pref} and
+Example~\ref{example:bottom_responsive_pref}, their strict core stable solutions
+are also SSNS.
 
 \paragraph{}
 A top responsive preference profile guarantees the existence of a strict core partition.
