@@ -25,7 +25,7 @@ ordered along a single right-left axis, which has to do mainly with
 the parties' approach to the Israeli-Palestinian conflict.
 This simplifies the considerations we need to take into account when analyzing
 the outcomes, and allows for easier comparison between the different models.
-More over, it allows us to more easily discern
+Moreover, it allows us to more easily discern
 unexpected coalition structures that need to be explained.
 There is also relative ideological cohesion between coalition parties
 as well as between opposition parties.
@@ -79,12 +79,86 @@ as a result of pressing the electronic button.
 Such manual vote entries are captured by the bill summary dataset
 but not individual member's vote dataset.
 
-For the purpose of our research, we treat the data with individual member's
-votes on every bill as the ground truth since it has the level of granularity
-required for modeling.
+For the purpose of our research, we use the dataset with individual member's
+votes on every bill since it has the level of granularity required for modeling.
 We remove the 26 bills whose pass/reject status is inconsistent between
 the summary and individual data sets, since it's most likely that
 the individual data is wrong.
 
-\section{Quantitative Measurements}
-\section{Qualitative Assessment Criteria}
+% Maybe include data summary tables?
+% total bills, total parliament members
+% total for, against, abstained, did not attend, missing votes
+% per bill: min, max, average for, against, abstained, did not attend, missing votes
+% per member: min, max, average for, against, abstained, did not attend, missing votes
+
+\section{Experiment Design}
+
+Recall our first research questions: Can we use hedonic games to model
+real-world collaborative activities?
+We see in past works, to demonstrate the power of game theoretic models
+in describing real-world data, it usually involves the following two steps:
+
+\begin{enumerate}
+  \item Learning the underlying game (a.k.a the complete preference profile)
+  \item Finding a stable partition
+\end{enumerate}
+
+The rationale is that the closer the learned preference profile is to reality,
+the more likely we are to observe theoretically stable partition matching
+the ground truth parition in real-world data, such as party affiliation in
+our dataset.
+The problem with this approach lies in verifying the fidelity of the learned
+preference profile --- we observe even simple preference profiles such as top
+and bottom responsive games are exponentially large in the number of players
+(Chapter~\ref{ch:preliminaries} Section~\ref{sec:hedonic_game}
+Subsection~\ref{subsec:top_responsive_preferences}
+and Subsection~\ref{subsec:bottom_responsive_preferences}).
+Given our dataset, it means each player's complete preference relation contains
+an order of $2^147 \approx 10^44$ coalitions.
+Even if we have access to every parliament member, it is unrealistic to ask them
+to rank these many possible coalitions.
+
+PAC stability inspires an alternative approach; instead of first learning the
+complete preference profile then computing a stable parition, we directly
+infer a PAC stable partition from partial preference relations we observe
+each player demonstrates in a dataset.
+The resulting partition does not have as strong stability guarantees as that
+of the previous approach; the tradeoff we make is to remove the requirement for
+the complete preference profile, which is unverifiable given the size of
+real-world data, such as our parliament voting data.
+
+For every hedonic game model we investigate, we formulate ways to translate the
+voting data to preference relations of each parliament member, satisfying the
+requirements of the given model.
+If the formulation results in a complete preference profile, we use it to
+compute a deterministic stable partition.
+We then attempt to PAC-ify the formulation to discover a PAC stable partition
+directly from sample data, i.e. partial preference relations inferred from
+voting behaviors observed in a subset of all bills.
+
+For each PAC model, we simulate i.i.d. by sampling with replacement $3/4$ of
+all bills; repeat the run 50 times to evaluate the consistency between
+different runs and for producing a robust PAC stable partition minimizing the
+chance of luck.
+We use information theoretic measures to measure the distance among the 50
+partitions.
+If most partitions are in agreement, the average information distance is
+expected to be small.
+We still need to select one or aggregate these 50 partitions into one single
+partition as a representative output from each PAC model, which we can use
+to compare with the ground truth partition and other models.
+We select the conceptual ``centroid'' of the 50 partitions by calculating
+the sum of information distance between every partition to other 49 partitions
+and selecting the partition with the smallest sum of distance as the
+representative.
+
+With one partition produced by every model, we then compare it against our
+ground truth, which is party affiliation, both quantitatively and qualitatively.
+The quantitative measures give us a quick way to compare across multiple models;
+while there are qualitative subtleties not captured by the quantitative
+measures, such as a parliament member who is known to hold opinions that
+mismatch her party ideologies and vote differently, which we will examine
+separately.
+
+
+
