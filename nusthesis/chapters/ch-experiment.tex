@@ -160,5 +160,46 @@ measures, such as a parliament member who is known to hold opinions that
 mismatch her party ideologies and vote differently, which we will examine
 separately.
 
+\subsection{Information Theoretic Measures}
+We need to be able to quantify distance between two given partitions, in order
+to select a representative out of multiple runs of a PAC model and to compare
+model partitions to the ground truth partition.
+We turn to information theoretic measures, which are frequently used in cluster
+analysis.
+Different from other classes of measures for comparing clusterings, such as
+pair-counting based and set-matching based measures, information theoretic
+measures have strong mathematical foundation and the ability to detect
+non-linear similarities \cite{Vinh:2010:ITM:1756006.1953024}.
+The information theoretic measure we are interested in is Variation of
+Information proposed by \citenameyear{MEILA2007873}.
 
+Given a partition made of $x$ coalitions $\pi = \{S_1, \cdots S_x\}$, the
+probability of a randomly picked player being in coalition $S_i$ is
+$\frac{|S_i|}{|N|}$.
+The uncertainty (a.k.a. \textit{Entropy}) associated with the given partition
+$\pi$ is defined as
+$H(\pi) = - \sum^x_{i=1} \frac{|S_i|}{|N|} \log{\frac{|S_i|}{|N|}}$.
+It can be interpreted as the average amount of data, in bits for example,
+required to encode coalition labels of every player in parition $\pi$ in order
+to transmit this partition over a communication channel.
 
+Given another partition made of $y$ coalitions $\pi' = \{S'_1, \cdots, S'_y\}$,
+if we already know $\pi'$, we can then ask what would be the amount of data
+required to encode $\pi$ given $\pi'$ --- this is \textit{Conditional Entropy}:
+$H(\pi|\pi') = - \sum^x_{i=1} \sum^y_{j=1} \frac{|S_i \cap S'_j|}{|N|} \log{\frac{|S_i \cap S'_j|/|N|}{|S_j|/|N|}}$.
+
+\textit{Mutual Information} represents how much the knowledge of $\pi'$ help
+reduce the number of bits required to encode $\pi$:
+$\MI(\pi, \pi') = H(\pi) - H(\pi|\pi')$
+
+\textit{Variation of Information} can be interpreted as the total amount of
+information change going from partition $\pi$ to partition $\pi'$;
+$H(\pi|\pi')$ represent the amount of information we lose about $\pi$
+$H(\pi'|\pi)$ represent the amount of information we gain about $\pi'$:
+$\VI(\pi, \pi') = H(\pi|\pi') + H(\pi'|\pi)$.
+It can also be expressed using mutual information:
+$\VI(\pi, \pi') = H(\pi) + H(\pi') - 2\MI(\pi, \pi')$.
+Different from mutual information, variation of information satisfies the
+properties of a true metric: non-negativity, symmetry and triangle inequality.
+Being a metric makes it a measure that matches our intuitive understanding of
+distance.
