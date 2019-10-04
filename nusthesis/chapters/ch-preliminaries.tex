@@ -5,13 +5,18 @@
 \label{ch:preliminaries}
 \vspace{2em}
 
-In this chapter, we recall some definitions relating to hedonic games,
-coalition structures, stability solution concepts, and PAC stability.
-These technical details are important foundation for our data driven experiments.
+Consider a parliament; who are ``natural allies''? One way to model this is by
+assuming that each member has a preference relation over various groups they
+wish to be part of; our objective is to identify partitions of parliament members
+that satisfy certain desirable properties, such as stability.
+
+In this chapter, we present necessary definitions and examples relating to
+hedonic preference models (Section~\ref{sec:hedonic_game} and
+stability solution concepts (Section~\ref{sec:stability_concepts},
+Section~\ref{sec:pac_learning_pac_stability}).
 
 \section{Hedonic Games}
 \label{sec:hedonic_game}
-
 
 A \textit{hedonic game} is a pair $(N, P)$, where $N$ is a finite set of players
 $\{1, \cdots, n\}$ and $P$ is a \textit{preference profile} consisting of
@@ -22,15 +27,29 @@ transitive binary relation on $\mathcal{N}_i$, where $\mathcal{N}_i$ is the set
 of all non-empty subset of $N$ that includes player $i$;
 i.e., $\mathcal{N}_i = \{S \subseteq N: i \in S, S \neq \emptyset \}$
 
-Consider a parliament; who are ``natural allies''? One way to model this is by
-assuming that each member has a preference relation over various groups they
-wish to be part of; 
-our objective is to identify partitions
-(also known as \textit{coalition structures}) that satisfy certain desirable
-properties, such as stability.
+\begin{example}
+\label{example:not_top_responsive_pref}
+  Consider the ``love triangle'' preference relations: player 1 wants
+  to be with player 2, player 2 wants to be with player 3, and player 3 wants to
+  be with player 1. All players prefer two-player coalitions over the three-player
+  coalition over being alone.
+  The resulting preference profile is a hedonic game:
 
-We are learning preferences from data, but still need to make certain assumptions about player utility models.
-We now describe the two classes of preference models our study is built upon.
+  player 1: $\{1, 2\} \succ_1 \{1, 3\} \succ_1 \{1, 2, 3\} \succ_1  \{1\}$
+
+  player 2: $\{2, 3\} \succ_2 \{1, 2\} \succ_2 \{1, 2, 3\} \succ_2  \{2\}$
+
+  player 3: $\{1, 3\} \succ_3 \{2, 3\} \succ_3 \{1, 2, 3\} \succ_3  \{3\}$
+\end{example}
+
+Observe that hedonic games describe a very broad family of games --- it does not
+place any restriction on any preference relation\footnote{``reflective, complete, 
+and transitive'' are inherent requirements of the definition of a preference
+relation}.
+Without any restriction, we cannot meaningfully judge if a certain partition
+satisfy a desirable property such as stability, therefore it is necessary to make
+certain assumptions about player utility models.
+We now describe three classes of hedonic preference models our study is built upon.
 
 \subsection{Top Responsive Preferences}
 \label{subsec:top_responsive_preferences}
@@ -38,7 +57,6 @@ The intuition behind top responsiveness is that every player derives their
 utility from a most preferred subset of players from the coalition they belong to.
 If two coalitions, with one containing the other, yield the same utility for
 a player, the tie is broken in favor of the smaller coalition.
-
 In the context of our dataset, it captures the following idea:
 politicians care about whose votes they stand with;
 they want to vote with other politicians they like.
@@ -55,46 +73,43 @@ and any coalition that may contain player $i$: $S, T \in \mathcal{N}_i$:
   \item if $\ch(i, S) \succ_i \ch(i, T)$ then $S \succ_i T$
   \item if $\ch(i, S) = \ch(i, T)$ and $S \subset T$ then $S \succ_i T$
 \end{enumerate}
-
-\begin{example}
-\label{example:not_top_responsive_pref}
-  Consider the classic ``love triangle'' preference profile, where player 1 wants
-  to be with player 2, player 2 wants to be with player 3, and player 3 wants to
-  be with player 1. All players prefer two-player coalitions over the three-player
-  coalition over being alone.
-  The resulting preference profile is a hednoic game however not a top responsive
-  game:
-
-  player 1: $\{1, 2\} \succ_1 \{1, 3\} \succ_1 \{1, 2, 3\} \succ_1  \{1\}$
-
-  player 2: $\{2, 3\} \succ_2 \{1, 2\} \succ_2 \{1, 2, 3\} \succ_2  \{2\}$
-
-  player 3: $\{1, 3\} \succ_3 \{2, 3\} \succ_3 \{1, 2, 3\} \succ_3  \{3\}$
-
-  It does not satisfy top responsiveness because the grand coalition $\{1, 2, 3\}$
-  contains every player's top choice, which is their choice set when all players
-  are considered, but is outranked by another two-player coalition every time.
-\end{example}
+ 
+According to the above definition, Example~\ref{example:not_top_responsive_pref}
+does not satisfy top responsiveness because the grand coalition $\{1, 2, 3\}$
+contains every player's top choice, which is their choice set when all players
+are considered, but is outranked by another two-player coalition every time.
 
 \begin{example}
 \label{example:top_responsive_pref}
-  If we modify Example~\ref{example:not_top_responsive_pref} by making every player
-  rank the three-player coalition as their second most preferred coalition, the
-  resulting preference profile is top responsive:
+  Consider a similar game of three players with the following choice sets:
+  
+  $\ch(1, \{1, 2, 3\}) = \ch(1, \{1, 2\} = \{1, 2\},
+   \ch(1, \{1, 3\}) = \{1, 3\}, \ch(1, \{1\}) = \{1\}$
+
+  $\ch(2, \{1, 2, 3\}) = \ch(2, \{2, 3\} = \{2, 3\},
+   \ch(2, \{1, 2\}) = \{1, 2\}, \ch(2, \{2\}) = \{2\}$
+
+  $\ch(3, \{1, 2, 3\}) = \ch(3, \{1, 3\} = \{1, 3\},
+   \ch(3, \{1, 2\}) = \{1, 2\}, \ch(3, \{3\}) = \{3\}$
+  
+  Then the resulting preference profile is top responsive:
 
   player 1: $\{1, 2\} \succ_1 \{1, 2, 3\} \succ_1 \{1, 3\} \succ_1  \{1\}$
 
   player 2: $\{2, 3\} \succ_2 \{1, 2, 3\} \succ_2 \{1, 2\} \succ_2  \{2\}$
 
   player 3: $\{1, 3\} \succ_3 \{1, 2, 3\} \succ_3 \{2, 3\} \succ_3  \{3\}$
-
+  
+  Notice this is effectively a simple modification of
+  Example~\ref{example:not_top_responsive_pref} by making every player rank
+  the three-player coalition as their second most preferred coalition.
 \end{example}
 
 The description of a generic top responsive preference profile is exponentially
 large in the number of players, as each player needs to rank all possible
 coalitions they may belong to.
-In our implementation and experiments in Chapter~\ref{ch:hedonic}, we will
-explore top responsive models in both its generic form
+In our implementation and experiments in Chapter~\ref{ch:hedonic}, we explore
+top responsive models in both its generic form
 (Subsection~\ref{subsec:handcrafted_value_function}) and a specific sub-class of
 this preference model named Appreciation of Friends
 (Subsection~\ref{subsec:appreciation_of_friends}).
@@ -104,10 +119,10 @@ this preference model named Appreciation of Friends
 
 Bottom responsive games can be viewed as the counterpart of top responsive games,
 where a player's utility is derived from the absence of disliked players.
-In the context of parliment voting data, it models the idea that politicians wants
+In the context of parliament voting data, it models the idea that politicians want
 to avoid voting with those whose ideologies they disagree with.
 
-Similiar to top responsive game's choice sets, bottom responsive game formalizes
+Similar to top responsive game's choice sets, bottom responsive game formalizes
 ``most disliked players'' with the concept of \textit{avoid sets};
 $\Av(i, S)$ denotes the avoid sets of player $i$ in coalition $S$: $\Av(i, S) =
 \{S' \subseteq S: (i \in S') \wedge (S' \preceq_i S'' \forall S'' \subseteq S)\}$
@@ -135,8 +150,18 @@ is denoted $\av(i, S)$.
   If we invert the ``love triangle'' preference profile to ``despise triangle'',
   where player 1 wants to avoid being with player 3,
   player 2 wants to avoid player 1, and player 3 wants to avoid player 2.
-  We can formulate the preference profile as follow to be stronly bottom
-  responsive:
+  Their corresponding avoid sets are as follow:
+    
+  $\av(1, \{1, 2, 3\}) = \av(1, \{1, 3\} = \{1, 3\},
+   \av(1, \{1, 2\}) = \av(1, \{1\}) = \{1\}$
+
+  $\av(2, \{1, 2, 3\}) = \av(2, \{1, 2\} = \{1, 2\},
+   \av(2, \{2, 3\}) = \av(2, \{2\}) = \{2\}$
+
+  $\av(3, \{1, 2, 3\}) = \av(3, \{2, 3\} = \{2, 3\},
+   \av(3, \{1, 3\}) = \av(3, \{3\}) = \{3\}$
+  
+  The preference profile is strongly bottom responsive:
 
   player 1: $\{1, 2\} \succ_1 \{1\} \succ_1 \{1, 2, 3\} \succ_1 \{1, 3\}$
 
@@ -145,7 +170,7 @@ is denoted $\av(i, S)$.
   player 3: $\{1, 3\} \succ_3 \{3\} \succ_3 \{1, 2, 3\} \succ_3 \{2, 3\}$
 \end{example}
 
-We will discuss applying the bottom responsive preference model on parliment
+We discuss applying the bottom responsive preference model on parliament
 voting data in Chapter~\ref{ch:hedonic}, Section~\ref{sec:aversion_to_enemies}.
 
 \subsection{Boolean Preferences}
@@ -186,7 +211,7 @@ for any given bill, and label this coalition as satisfactory for everyone who is
 a part of.
 Intuitively it reflects the idea that a politician is approval of any group they
 have ever voted with.
-We will investigate Boolean preference model with our empirical voting data in
+We investigate Boolean preference model with our empirical voting data in
 Chapter~\ref{ch:hedonic} Section~\ref{sec:boolean_hedonic_game}.
 
 
@@ -255,7 +280,7 @@ $j \in ch(i, S)$.
 This means if we can model empirical data with mutual preferences,
 we can achieve the strongest notion of group based notion of stability.
 
-Both bottom responsive and boolean preference profiles warrant the existence of
+Both bottom responsive and Boolean preference profiles warrant the existence of
 a core stable coalition structure.
 It is such stability guarantees that motivate us to choose these specific set
 of hedonic models for our experiments.
@@ -288,5 +313,5 @@ $\frac{1}{\varepsilon}$, and $\log{\frac{1}{\delta}}$.
 In the same paper, \citenameyear{ijcai2017-380} also show that top responsive games
 are efficiently PAC stablizable even though they are not PAC learnable.
 A PAC stable partition can be computed with Algorithm~\ref{alg:pac_top_covering}
-which we will describe in detail in Chapter~\ref{ch:hedonic}
+which we describe in detail in Chapter~\ref{ch:hedonic}
 Section~\ref{sec:top_responsive_game} Subsection~\ref{subsec:algorithms}.
