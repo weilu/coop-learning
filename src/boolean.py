@@ -71,19 +71,17 @@ def approximate_preferences(players, votes, B, likes, sample_size,
     filtered_likes = {}
     for i in players:
         # filter out None values
-        filtered_likes[i] = list(likes[i][j] for j in S_prime_indexes if likes[i][j] is not None)
+        filtered_likes[i] = set(likes[i][j] for j in S_prime_indexes if likes[i][j] is not None)
     for i in players:
         if i in B and B[i] == {i}: # already singleton, no need to check further
             continue
         if not filtered_likes[i]:
             continue
         old_coal_len = len(B[i]) if i in B else 0
-        sorted_likes = sorted(filtered_likes[i], key=len, reverse=True)
-        max_coalition = sorted_likes[0]
         if i not in B: # initialization round
-            B[i] = max_coalition
+            B[i] = filtered_likes[i]
         else:
-            B[i] &= max_coalition
+            B[i] &= filtered_likes[i]
         if old_coal_len != len(B[i]):
             logging.info(f'player {i}\'s coalition size changed: {old_coal_len} -> {len(B[i])}')
 
@@ -102,26 +100,44 @@ def find_pac_core(votes, sample_size, sample_method=random.choices):
             approximate_preferences(players, votes, B, prefs, sample_size, sample_method)
         logging.debug(f'done approximating preferences')
 
-        all_likes = set(B.values())
-        if len(all_likes) == 0:
+        coalition = find_largest_liked_coalition(B)
+        if coalition is not None:
+            stable_partition.add(coalition)
+            logging.info(f'players to remove: {coalition}')
+            players = players - coalition
+
+            # remove coalitions with removed players
+            for i, row in prefs.items():
+                if i in coalition:
+                    continue
+                for j, pref_coal in enumerate(row):
+                    if pref_coal is not None and (pref_coal & coalition):
+                        prefs[i][j] = None
+        else:
             logging.info(f'exhausted all_likes')
             for i in players:
                 p = frozenset([i])
                 stable_partition.add(p)
             break
 
-        sorted_potential = sorted(all_likes, key=len, reverse=True)
-        stable_coalition = sorted_potential[0]
-        stable_partition.add(stable_coalition)
-        logging.info(f'players to remove: {stable_coalition}')
-        players = players - stable_coalition
-
-        # remove coalitions with removed players
-        for i, row in prefs.items():
-            if i in stable_coalition:
-                continue
-            for j, coalition in enumerate(row):
-                if coalition is not None and (coalition & stable_coalition):
-                    prefs[i][j] = None
-
     return stable_partition
+
+
+def find_largest_liked_coalition(prefs):
+    all_likes = set()
+    for liked_groups in prefs.values():
+        all_likes |= liked_groups
+
+    # all singletons left: handle at caller
+    if len(all_likes) == 0:
+        return None
+
+    sorted_potential = sorted(all_likes, key=len, reverse=True)
+    for coalition in sorted_potential:
+        good_for_all = True
+        for player in coalition:
+            if coalition not in prefs[player]:
+                good_for_all = False
+                break
+        if good_for_all:
+            return coalition
