@@ -426,62 +426,6 @@ coalitions they may be part of into two equivalence classes:
 satisfactory or unsatisfactory; in other words, a player either likes to be
 a member of a coalition or dislikes it.
 
-We can naturally derive such preferences from parliament members' past voting
-activities --- whenever a member votes with either ``for'' (or ``against''), they
-express their preference to be with other members whose votes are the same
-as theirs, and not to be with the group that voted differently.
-
-\begin{example}
-\label{example:votes_boolean}
-  For example, given 3 players and 3 bills, their votes are as follow:
-
-  \begin{table}[h!]
-  \centering
-  \begin{tabular}{|c|c|c|c|}
-  \hline
-         & player 1 & player 2 & player 3 \\ \hline
-  bill 1 & 1 & 2 & 1 \\
-  bill 2 & 3 & 1 & 1 \\
-  bill 3 & 1 & 2 & 2 \\
-  \hline
-  \end{tabular}
-  \end{table}
-\end{example}
-
-From bill 1, we have $\{1, 3\} \succ_1 \{1, 2\}$, $\{2\} \succ_2 \{1, 2, 3\}$,
-$\{1, 3\} \succ_3 \{2, 3\}$.
-From bill 2, we have $\{2, 3\} \succ_2 \{2\}$, $\{2, 3\} \succ_3 \{3\}$.
-Player 1 is not involved as they voted abstained.
-Since there is nobody voted ``2 - against'', both player 2 and player 3 dislike
-joining an empty coalition.
-From bill 3, we have $\{1\} \succ_1 \{1, 2, 3\}$, $\{2, 3\} \succ_2 \{1, 2\}$,
-$\{2, 3\} \succ_3 \{1, 3\}$.
-
-In order to combine the preferences from bill 1, 2 and 3, we need to handle
-the cases when a coalition is both liked and disliked by a player, for example,
-player 3 likes $\{1, 3\}$ according to bill 1 but dislikes it according to bill 3;
-player 3 also likes $\{2, 3\}$ according to bill 2 and 3 but dislikes it
-according to bill 1.
-We tally the number of times a given coalition is liked and disliked by a
-player and rule according to the preference with more occurrences.
-When there are equal number of likes and dislikes, we break tie in favor of dislike.
-As such, in the above Example~\ref{example:votes_boolean}, player 3 dislikes
-$\{1, 3\}$ and likes $\{2, 3\}$.
-
-Therefore we can merge the preferences derived from bill 1, 2, and 3:
-
-player 1: $\{1, 3\} \sim \{1\} \succ_1 \{1, 2\} \sim \{1, 2, 3\}$
-
-player 2: $\{2, 3\} \succ_2 \{2\} \sim \{1, 2\} \sim \{1, 2, 3\}$
-
-player 3: $\{2, 3\} \succ_3 \{1, 3\} \sim \{3\}$
-
-The merged preferences is not guaranteed to be a complete preference profile;
-as shown in the merged preferences derived from Example~\ref{example:votes_boolean},
-player 3's preference over the grand coalition is unknown.
-We will discuss handling of missing preferences after we describe the algorithm to
-find the core of a given Boolean hedonic game.
-
 \begin{algorithm}[htb]
   \caption{Boolean Hedonic Game Core Finding Algorithm}
   \label{alg:boolean_core}
