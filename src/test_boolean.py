@@ -2,7 +2,7 @@ import copy
 import logging
 import random
 import unittest
-from boolean import votes_to_pref_table, find_core, find_pac_core
+from boolean import votes_to_pref_table, find_largest_liked_coalition, find_core, find_pac_core
 from knesset_test import print_partition_stats, calculate_partition_edit_distances_and_print_stats
 from votes_to_game import read_votes_and_player_data
 
@@ -48,6 +48,33 @@ class TestBoolean(unittest.TestCase):
         self.assertEqual(prefs[0], [frozenset([0, 1]), None, None, None])
         self.assertEqual(prefs[1], [frozenset([0, 1]), frozenset([1]), frozenset([1]), frozenset([1])])
         self.assertEqual(prefs[2], [frozenset([2]), None, None, frozenset([2])])
+
+
+    def test_find_largest_liked_coalition(self):
+        prefs = {
+            0: {frozenset({0, 1})},
+            1: {frozenset({1})},
+            2: {frozenset({2})}
+        }
+        coalition = find_largest_liked_coalition(prefs)
+        self.assertEqual(coalition, frozenset({1}))
+
+        prefs = {
+            0: {frozenset({0, 1, 2}), frozenset({0, 1})},
+            1: {frozenset({0, 1, 2}), frozenset({0, 1})},
+            2: {frozenset({0, 1, 2}), frozenset({2, 3})},
+            3: {frozenset({2, 3})}
+        }
+        coalition = find_largest_liked_coalition(prefs)
+        self.assertEqual(coalition, frozenset({0, 1, 2}))
+
+        prefs = {
+            0: set({}),
+            1: set({}),
+            2: set({})
+        }
+        coalition = find_largest_liked_coalition(prefs)
+        self.assertEqual(coalition, None)
 
 
     def test_find_core(self):

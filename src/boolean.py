@@ -34,33 +34,30 @@ def votes_to_pref_table(votes):
 
 def find_core(likes):
     stable_partition = set()
-    all_likes = set()
-    for liked_groups in likes.values():
-        for group in liked_groups:
-            if group is not None:
-                all_likes.add(group)
-
     remaining_players = set(likes.keys())
-    while all_likes:
+    while remaining_players:
         logging.info(f'{len(remaining_players)} players remaining')
-        sorted_potential = sorted(all_likes, key=len, reverse=True)
-        stable_coalition = sorted_potential[0]
-        stable_partition.add(stable_coalition)
-        remaining_players = remaining_players - stable_coalition
+        filtered_likes = {}
+        for i in remaining_players:
+            filtered_likes[i] = set(coal for coal in likes[i] if coal is not None)
+        coalition = find_largest_liked_coalition(filtered_likes)
+        if coalition is not None:
+            stable_partition.add(coalition)
+            remaining_players = remaining_players - coalition
 
-        # remove any coalition containing any removed player
-        updated_potentially_stable_likes = set()
-        for p in all_likes:
-            if len(stable_coalition & p) == 0:
-                updated_potentially_stable_likes.add(p)
-        all_likes = updated_potentially_stable_likes
-
-    logging.info(f'exhausted all_likes')
-    # all singleton coalitions
-    for i in remaining_players:
-        p = frozenset([i])
-        stable_partition.add(p)
-        remaining_players = remaining_players - p
+            # remove coalitions with removed players
+            for i, row in likes.items():
+                if i in coalition:
+                    continue
+                for j, pref_coal in enumerate(row):
+                    if pref_coal is not None and (pref_coal & coalition):
+                        likes[i][j] = None
+        else:
+            logging.info(f'exhausted all_likes')
+            for i in remaining_players:
+                p = frozenset([i])
+                stable_partition.add(p)
+            break
 
     return stable_partition
 
