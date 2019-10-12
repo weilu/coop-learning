@@ -37,9 +37,9 @@ All members of the only large coalition are from right wing parties.
 The singleton coalitions are likely a result of the limited size of the derived partial preference profile --- Upon discovery of the smallest $\CC$ in each iteration, we also remove any coalition that contains any of the removed player from the remaining player's preference relation. Since we took away a large number of players in one of the first few iterations, many coalitions are removed from remaining players' preference relations, resulting in isolated nodes in the updated graph which leads to singleton coalitions.
 % END TODO: doublecheck if this makes sense
 
-\section{Appreciation of Friends}
+\subsection{Appreciation of Friends}
 
-\subsection{Complete Preference Profiles}
+\textbf{Complete Preference Profiles}
 
 \begin{figure}[!t]
   \centering
@@ -70,6 +70,8 @@ definition of friends.
 This outcome further motivates our experiments with the PAC version of these
 two friends models, in hope that sampling would dampen such sensitivity.
 
+\textbf{PAC Models}
+
 \begin{figure}[!t]
   \centering
   \includegraphics[width=\linewidth]{\Pic{png}{pac_friends}}
@@ -87,5 +89,23 @@ two friends models, in hope that sampling would dampen such sensitivity.
 \end{figure}
 
 TODO: comment on results of PAC friends and selective friends
+
+\subsection{Boolean Hedonic Games}
+
+\begin{figure}[!t]
+  \centering
+  \includegraphics[width=\linewidth]{\Pic{png}{boolean}}
+  \vspace{\BeforeCaptionVSpace}
+  \caption{Coalition structure produced by the Boolean model}
+  \label{Analysis:fig:boolean}
+\end{figure}
+
+\begin{figure}[!t]
+  \centering
+  \includegraphics[width=\linewidth]{\Pic{png}{pac_boolean}}
+  \vspace{\BeforeCaptionVSpace}
+  \caption{Coalition structure produced by the PAC Boolean model}
+  \label{Analysis:fig:pac_boolean}
+\end{figure}
 
 \section{Discussion}
