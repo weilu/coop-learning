@@ -397,12 +397,7 @@ due to the lack of symmetry.
 Aside from the two partitions yielded from the complete preference profiles,
 we implement and run two sets of PAC experiments based on the general friends
 and selective friends preference assumptions respectively.
-Similar to our approach in Section~\ref{subsec:handcrafted_value_function},
-we simulate i.i.d. by sampling with replacement $3/4$ of all bills;
-repeat the run 50 times to evaluate the consistency between different runs and
-for producing a robust PAC stable partition minimizing the chance of luck.
-
-For the PAC version of the experiments, due to sampling we do not observe all
+Due to sampling in the PAC version of the experiments, we do not observe all
 the bills every time we approximate players' preferences,
 therefore, for a given player, the sets of friends and enemies can be different
 from the complete preference profile cases, and also different between samples.
