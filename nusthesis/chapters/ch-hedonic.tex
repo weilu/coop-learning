@@ -437,8 +437,11 @@ stable partition for a given Boolean hedonic game using the following procedure:
 
   \State $N' \leftarrow N$; $\pi \leftarrow \emptyset$.
   \While {$N' \neq \emptyset$}
-    \State Find $S \subset N'$ where all players in $S$ find $S$ satisfactory, and the size of $S$ is the largest if there are multiple such coalitions.
-    \State $\pi \leftarrow \pi \cup \lbrace S \rbrace$ and $N' \leftarrow  N' \setminus S$
+    \State \label{boolean_core:select} Find $S \subset N'$ where all players
+      in $S$ find $S$ satisfactory, and the size of $S$ is the largest if there
+      are multiple such coalitions.
+    \State $\pi \leftarrow \pi \cup \lbrace S \rbrace$ and
+      $N' \leftarrow  N' \setminus S$
   \EndWhile
   \State \Return $\pi$
 
@@ -510,4 +513,39 @@ formulation without much success.
 The details of that alternative formulation is described in
 Appendix~\ref{append:alternative_boolean}.
 
+We also would like to highlight two conscious design decisions in our
+implementation:
+
+\begin{enumerate}
+  \item When any player is removed we remove any satisfactory coalitions that
+    contain the removed player, instead of modifying those coalitions.
+    This is to maintained integrity of the votes to preference relation
+    translation; if we were to modify satisfactory coalitions by simply
+    deleting removed players from them, we would be constructing satisfactory
+    coalitions that are not actually observed from voting behaviors.
+  \item After exhausting satisfactory coalitions in our iterations, we place
+    the remaining players in singleton coalitions.
+    Since a player is indifferent among unsatisfactory coalitions, singleton
+    coalitions is the simplest way to partition the remaining players.
+    This is in line with the minimum description length principle, where given
+    the same explanatory power, the simplest model is selected.
+\end{enumerate}
+
+Formulation of the PAC version of the Boolean hedonic games is tricky, because
+Algorithm~\ref{alg:pac_top_covering} does not directly apply --- sampling bills
+will produce a large number of satisfactory coalitions for every player, however
+we break the tie to pick one ``best'' coalition for each player at
+Step~\ref{pac_top_cover:argmax}, it violates the definition of Boolean
+preferences where a player is indifferent among satisfactory coalitions.
+
+Instead of picking one ``best'' coalition we allow for a set of equally good
+coalitions from each set of samples of bills.
+Rather than taking the intersection of ``best'' coalitions, we take intersections
+of sets of equally good coalitions.
+The resulting approximated preferences are thus not one coalition per player,
+but a set of coalitions per player.
+
+In Step~\ref{pac_top_cover:select}, we follow the same select step as
+Algorithm~\ref{alg:boolean_core} (Step~\ref{boolean_core:select}), which picks
+the largest coalition that is satisfactory for every member in it.
 
