@@ -5,28 +5,13 @@
 \label{append:alternative_boolean}
 \vspace*{2em}
 
-We can naturally derive preferences from parliament members' past voting
-activities --- whenever a member votes with either ``for'' (or ``against''), they
+We can alternatively derive preferences from parliament members' past voting
+activities using the following idea:
+whenever a member votes with either ``for'' (or ``against''), they not only
 express their preference to be with other members whose votes are the same
-as theirs, and not to be with the group that voted differently.
+as theirs, but also not to be with the group that voted differently.
 
-\begin{example}
-\label{example:votes_boolean}
-  For example, given 3 players and 3 bills, their votes are as follow:
-
-  \begin{table}[h!]
-  \centering
-  \begin{tabular}{|c|c|c|c|}
-  \hline
-         & player 1 & player 2 & player 3 \\ \hline
-  bill 1 & 1 & 2 & 1 \\
-  bill 2 & 3 & 1 & 1 \\
-  bill 3 & 1 & 2 & 2 \\
-  \hline
-  \end{tabular}
-  \end{table}
-\end{example}
-
+Recall Example~\ref{example:votes_boolean}:
 From bill 1, we have $\{1, 3\} \succ_1 \{1, 2\}$, $\{2\} \succ_2 \{1, 2, 3\}$,
 $\{1, 3\} \succ_3 \{2, 3\}$.
 From bill 2, we have $\{2, 3\} \succ_2 \{2\}$, $\{2, 3\} \succ_3 \{3\}$.
@@ -92,7 +77,8 @@ Either way, both partitions from this formulation have high variation of informa
 \begin{tabular}{|c|c|c|}
 \hline
        & default-unsatisfactory & default-satisfactory \\ \hline
-Variation of Information & 3.49 & 3.72 \\
+Variation of Information & 3.487 & 3.716 \\
+Adjusted Mutual Information & 0.018 & 0.005 \\
 \hline
 \end{tabular}
 \end{table}

@@ -424,7 +424,10 @@ As a result, we expect to observe smaller and more coalitions in comparison.
 Recall Boolean hedonic preferences means that each player partitions all possible
 coalitions they may be part of into two equivalence classes:
 satisfactory or unsatisfactory; in other words, a player either likes to be
-a member of a coalition or dislikes it.
+a member of a coalition or dislikes it (Section~\ref{subsec:boolean_preferences}).
+
+\citenameyear{Aziz:2016:BHG:3032027.3032048} show that we can discover a core
+stable partition for a given Boolean hedonic game using the following procedure:
 
 \begin{algorithm}[htb]
   \caption{Boolean Hedonic Game Core Finding Algorithm}
@@ -441,3 +444,70 @@ a member of a coalition or dislikes it.
 
   \end{algorithmic}
 \end{algorithm}
+
+Given our parliament voting data, it is natural to formulate satisfactory
+coalitions --- for a given bill, those who voted ``for'' and those who voted
+``against'' form two coalitions that are satisfactory among its own members.
+
+\begin{example}
+\label{example:votes_boolean}
+  Given a parliament with 3 players and 3 bills, their votes are as follow:
+
+  \begin{table}[h!]
+  \centering
+  \begin{tabular}{|c|c|c|c|}
+  \hline
+         & player 1 & player 2 & player 3 \\ \hline
+  bill 1 & 1 & 2 & 1 \\
+  bill 2 & 3 & 1 & 1 \\
+  bill 3 & 1 & 2 & 2 \\
+  \hline
+  \end{tabular}
+  \end{table}
+\end{example}
+
+From bill 1, we have player 1 and 3 being satisfied with coalition $\{1, 3\}$,
+and player 2 satisfied with $\{2\}$.
+From bill 2, player 2 and 3 find $\{2, 3\}$ satisfactory; player 1's preference
+is unknown as their vote is neither ``for'' nor ``against''.
+In summary, we have the following satisfactory coalitions for every player:
+
+player 1: $\{1, 3\}, \{1\}$
+
+player 2: $\{2\}, \{2, 3\}$
+
+player 3: $\{1, 3\}, \{2, 3\}$
+
+We can simply assume unobserved coalitions as unsatisfactory.
+Since a player is indifferent among satisfactory coalitions in a Boolean hedonic
+game, such an assumption guarantees that satisfactory coalitions extracted from
+voting behaviors are strictly more preferable than those unobserved coalitions.
+With this assumption, we can fill in the missing preference relations to
+form a complete Boolean preference profile:
+
+player 1: $\{1, 3\} \sim \{1\} \succ_1 \{1, 2\} \sim \{1, 2, 3\}$
+
+player 2: $\{2\} \sim \{2, 3\} \succ_2 \{1, 2\} \sim \{1, 2, 3\}$
+
+player 3: $\{1, 3\} \sim \{2, 3\} \succ_3 \{3\} \sim \{1, 2, 3\}$
+
+Feed this preference profile to Algorithm~\ref{alg:boolean_core} as input, we
+have $\pi = \{\{1, 3\}, \{2\}\}$ as the core stable partition
+\footnote{$\pi' = \{\{2, 3\}, \{1\}\}$ is also a core stable partition, depends
+on how we break tie among coalitions that are satisfactory for all their members
+and are of the same size.}.
+
+We also observe that the preference profile formulated this way is symmetric ---
+if a coalition is satisfactory for one player, it is also satisfactory for all
+other players within it.
+An implication of this symmetry is that the bill with the broadest
+support/disapproval also yields the largest coalition.
+This means if there is a single bill with support/disapproval among multiple
+parties across the political spectrum, we are going to observe such multi-party
+coalition in the final stable partition.
+We attempt to break this symmetry with an alternative, more complicated,
+formulation without much success.
+The details of that alternative formulation is described in
+Appendix~\ref{append:alternative_boolean}.
+
+
