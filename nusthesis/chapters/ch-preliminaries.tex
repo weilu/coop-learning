@@ -171,12 +171,12 @@ is denoted $\av(i, S)$.
 \end{example}
 
 We discuss applying the bottom responsive preference model on parliament voting
-data in Chapter~\ref{ch:hedonic}, Section~\ref{sec:bottom_responsive_game}.
+data in Section~\ref{sec:bottom_responsive_game}.
 
 \subsection{Boolean Preferences}
 \label{subsec:boolean_preferences}
-Boolean preference model assumes dichotomous preferences of every player ---
-a player view any coalition she may belong to as either satisfactory or
+The Boolean preference model assumes dichotomous preferences of every player ---
+a player views any coalition she may belong to as either satisfactory or
 unsatisfactory.
 A player is indifferent among all satisfactory coalitions and indifferent
 among all unsatisfactory coalitions, however strictly prefers any satisfactory
@@ -238,9 +238,9 @@ over $\pi(j)$; a coalition structure is strictly core stable when there is no
 weakly blocking coalition.
 
 Example~\ref{example:not_top_responsive_pref} does not have any core stable
-partition: the grand coalition $\{1, 2, 3\}$ is strongly blocked by any two-player
+partitions: the grand coalition $\{1, 2, 3\}$ is strongly blocked by any two-player
 coalition; the partition made of a two-player coalition and a one-player
-coalition is strongly blocked by another two-player coalition, for example,
+coalition is strongly blocked by another two-player coalition: for example,
 $\pi = \{\{1, 2\}, \{3\}\}$ is strongly blocked by $\{2, 3\}$; the partition made
 of single players is strongly blocked by any two-player coalition.
 
@@ -295,16 +295,16 @@ provable probabilistic approximations to functions.
 In this framework, a learner receives samples and selects a function from a class
 of possible functions.
 The selected function is called the \textit{hypothesis}, which should be likely
-to predict new samples from the same distribution.
+to predict new samples drawn from the same distribution.
 A good probabilistic approximation means that with probability of at least
 $1 - \delta$, the selected function's output has an average error less than or
-equal to $\varepsilon$, where $0 < \varepsilon, \delta < 1$.
+equal to $\varepsilon$, where $0 < \varepsilon$ and $\delta < 1$ are parameters.
 A hypothesis class is efficiently PAC learnable if such a good probabilistic
 approximation can be produced by some algorithm that has both running time and
 input sample size be polynomial in $n$, $\frac{1}{\varepsilon}$, and
 $\log{\frac{1}{\delta}}$.
 
-\citenameyear{ijcai2017-380} define that a class of hedonic games is PAC stablizable
+\citenameyear{ijcai2017-380} define that a class of hedonic games is \textit{PAC stablizable}
 if there exists an algorithm that produces a partition $\pi$ such that
 $\Pr_{S\sim D}[\text{S core blocks } \pi] < \varepsilon$;
 both the number of samples required by the algorithm to provide this PAC guarantee,
