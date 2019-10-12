@@ -71,9 +71,9 @@ We end up discovering more inconsistencies:
   \item Number of bills with abstain count inconsistent : 2
 \end{itemize}
 
-We reach out to Knesset regarding the data inconsistency between
+We reach out to the Knesset data management team regarding the data inconsistency between
 two API endpoints, as well as the missing value issue.
-The Knesset data management team state that the inconsistency
+They state that the inconsistency
 is likely a result of manual vote entries instead of votes recorded
 as a result of pressing the electronic button.
 Such manual vote entries are captured by the bill summary dataset
@@ -110,20 +110,18 @@ our dataset.
 The problem with this approach lies in verifying the fidelity of the learned
 preference profile --- we observe even simple preference profiles such as top
 and bottom responsive games are exponentially large in the number of players
-(Chapter~\ref{ch:preliminaries} Section~\ref{sec:hedonic_game}
-Subsection~\ref{subsec:top_responsive_preferences}
-and Subsection~\ref{subsec:bottom_responsive_preferences}).
+(Sections~\ref{subsec:top_responsive_preferences}~and~\ref{subsec:bottom_responsive_preferences}).
 Given our dataset, it means each player's complete preference relation contains
-an order of $2^147 \approx 10^44$ coalitions.
+an order of $2^147 \approx 10^{44}$ coalitions.
 Even if we have access to every parliament member, it is unrealistic to ask them
-to rank these many possible coalitions.
+to rank this many possible coalitions.
 
-PAC stability inspires an alternative approach; instead of first learning the
-complete preference profile then computing a stable parition, we directly
+PAC stability inspires an alternative approach: instead of first learning the
+complete preference profile then computing a stable partition, we directly
 infer a PAC stable partition from partial preference relations we observe
 each player demonstrates in a dataset.
 The resulting partition does not have as strong stability guarantees as that
-of the previous approach; the tradeoff we make is to remove the requirement for
+of the previous approach: the tradeoff we make is to remove the requirement for
 the complete preference profile, which is unverifiable given the size of
 real-world data, such as our parliament voting data.
 
@@ -139,7 +137,7 @@ voting behaviors observed in a subset of all bills.
 For each PAC model, we simulate i.i.d. by sampling with replacement $3/4$ of
 all bills; repeat the run 50 times to evaluate the consistency between
 different runs and for producing a robust PAC stable partition minimizing the
-chance of luck.
+impact of chance.
 We use information theoretic measures to measure the distance among the 50
 partitions.
 If most partitions are in agreement, the average information distance is
