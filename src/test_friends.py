@@ -2,7 +2,7 @@ import copy
 import random
 import unittest
 from knesset_test import print_partition_stats, calculate_partition_edit_distances_and_print_stats
-from friends_and_enemies import stable_friends, find_friends, top_cover, to_avoid_sets, bottom_avoid, pac_top_cover, precalculate_coalitions
+from friends import stable_friends, find_friends, top_cover, pac_top_cover, precalculate_coalitions
 from top_covering import largest_scc_from_pref
 from partition_ids_to_names import build_member_map, partition_id_str_to_names
 from votes_to_game import partition_edit_distance, read_votes_and_player_data
@@ -39,21 +39,21 @@ class TestFriendsAndEnemies(unittest.TestCase):
         self.assertTrue(frozenset({2}) in pi)
 
 
-    def test_pac_knesset(self):
-        member_map = build_member_map()
-        random.seed(42)
-        partitions = []
-        original_votes, _ = read_votes_and_player_data()
-        sample_size = int(0.75 * len(original_votes))
-        for _ in range(50):
-            votes = copy.deepcopy(original_votes)
-            pi = pac_top_cover(votes, sample_size)
-            print(pi)
-            print_partition_stats(pi)
-            partition_id_str_to_names(str(pi), member_map)
-            partitions.append(pi)
-
-        calculate_partition_edit_distances_and_print_stats(partitions)
+    # def test_pac_knesset(self):
+    #     member_map = build_member_map()
+    #     random.seed(42)
+    #     partitions = []
+    #     original_votes, _ = read_votes_and_player_data()
+    #     sample_size = int(0.75 * len(original_votes))
+    #     for _ in range(50):
+    #         votes = copy.deepcopy(original_votes)
+    #         pi = pac_top_cover(votes, sample_size)
+    #         print(pi)
+    #         print_partition_stats(pi)
+    #         partition_id_str_to_names(str(pi), member_map)
+    #         partitions.append(pi)
+    #
+    #     calculate_partition_edit_distances_and_print_stats(partitions)
 
 
     def test_knesset(self):
@@ -68,10 +68,6 @@ class TestFriendsAndEnemies(unittest.TestCase):
         pi_tc_scc = top_cover(friend_matrix, pref_to_cc_method=largest_scc_from_pref)
         self.assertEqual(pi_tc_scc, pi)
 
-        pi_ba = bottom_avoid(friend_matrix)
-        print(pi_ba)
-        print_partition_stats(pi_ba)
-        # TODO: verify core stable
 
     def test_find_friends(self):
         friend_matrix = find_friends([[1, 1, 2]])
@@ -153,47 +149,6 @@ class TestFriendsAndEnemies(unittest.TestCase):
         self.assertEqual(pi, pi_tc)
         pi_tc_scc = top_cover(friend_matrix, pref_to_cc_method=largest_scc_from_pref)
         self.assertEqual(pi_tc_scc, pi)
-
-
-    def test_to_avoid_sets(self):
-        friend_matrix = [{1, 2}, {0}, {0}]
-        avoid_sets = to_avoid_sets(friend_matrix)
-        self.assertEqual(len(avoid_sets), 3)
-        self.assertEqual(avoid_sets[0], {0})
-        self.assertEqual(avoid_sets[1], {1, 2})
-        self.assertEqual(avoid_sets[2], {1, 2})
-
-        friend_matrix = [None, {0}, {0}]
-        avoid_sets = to_avoid_sets(friend_matrix)
-        self.assertEqual(len(avoid_sets), 2)
-        self.assertEqual(avoid_sets[1], {1, 2})
-        self.assertEqual(avoid_sets[2], {1, 2})
-
-        friend_matrix = [None, {2}, {0}]
-        avoid_sets = to_avoid_sets(friend_matrix)
-        self.assertEqual(len(avoid_sets), 2)
-        self.assertEqual(avoid_sets[1], {1})
-        self.assertEqual(avoid_sets[2], {1, 2})
-
-        friend_matrix = [None, None, {0}]
-        avoid_sets = to_avoid_sets(friend_matrix)
-        self.assertEqual(len(avoid_sets), 1)
-        self.assertEqual(avoid_sets[2], {2})
-
-        friend_matrix = [None, None, set()]
-        avoid_sets = to_avoid_sets(friend_matrix)
-        self.assertEqual(len(avoid_sets), 1)
-        self.assertEqual(avoid_sets[2], {2})
-
-
-    def test_bottom_avoid(self):
-        friend_matrix = [{1}, {0, 2}, {1}]
-        pi = bottom_avoid(friend_matrix)
-        self.assertEqual(len(pi), 2)
-        self.assertTrue(frozenset({0, 1}) in pi)
-        self.assertTrue(frozenset({2}) in pi)
-
-        #TODO: add more test cases
 
 
     def test_precalculate_coalitions(self):
