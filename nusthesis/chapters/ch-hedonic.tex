@@ -340,15 +340,10 @@ our top covering algorithm implementation.
 
 Our next set of experiments are based on the appreciation of friends model,
 which is a proper subset of top responsive games.
-
-\paragraph{Preference Model}
-
 In this preference model, a player classifies other players as either friends
 or enemies, and prefers any coalition with more friends and fewer enemies:
 
 Let $G_i$ be player $i$'s set of friends, and $B_i$ the set of enemies. $G_i \cup B_i \cup i = N$ and $G_i \cap B_i = \emptyset$. A preference profile $P^f$ is based on \textit{appreciation of friends} if for all player $i \in N$, $S \succeq_i T$ if and only if $|S \cap G_i| > |T \cap G_i|$ or $|S \cap G_i| = |T \cap G_i|$ and $|S \cap B_i| \leq |T \cap B_i|$.
-
-\paragraph{Implementation}
 
 We define friends of a player's as anyone whose votes agreed with the given
 player's votes more times than disagreed.
@@ -361,7 +356,8 @@ We experimented with two different ways of counting the disagreed votes:
 \end{enumerate}
 
 Compared to narrow disagreement, broad disagreement leads to every player being
-more selective of friends; it may also break the symmetry of the friend relationship.
+more selective of friends; it may also break the symmetry of the friend
+relationship.
 In both cases, for any player, those who are not friends are considered enemies.
 
 \begin{example}
@@ -387,12 +383,28 @@ In comparison, under selective friends, from player 1's point of view, player 2
 is still a friend due to bill 1, while player 2 considers player 1 an enemy
 because player 1 did not vote with her for bill 2 and 3.
 
+The complete preference profile under general friends is therefore:
+
+player 1: $\{1, 2\} \succ_1 \{1, 2, 3\} \succ_1 \{1\} \succ_1 \{1, 3\} $
+
+player 2: $\{1, 2\} \succ_2 \{1, 2, 3\} \succ_2 \{2\} \succ_2 \{2, 3\}$
+
+player 3: $\{3\} \succ_3 \{1, 3\} \sim \{2, 3\} \succ_3 \{1, 2, 3\}$
+
+The complete preference profile under selective friends is as follow:
+
+player 1: $\{1, 2\} \succ_1 \{1, 2, 3\} \succ_1 \{1\} \succ_1 \{1, 3\} $
+
+player 2: $\{2\} \succ_2 \{1, 2\} \sim \{2, 3\} \succ_2 \{1, 2, 3\} $
+
+player 3: $\{3\} \succ_3 \{1, 3\} \sim \{2, 3\} \succ_3 \{1, 2, 3\}$
+
 As soon as the sets of friends and enemies are derived for each parliament member,
 we can expand them into a complete preference profile, and apply the top covering
 algorithm to obtain a strict strong Nash stable partition for the general friends
 preference profile, and a strict core stable partition for the selective friends
-preference profile. The notion of stability is weaker for the selective friends case
-due to the lack of symmetry.
+preference profile. The notion of stability is weaker for the selective friends
+case due to the lack of symmetry.
 
 Aside from the two partitions yielded from the complete preference profiles,
 we implement and run two sets of PAC experiments based on the general friends
@@ -410,8 +422,63 @@ As a result, we expect to observe smaller and more coalitions in comparison.
 \section{Bottom Responsive Game}
 \label{sec:bottom_responsive_game}
 
+Bottom responsive games is the counterpart of top responsive games, but is a
+much less studied class of hedonic game models in comparison.
+In the context of our parliament voting dataset, we are curious to learn what
+coalition structure can be produced from this similar yet ``opposite''
+preference model.
+
 \subsection{Aversion to Enemies}
 \label{subsec:aversion_to_enemies}
+
+Aversion to enemies profile is a proper subclass of bottom responsive games
+\cite{SuSu10}.
+This preference model is closely related to appreciation of friends model
+(Section~\ref{subsec:appreciation_of_friends}).
+Same as the appreciation of friends model, a player classifies other players as
+either friends or enemies; different from the friends model where a player
+derives utility from the number of friends in a coalition, under the aversion
+to enemies model, a player prefers a coalition with fewer enemies and only uses
+the number of friends to break ties when two coalitions have the same number
+of enemies:
+
+Let $G_i$ be player $i$'s set of friends, and $B_i$ the set of enemies.
+$G_i \cup B_i \cup i = N$ and $G_i \cap B_i = \emptyset$.
+A preference profile $P^e$ is based on \textit{aversion to enemies} if for all
+player $i \in N$, $S \succeq_i T$ if and only if $|S \cap B_i| < |T \cap B_i|$
+or $|S \cap B_i| = |T \cap B_i|$ and $|S \cap G_i| \geq |T \cap G_i|$.
+
+Given 3 players and their votes in Example~\ref{example:votes_friends},
+under general firnds, both player 1 and player 2 view player 3 as enemy, and
+player 3 reciprocates this relation.
+The expanded preference profile is as follow:
+
+player 1: $\{1, 2\} \succ_1 \{1\} \succ_1 \{1, 2, 3\} \succ_1 \{1, 3\} $
+
+player 2: $\{1, 2\} \succ_2 \{2\} \succ_2 \{1, 2, 3\} \succ_2 \{2, 3\}$
+
+player 3: $\{3\} \succ_3 \{1, 3\} \sim \{2, 3\} \succ_3 \{1, 2, 3\}$
+
+Notice that compared to the appreciation of friends model under selective
+friends, both player 1 and 2 now prefer their respective singleton coalition
+over the grand coalition.
+This illustrates that we can expect to observe smaller coalitions in partitions
+generated from the enemy models compared to that from the friend models.
+
+under selective friends, player 1's only enemy remains as player 3, while
+player 2 views both player 1 and 3 as enemies; player 3's enemies remain as
+player 1 and 2.
+The expanded preference profile is therefore:
+
+player 1: $\{1, 2\} \succ_1 \{1\} \succ_1 \{1, 2, 3\} \succ_1 \{1, 3\} $
+
+player 2: $\{2\} \succ_2 \{1, 2\} \sim \{2, 3\} \succ_2 \{1, 2, 3\} $
+
+player 3: $\{3\} \succ_3 \{1, 3\} \sim \{2, 3\} \succ_3 \{1, 2, 3\}$
+
+% TODO: Algorithm
+
+% TODO: PAC
 
 \section{Boolean Hedonic Game}
 \label{sec:boolean_hedonic_game}
