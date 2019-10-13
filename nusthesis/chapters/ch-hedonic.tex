@@ -476,7 +476,31 @@ player 2: $\{2\} \succ_2 \{1, 2\} \sim \{2, 3\} \succ_2 \{1, 2, 3\} $
 
 player 3: $\{3\} \succ_3 \{1, 3\} \sim \{2, 3\} \succ_3 \{1, 2, 3\}$
 
-% TODO: Algorithm
+We imiplement the following algorithm proposed by \citenameyear{SuSu10} to
+compute a core stable coalition structure for a given complete bottom
+responsive preference profile:
+
+\begin{algorithm}[htb]
+  \caption{Bottom Responsive Game Core Finding Algorithm}
+  \label{alg:bottom_responsive_core}
+  \textbf{Input:} A bottom responsive game
+  \begin{algorithmic}[1]
+
+  \State $S \leftarrow N$; $\pi \leftarrow \emptyset$.
+  \While {$S \neq \emptyset$}
+    \State Set $\Gamma \leftarrow \{S\}$; $\Phi \leftarrow \emptyset$.
+    \While {$\Phi = \emptyset$}
+      \State $\Gamma \leftarrow \underset{X \in \Phi}{\bigcup} \underset{i \in X}{\bigcup} \{ X \text{\textbackslash} \{j\} | j \in Y \text{ for some } Y \in \Av(i, X)\}$
+      \State $\Phi \leftarrow \lbrace X \in \Gamma | \{i\} \in \Av(i, X) \text{ for each } i \in X \rbrace$
+    \EndWhile
+    \State Select a coalition $X \in \Phi$ and set
+      $\pi \leftarrow \pi \cup \lbrace X \rbrace$ and
+      $S \leftarrow  S \setminus X$
+  \EndWhile
+  \State \Return $\pi$
+
+  \end{algorithmic}
+\end{algorithm}
 
 % TODO: PAC
 
