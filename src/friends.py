@@ -179,17 +179,16 @@ def precalculate_coalitions(votes):
         coalition_matrix.append(coalitions)
     return coalition_matrix
 
-def pac_top_cover(votes, sample_size=None, sample_method=random.choices, selective_friends=False):
+def pac_top_cover(votes, diff_matrix, sample_size=None, sample_method=random.choices, selective_friends=False):
     if sample_size is None:
         sample_size = len(votes)
 
     num_players = len(votes[0])
     players = set(range(num_players))
     stable_partition = set()
-
-    diff_matrix = precalculate_frenemy_per_player_per_bill(votes, selective_friends)
     while players:
         logging.info(f'{len(players)} players left')
+        # need to redo coalition precalculation for correct & efficient counting of voted_with_me
         coalition_matrix = precalculate_coalitions(votes)
         B = {}
         approximate_preferences(votes, B, players, diff_matrix, coalition_matrix, sample_size, sample_method)
@@ -204,7 +203,7 @@ def pac_top_cover(votes, sample_size=None, sample_method=random.choices, selecti
         logging.info(f'players to remove: {cc}')
 
         players = players - cc
-        # remove votes of removed players
+        # remove votes of removed players, necessary for precalculate_coalitions next iteration
         for i, row in enumerate(votes):
             for j in range(num_players):
                 if j in cc:

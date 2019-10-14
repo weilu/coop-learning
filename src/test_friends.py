@@ -2,7 +2,7 @@ import copy
 import random
 import unittest
 from knesset_test import print_partition_stats, calculate_partition_edit_distances_and_print_stats
-from friends import stable_friends, find_friends, top_cover, pac_top_cover, precalculate_coalitions
+from friends import stable_friends, find_friends, top_cover, pac_top_cover, precalculate_coalitions, precalculate_frenemy_per_player_per_bill
 from top_covering import largest_scc_from_pref
 from votes_to_game import partition_edit_distance, read_votes_and_player_data
 
@@ -13,7 +13,8 @@ class TestFriends(unittest.TestCase):
         votes = [
             [1, 1, 2],
         ]
-        pi = pac_top_cover(votes, sample_method=random.sample)
+        diff_matrix = precalculate_frenemy_per_player_per_bill(votes, False)
+        pi = pac_top_cover(votes, diff_matrix, sample_method=random.sample)
         self.assertEqual(len(pi), 2)
         self.assertTrue(frozenset({0, 1}) in pi)
         self.assertTrue(frozenset({2}) in pi)
@@ -23,7 +24,8 @@ class TestFriends(unittest.TestCase):
             [2, 1, 2],
             [2, 2, 2],
         ]
-        pi = pac_top_cover(votes, sample_method=random.sample)
+        diff_matrix = precalculate_frenemy_per_player_per_bill(votes, False)
+        pi = pac_top_cover(votes, diff_matrix, sample_method=random.sample)
         self.assertEqual(len(pi), 1)
         self.assertTrue(frozenset({0, 1, 2}) in pi)
 
@@ -32,7 +34,8 @@ class TestFriends(unittest.TestCase):
             [3, 1, 3],
             [3, 2, 3],
         ]
-        pi = pac_top_cover(votes, sample_method=random.sample)
+        diff_matrix = precalculate_frenemy_per_player_per_bill(votes, False)
+        pi = pac_top_cover(votes, diff_matrix, sample_method=random.sample)
         self.assertEqual(len(pi), 2)
         self.assertTrue(frozenset({0, 1}) in pi)
         self.assertTrue(frozenset({2}) in pi)
@@ -40,30 +43,55 @@ class TestFriends(unittest.TestCase):
 
     def test_pac_knesset(self):
         random.seed(42)
-        partitions = []
         original_votes, _ = read_votes_and_player_data()
         sample_size = int(0.75 * len(original_votes))
-        for _ in range(50):
-            votes = copy.deepcopy(original_votes)
-            pi = pac_top_cover(votes, sample_size)
-            print(pi)
-            print_partition_stats(pi)
-            partitions.append(pi)
 
-        calculate_partition_edit_distances_and_print_stats(partitions)
+        diff_matrix = precalculate_frenemy_per_player_per_bill(votes, False)
+        with open('data/partitions_pac_friends_50_runs.txt', 'w') as f:
+            for r in range(50):
+                votes = copy.deepcopy(original_votes)
+                pi = pac_top_cover(votes, diff_matrix, sample_size)
+                print(pi)
+                print_partition_stats(pi)
+                print(f'done round {r + 1}')
+
+        random.seed(42)
+        diff_matrix = precalculate_frenemy_per_player_per_bill(votes, True)
+        with open('data/partitions_pac_friends_selective_50_runs.txt', 'w') as f:
+            for r in range(50):
+                votes = copy.deepcopy(original_votes)
+                pi = pac_top_cover(votes, diff_matrix, sample_size)
+                print(pi)
+                print_partition_stats(pi)
+                print(f'done round {r + 1}')
 
 
     def test_knesset(self):
         votes, player_labels = read_votes_and_player_data()
-        friend_matrix = find_friends(votes)
-        pi = stable_friends(friend_matrix)
-        print(pi)
-        print_partition_stats(pi)
-        # TODO: verify core stable
-        pi_tc = top_cover(friend_matrix)
-        self.assertEqual(pi_tc, pi)
-        pi_tc_scc = top_cover(friend_matrix, pref_to_cc_method=largest_scc_from_pref)
-        self.assertEqual(pi_tc_scc, pi)
+
+        friend_matrix = find_friends(votes, selective_friends=False)
+        with open('data/partitions_friends_1_runs.txt', 'w') as f:
+            pi = stable_friends(friend_matrix)
+            f.write(str(pi) + '\n')
+            print(pi)
+            print_partition_stats(pi)
+
+            pi_tc = top_cover(friend_matrix)
+            self.assertEqual(pi_tc, pi)
+            pi_tc_scc = top_cover(friend_matrix, pref_to_cc_method=largest_scc_from_pref)
+            self.assertEqual(pi_tc_scc, pi)
+
+        friend_matrix = find_friends(votes, selective_friends=True)
+        with open('data/partitions_friends_selective_1_runs.txt', 'w') as f:
+            pi = stable_friends(friend_matrix)
+            f.write(str(pi) + '\n')
+            print(pi)
+            print_partition_stats(pi)
+
+            pi_tc = top_cover(friend_matrix)
+            self.assertEqual(pi_tc, pi)
+            pi_tc_scc = top_cover(friend_matrix, pref_to_cc_method=largest_scc_from_pref)
+            self.assertEqual(pi_tc_scc, pi)
 
 
     def test_find_friends(self):
