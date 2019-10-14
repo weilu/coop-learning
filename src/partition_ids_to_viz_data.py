@@ -122,6 +122,8 @@ SINGLE_RUN_MODELS = [
     'value_function',
     'friends',
     'selective_friends',
+    'enemies',
+    'enemies_selective',
 ]
 
 def select_representatives(grouped_partitions, metric):
@@ -129,7 +131,10 @@ def select_representatives(grouped_partitions, metric):
     reps = {}
     for key, partitions in grouped_partitions.items():
         print_stats = True
-        if len(partitions) < 2:
+        if len(partitions) < 1:
+            print(f'Ignoring {key} as no valid partition found')
+            continue
+        elif len(partitions) == 1:
             stats_keys = partitions[0]['stats'].keys()
             if key in SINGLE_RUN_MODELS:
                 reps[key] = partitions
