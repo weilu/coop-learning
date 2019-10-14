@@ -81,8 +81,6 @@ def find_friends(votes, active_players=None):
 
 
 def find_friends_from_sample(sample_bill_indexes, diff_matrix, active_players=None):
-    num_players = len(diff_matrix[0, 0])
-
     diff_matrix = diff_matrix[sample_bill_indexes]
     frenemy_matrix = np.sum(diff_matrix, axis=0)
 

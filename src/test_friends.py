@@ -39,21 +39,21 @@ class TestFriendsAndEnemies(unittest.TestCase):
         self.assertTrue(frozenset({2}) in pi)
 
 
-    # def test_pac_knesset(self):
-    #     member_map = build_member_map()
-    #     random.seed(42)
-    #     partitions = []
-    #     original_votes, _ = read_votes_and_player_data()
-    #     sample_size = int(0.75 * len(original_votes))
-    #     for _ in range(50):
-    #         votes = copy.deepcopy(original_votes)
-    #         pi = pac_top_cover(votes, sample_size)
-    #         print(pi)
-    #         print_partition_stats(pi)
-    #         partition_id_str_to_names(str(pi), member_map)
-    #         partitions.append(pi)
-    #
-    #     calculate_partition_edit_distances_and_print_stats(partitions)
+    def test_pac_knesset(self):
+        member_map = build_member_map()
+        random.seed(42)
+        partitions = []
+        original_votes, _ = read_votes_and_player_data()
+        sample_size = int(0.75 * len(original_votes))
+        for _ in range(50):
+            votes = copy.deepcopy(original_votes)
+            pi = pac_top_cover(votes, sample_size)
+            print(pi)
+            print_partition_stats(pi)
+            partition_id_str_to_names(str(pi), member_map)
+            partitions.append(pi)
+
+        calculate_partition_edit_distances_and_print_stats(partitions)
 
 
     def test_knesset(self):
