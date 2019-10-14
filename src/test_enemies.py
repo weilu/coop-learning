@@ -1,9 +1,13 @@
 import unittest
+import logging
 import random
 from knesset_test import print_partition_stats
 from friends import find_friends
 from enemies import to_avoid_sets, bottom_avoid, pac_bottom_avoid
 from votes_to_game import read_votes_and_player_data
+
+logging.basicConfig(format='%(asctime)s [%(levelname)s] %(message)s',
+                    level=logging.INFO)
 
 
 class TestEnemies(unittest.TestCase):
@@ -77,6 +81,21 @@ class TestEnemies(unittest.TestCase):
         pi = bottom_avoid(friend_matrix)
         pi_pac = pac_bottom_avoid(votes, len(votes), sample_method=random.sample)
         self.assertEqual(pi, pi_pac)
+
+
+    def test_pac_knesset(self):
+        random.seed(42)
+        votes, player_labels = read_votes_and_player_data()
+        logging.info('done reading votes data')
+        sample_size = int(0.75 * len(votes))
+        with open('data/partitions_pac_enemies_50_runs.txt', 'w') as f:
+            for r in range(50):
+                pi = pac_bottom_avoid(votes, sample_size)
+                f.write(str(pi) + '\n')
+                print(pi)
+                print_partition_stats(pi)
+                logging.info(f'done round {r + 1}')
+
 
 if __name__ == '__main__':
     unittest.main()

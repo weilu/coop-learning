@@ -62,13 +62,15 @@ def pac_bottom_avoid(votes, sample_size, sample_method=random.choices):
         friend_matrix = approximate_friends(votes, players, diff_matrix, sample_size, sample_method)
         # successive restriction loop
         for round_index in range(len(players)):
-            # logging.info(f'round {round_index}')
+            logging.debug(f'round {round_index}')
             new_friend_matrix = approximate_friends(votes, players, diff_matrix, sample_size, sample_method)
+            logging.debug(f'done approximating friends')
             # take intersection of friends across samples
             for i, row in enumerate(new_friend_matrix):
                 if row is None:
                     continue
                 friend_matrix[i] &= row
+            logging.debug(f'done updating friends')
 
         pref = to_avoid_sets(friend_matrix)
         coalition = remove_bottom_players(pref, friend_matrix)
