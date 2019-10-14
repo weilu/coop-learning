@@ -476,7 +476,7 @@ player 2: $\{2\} \succ_2 \{1, 2\} \sim \{2, 3\} \succ_2 \{1, 2, 3\} $
 
 player 3: $\{3\} \succ_3 \{1, 3\} \sim \{2, 3\} \succ_3 \{1, 2, 3\}$
 
-We imiplement the following algorithm proposed by \citenameyear{SuSu10} to
+We implement the following algorithm proposed by \citenameyear{SuSu10} to
 compute a core stable coalition structure for a given complete bottom
 responsive preference profile:
 
@@ -488,12 +488,15 @@ responsive preference profile:
 
   \State $S \leftarrow N$; $\pi \leftarrow \emptyset$.
   \While {$S \neq \emptyset$}
-    \State Set $\Gamma \leftarrow \{S\}$; $\Phi \leftarrow \emptyset$.
+    \State \label{bottom_responsive_core:select_begin} Set
+      $\Gamma \leftarrow \{S\}$; $\Phi \leftarrow \emptyset$.
     \While {$\Phi = \emptyset$}
       \State $\Gamma \leftarrow \underset{X \in \Phi}{\bigcup} \underset{i \in X}{\bigcup} \{ X \text{\textbackslash} \{j\} | j \in Y \text{ for some } Y \in \Av(i, X)\}$
       \State $\Phi \leftarrow \lbrace X \in \Gamma | \{i\} \in \Av(i, X) \text{ for each } i \in X \rbrace$
     \EndWhile
-    \State Select a coalition $X \in \Phi$ and set
+    \State \label{bottom_responsive_core:select_end} Select a coalition
+      $X \in \Phi$
+    \State \label{bottom_responsive_core:reduce} Set
       $\pi \leftarrow \pi \cup \lbrace X \rbrace$ and
       $S \leftarrow  S \setminus X$
   \EndWhile
@@ -502,7 +505,27 @@ responsive preference profile:
   \end{algorithmic}
 \end{algorithm}
 
-% TODO: PAC
+For the PAC version of the aversion to enemies models,
+Algorithm~\ref{alg:pac_top_covering} does not directly apply; we need to adapt
+Algorithm~\ref{alg:bottom_responsive_core} to produce a PAC stable partition
+instead.
+Similar to Algorithm~\ref{alg:pac_top_covering}
+Step~\ref{pac_top_cover:sample_begin} to Step~\ref{pac_top_cover:sample_end}
+where we approximate the most preferred coalition for every player through
+repeated sampling, we can derive each player's set of friends from each round
+of sampling and take intersection of these friend sets across multiple rounds
+of sampling as each player's approximated ``true friends''.
+Players that are not ``true friends'' are then enemies.
+Given the approximated sets of enemies for each player, we execute
+Algorithm~\ref{alg:bottom_responsive_core}
+Step~\ref{bottom_responsive_core:select_begin} to
+Step~\ref{bottom_responsive_core:select_end} to select a PAC stable coalition,
+then add this coalition to the output PAC stable partition, and remove players
+in this coalition from the game (Step~\ref{bottom_responsive_core:reduce}).
+We repeat the approximation of ``true friends'', selection of PAC stable
+coalition, addition of coalition and removal of players with the remaining
+players until we exhaust all the players.
+
 
 \section{Boolean Hedonic Game}
 \label{sec:boolean_hedonic_game}
