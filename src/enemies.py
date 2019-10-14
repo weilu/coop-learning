@@ -50,12 +50,11 @@ def approximate_friends(votes, players, diff_matrix, sample_size, sample_method)
     return friend_matrix
 
 
-def pac_bottom_avoid(votes, sample_size, sample_method=random.choices):
+def pac_bottom_avoid(votes, diff_matrix, sample_size, sample_method=random.choices):
     num_players = len(votes[0])
     players = set(range(num_players))
     stable_partition = set()
 
-    diff_matrix = precalculate_frenemy_per_player_per_bill(votes)
     while players:
         logging.info(f'{len(players)} players left')
         B = {}

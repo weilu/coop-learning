@@ -54,7 +54,7 @@ def update_friend_matrix(friend_matrix, to_remove):
     return updated_friend_matrix
 
 
-def precalculate_frenemy_per_player_per_bill(votes):
+def precalculate_frenemy_per_player_per_bill(votes, selective_friends):
     num_bills = len(votes)
     num_players = len(votes[0])
     diff_matrix = np.zeros((num_bills, num_players, num_players))
@@ -64,9 +64,13 @@ def precalculate_frenemy_per_player_per_bill(votes):
             if my_vote not in {1, 2}:
                 continue
             for col_index, vote in enumerate(row):
-                # comment out the following two lines to be more selective about friends
-                if vote not in {1, 2}:
+                if selective_friends:
+                    effective_vote = True
+                else:
+                    effective_vote = vote in {1, 2}
+                if not effective_vote:
                     continue
+
                 if col_index != my_index:
                     if vote == my_vote:
                         diff_matrix[row_index, my_index, col_index] += 1
@@ -75,8 +79,8 @@ def precalculate_frenemy_per_player_per_bill(votes):
     return diff_matrix
 
 
-def find_friends(votes, active_players=None):
-    diff_matrix = precalculate_frenemy_per_player_per_bill(votes)
+def find_friends(votes, active_players=None, selective_friends=False):
+    diff_matrix = precalculate_frenemy_per_player_per_bill(votes, selective_friends)
     if active_players is None:
         active_players = set(range(len(votes[0])))
     return find_friends_from_sample(list(range(len(votes))), diff_matrix, active_players)
@@ -175,7 +179,7 @@ def precalculate_coalitions(votes):
         coalition_matrix.append(coalitions)
     return coalition_matrix
 
-def pac_top_cover(votes, sample_size=None, sample_method=random.choices):
+def pac_top_cover(votes, sample_size=None, sample_method=random.choices, selective_friends=False):
     if sample_size is None:
         sample_size = len(votes)
 
@@ -183,7 +187,7 @@ def pac_top_cover(votes, sample_size=None, sample_method=random.choices):
     players = set(range(num_players))
     stable_partition = set()
 
-    diff_matrix = precalculate_frenemy_per_player_per_bill(votes)
+    diff_matrix = precalculate_frenemy_per_player_per_bill(votes, selective_friends)
     while players:
         logging.info(f'{len(players)} players left')
         coalition_matrix = precalculate_coalitions(votes)

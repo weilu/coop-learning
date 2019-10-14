@@ -2,7 +2,7 @@ import unittest
 import logging
 import random
 from knesset_test import print_partition_stats
-from friends import find_friends
+from friends import find_friends, precalculate_frenemy_per_player_per_bill
 from enemies import to_avoid_sets, bottom_avoid, pac_bottom_avoid
 from votes_to_game import read_votes_and_player_data
 
@@ -55,11 +55,21 @@ class TestEnemies(unittest.TestCase):
 
     def test_knesset(self):
         votes, player_labels = read_votes_and_player_data()
-        friend_matrix = find_friends(votes)
-        pi = bottom_avoid(friend_matrix)
-        print(pi)
-        print_partition_stats(pi)
-        # TODO: verify core stable
+        logging.info('done reading votes data')
+        friend_matrix = find_friends(votes, selective_friends=False)
+        with open('data/partitions_enemies_selective_1_runs.txt', 'w') as f:
+            pi = bottom_avoid(friend_matrix)
+            f.write(str(pi) + '\n')
+            print(pi)
+            print_partition_stats(pi)
+            # TODO: verify core stable
+
+        friend_matrix = find_friends(votes, selective_friends=True)
+        with open('data/partitions_enemies_1_runs.txt', 'w') as f:
+            pi = bottom_avoid(friend_matrix)
+            f.write(str(pi) + '\n')
+            print(pi)
+            print_partition_stats(pi)
 
 
     def test_pac_bottom_avoid(self):
@@ -72,14 +82,16 @@ class TestEnemies(unittest.TestCase):
         friend_matrix = find_friends(votes)
         pi = bottom_avoid(friend_matrix)
 
-        pi_pac = pac_bottom_avoid(votes, len(votes), sample_method=random.sample)
+        diff_matrix = precalculate_frenemy_per_player_per_bill(votes, False)
+        pi_pac = pac_bottom_avoid(votes, diff_matrix, len(votes), sample_method=random.sample)
         self.assertEqual(pi, pi_pac)
 
         # use knesset data
         votes, player_labels = read_votes_and_player_data()
         friend_matrix = find_friends(votes)
         pi = bottom_avoid(friend_matrix)
-        pi_pac = pac_bottom_avoid(votes, len(votes), sample_method=random.sample)
+        diff_matrix = precalculate_frenemy_per_player_per_bill(votes, False)
+        pi_pac = pac_bottom_avoid(votes, diff_matrix, len(votes), sample_method=random.sample)
         self.assertEqual(pi, pi_pac)
 
 
@@ -88,9 +100,20 @@ class TestEnemies(unittest.TestCase):
         votes, player_labels = read_votes_and_player_data()
         logging.info('done reading votes data')
         sample_size = int(0.75 * len(votes))
+
+        diff_matrix = precalculate_frenemy_per_player_per_bill(votes, False)
+        with open('data/partitions_pac_enemies_selective_50_runs.txt', 'w') as f:
+            for r in range(50):
+                pi = pac_bottom_avoid(votes, diff_matrix, sample_size)
+                f.write(str(pi) + '\n')
+                print(pi)
+                print_partition_stats(pi)
+                logging.info(f'done round {r + 1}')
+
+        diff_matrix = precalculate_frenemy_per_player_per_bill(votes, True)
         with open('data/partitions_pac_enemies_50_runs.txt', 'w') as f:
             for r in range(50):
-                pi = pac_bottom_avoid(votes, sample_size)
+                pi = pac_bottom_avoid(votes, diff_matrix, sample_size)
                 f.write(str(pi) + '\n')
                 print(pi)
                 print_partition_stats(pi)
