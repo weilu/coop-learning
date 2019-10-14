@@ -1,4 +1,11 @@
-from friends import update_friend_matrix
+import copy
+import logging
+import random
+from friends import update_friend_matrix, precalculate_frenemy_per_player_per_bill, find_friends_from_sample
+
+logging.basicConfig(format='%(asctime)s [%(levelname)s] %(message)s',
+                    level=logging.INFO)
+
 
 def bottom_avoid(friend_matrix):
     stable_partition = set()
@@ -37,3 +44,35 @@ def to_avoid_sets(friend_matrix):
     return avoid_sets
 
 
+def approximate_friends(votes, players, diff_matrix, sample_size, sample_method):
+    S_prime_indexes = sample_method(range(len(votes)), k=sample_size)
+    friend_matrix = find_friends_from_sample(S_prime_indexes, diff_matrix, active_players=players)
+    return friend_matrix
+
+
+def pac_bottom_avoid(votes, sample_size, sample_method=random.choices):
+    num_players = len(votes[0])
+    players = set(range(num_players))
+    stable_partition = set()
+
+    diff_matrix = precalculate_frenemy_per_player_per_bill(votes)
+    while players:
+        logging.info(f'{len(players)} players left')
+        B = {}
+        friend_matrix = approximate_friends(votes, players, diff_matrix, sample_size, sample_method)
+        # successive restriction loop
+        for round_index in range(len(players)):
+            # logging.info(f'round {round_index}')
+            new_friend_matrix = approximate_friends(votes, players, diff_matrix, sample_size, sample_method)
+            # take intersection of friends across samples
+            for i, row in enumerate(new_friend_matrix):
+                if row is None:
+                    continue
+                friend_matrix[i] &= row
+
+        pref = to_avoid_sets(friend_matrix)
+        coalition = remove_bottom_players(pref, friend_matrix)
+        stable_partition.add(coalition)
+        players = players - coalition
+
+    return stable_partition

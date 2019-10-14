@@ -1,7 +1,8 @@
 import unittest
+import random
 from knesset_test import print_partition_stats
 from friends import find_friends
-from enemies import to_avoid_sets, bottom_avoid
+from enemies import to_avoid_sets, bottom_avoid, pac_bottom_avoid
 from votes_to_game import read_votes_and_player_data
 
 
@@ -56,6 +57,26 @@ class TestEnemies(unittest.TestCase):
         print_partition_stats(pi)
         # TODO: verify core stable
 
+
+    def test_pac_bottom_avoid(self):
+        votes = [
+            [1, 1, 2],
+            [1, 2, 2],
+            [2, 2, 2],
+        ]
+
+        friend_matrix = find_friends(votes)
+        pi = bottom_avoid(friend_matrix)
+
+        pi_pac = pac_bottom_avoid(votes, len(votes), sample_method=random.sample)
+        self.assertEqual(pi, pi_pac)
+
+        # use knesset data
+        votes, player_labels = read_votes_and_player_data()
+        friend_matrix = find_friends(votes)
+        pi = bottom_avoid(friend_matrix)
+        pi_pac = pac_bottom_avoid(votes, len(votes), sample_method=random.sample)
+        self.assertEqual(pi, pi_pac)
 
 if __name__ == '__main__':
     unittest.main()
