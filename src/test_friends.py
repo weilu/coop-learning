@@ -4,11 +4,10 @@ import unittest
 from knesset_test import print_partition_stats, calculate_partition_edit_distances_and_print_stats
 from friends import stable_friends, find_friends, top_cover, pac_top_cover, precalculate_coalitions
 from top_covering import largest_scc_from_pref
-from partition_ids_to_names import build_member_map, partition_id_str_to_names
 from votes_to_game import partition_edit_distance, read_votes_and_player_data
 
 
-class TestFriendsAndEnemies(unittest.TestCase):
+class TestFriends(unittest.TestCase):
 
     def test_pac_top_cover(self):
         votes = [
@@ -40,7 +39,6 @@ class TestFriendsAndEnemies(unittest.TestCase):
 
 
     def test_pac_knesset(self):
-        member_map = build_member_map()
         random.seed(42)
         partitions = []
         original_votes, _ = read_votes_and_player_data()
@@ -50,7 +48,6 @@ class TestFriendsAndEnemies(unittest.TestCase):
             pi = pac_top_cover(votes, sample_size)
             print(pi)
             print_partition_stats(pi)
-            partition_id_str_to_names(str(pi), member_map)
             partitions.append(pi)
 
         calculate_partition_edit_distances_and_print_stats(partitions)
