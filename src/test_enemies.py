@@ -110,6 +110,7 @@ class TestEnemies(unittest.TestCase):
                 print_partition_stats(pi)
                 logging.info(f'done round {r + 1}')
 
+        random.seed(42)
         diff_matrix = precalculate_frenemy_per_player_per_bill(votes, True)
         with open('data/partitions_pac_enemies_50_runs.txt', 'w') as f:
             for r in range(50):
