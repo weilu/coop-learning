@@ -77,21 +77,21 @@ def precalculate_frenemy_per_player_per_bill(votes):
 
 def find_friends(votes, active_players=None):
     diff_matrix = precalculate_frenemy_per_player_per_bill(votes)
+    if active_players is None:
+        active_players = set(range(len(votes[0])))
     return find_friends_from_sample(list(range(len(votes))), diff_matrix, active_players)
 
 
-def find_friends_from_sample(sample_bill_indexes, diff_matrix, active_players=None):
+def find_friends_from_sample(sample_bill_indexes, diff_matrix, active_players):
     diff_matrix = diff_matrix[sample_bill_indexes]
     frenemy_matrix = np.sum(diff_matrix, axis=0)
 
     friend_matrix = []
     for i, row in enumerate(frenemy_matrix):
-        if active_players and i not in active_players:
+        if i not in active_players:
             friend_matrix.append(None)
         else:
-            friends = set([i for i, count in enumerate(row) if count > 0])
-            if active_players:
-                friends &= active_players
+            friends = set([i for i, count in enumerate(row) if count > 0 and i in active_players])
             friend_matrix.append(friends)
     return friend_matrix
 
@@ -128,7 +128,7 @@ def af_better(friend_count, max_friend_count, enemy_count, max_enemy_count):
 def approximate_preferences(votes, B, players, diff_matrix, coalition_matrix, sample_size, sample_method):
     S_prime_indexes = sample_method(range(len(votes)), k=sample_size)
     sample_votes = list(votes[i] for i in S_prime_indexes)
-    friend_matrix = find_friends_from_sample(S_prime_indexes, diff_matrix, active_players=players)
+    friend_matrix = find_friends_from_sample(S_prime_indexes, diff_matrix, players)
     for i in players:
         if i in B and B[i] == {i}: # already singleton, no need to check further
             continue
