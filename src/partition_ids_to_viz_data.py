@@ -121,7 +121,7 @@ SINGLE_RUN_MODELS = [
     'boolean',
     'value_function',
     'friends',
-    'selective_friends',
+    'friends_selective',
     'enemies',
     'enemies_selective',
 ]
