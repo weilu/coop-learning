@@ -23,7 +23,7 @@ When the complete preference profile is not available, we can approximate
 a strict strong Nash stable partition.
 
 We will first introduce existing top responsive game algorithms for producing a
-stable parition and a PAC stable partition in Subsection~\ref{subsec:algorithms},
+stable partition and a PAC stable partition in Subsection~\ref{subsec:algorithms},
 followed by our improved PAC algorithm in
 Subsection~\ref{subsec:improved_pac_algorithm}.
 We then present two specific top responsive game models that we formulate and
@@ -34,19 +34,18 @@ Subsection~\ref{subsec:appreciation_of_friends}.
 \subsection{Existing Algorithms}
 \label{subsec:algorithms}
 In this section we describe two classes of algorithms which we implement and adapt
-for every top responsive preference models of our choice.
+for our top responsive preference models.
 The full information algorithms require the complete preference profile as
 input, whereas the PAC algorithm requires samples of coalitions observed as input.
 
 \paragraph{Full Information Algorithms}
 \label{para:full_pref_algos}
-The top covering algorithm computes a strict core stable partition for top
-responsive games.
+The top covering algorithm\cite{ALCALDE2004869, Dimitrov2006TopRA} computes a
+strict core stable partition for top responsive games.
 The algorithm works by discovering a stable coalition, adding this coalition
 to the output partition, removing players of this coalition from the pool
-of all players, then repeating the coalition discovery, addition to output
-partition, and player removal steps among the remaining players, until there is
-no more player left to be assigned.
+of all players, then repeating this process until there is no more player left
+to be assigned.
 
 \begin{algorithm}[htb]
   \caption{Top Covering Algorithm}
@@ -68,8 +67,14 @@ no more player left to be assigned.
  \end{algorithmic}
 \end{algorithm}
 
-Let $\CC(i, S)$ denotes the connected component with $i$ as the root node,
-in the graph induced by $S$ as vertices and directed edges $E$,
+In Algorithm~\ref{alg:top_covering}, to further specify Step~\ref{top_cover:select}
+we need to define the concept of \textit{connect component}:
+Let $C^1(i, S) = \ch(i, S)$ for player $i \in S, S \subseteq N$,
+$C^{t + 1}(i, S) = \underset{j \in C^t(i, S)}{\ch(j, S)}$, where $t$ is a positive
+integer; the \textit{connected component} of $i$ with respect to $S$ is 
+$C^{|N|}(i, S)$, denoted as $\CC(i, S)$. 
+$\CC(i, S)$ can be interpreted as a subgraph with $i$ as the root node in the graph
+induced by $S$ as vertices and directed edges $E$,
 $(i, j) \in E$ if $j \in \ch(i, S)$ for all $j \in S$.
 Step~\ref{top_cover:select} then expands to the following: select $i\in R^k$ such
 that $|\CC(i,R^k)| \leq |\CC(j,R^k)|$ for each $j\in R^k$;
@@ -101,7 +106,7 @@ equivalently the strongly connected components of the graph induced by $N$.
 When we do not have full information about the preference profile, but we have
 sufficient number of observations of coalitions that are i.i.d. samples from
 the probability distribution of all possible coalitions and how much each player
-value each coalition in this sample set, a PAC stable partition can be computed
+values each coalition in this sample set, a PAC stable partition can be computed
 using the following algorithm:
 
 \begin{algorithm}[htb]
@@ -186,7 +191,7 @@ and at least one player $i \in S$ prefers $S$ over $\pi(i)$.
 Consider the step when the coalition $\pi(i)$ is generated --- it was the largest
 strongly connected component in the directed graph induced by remaining players'
 choice sets.
-In order to form $S$ which is different from $\pi(i)$, either or both of the
+In order to form $S$ that is different from $\pi(i)$, either or both of the
 following steps must be carried out:
 
 \begin{enumerate}
@@ -253,7 +258,7 @@ Tarjan's algorithm in linear time $\mathcal{O}(|V| + |E|)$\cite{Tarjan72depthfir
 This running time improvement is only meaningful for the PAC version of the
 top covering algorithm due to the input size of the original top covering
 algorithm being exponential in the number of players.
-In addition, taking out more players in the earlier iterations also reduces
+In addition, removing more players in the earlier iterations also reduces
 the amount of computation required for the later iterations, making our
 experiments run much faster than what it would have been with the original
 $\CC$ procedure.

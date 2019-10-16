@@ -27,8 +27,8 @@ This simplifies the considerations we need to take into account when analyzing
 the outcomes, and allows for easier comparison between the different models.
 Moreover, it allows us to more easily discern
 unexpected coalition structures that need to be explained.
-There is also relative ideological cohesion between coalition parties
-as well as between opposition parties.
+There is also relative ideological cohesion between coalition parties, which
+form the government, as well as between opposition parties.
 
 No Israeli party has ever been elected with a majority of Knesset seats,
 which means all governments are made of coalitions.
@@ -48,7 +48,6 @@ party affiliation and their votes for all 7515 bills deliberated.
 A vote can take on one of the following values
 0 (vote canceled), 1 (vote for), 2 (vote against),
 3 (abstained), 4 (did not attend).
-
 
 \subsection{Data Preprocessing}
 
@@ -95,6 +94,7 @@ the individual data is wrong.
 
 Recall our first research questions: Can we use hedonic games to model
 real-world collaborative activities?
+%TODO: citations needed
 We see in past works, to demonstrate the power of game theoretic models
 in describing real-world data, it usually involves the following two steps:
 
@@ -105,7 +105,7 @@ in describing real-world data, it usually involves the following two steps:
 
 The rationale is that the closer the learned preference profile is to reality,
 the more likely we are to observe theoretically stable partition matching
-the ground truth parition in real-world data, such as party affiliation in
+the ground truth partition in real-world data, such as party affiliation in
 our dataset.
 The problem with this approach lies in verifying the fidelity of the learned
 preference profile --- we observe even simple preference profiles such as top
@@ -121,7 +121,7 @@ complete preference profile then computing a stable partition, we directly
 infer a PAC stable partition from partial preference relations we observe
 each player demonstrates in a dataset.
 The resulting partition does not have as strong stability guarantees as that
-of the previous approach: the tradeoff we make is to remove the requirement for
+of the previous approach: the trade-off we make is to remove the requirement for
 the complete preference profile, which is unverifiable given the size of
 real-world data, such as our parliament voting data.
 
@@ -178,12 +178,13 @@ The uncertainty (a.k.a. \textit{Entropy}) associated with the given partition
 $\pi$ is defined as
 $H(\pi) = - \sum^x_{i=1} \frac{|S_i|}{|N|} \log{\frac{|S_i|}{|N|}}$.
 It can be interpreted as the average amount of data, in bits for example,
-required to encode coalition labels of every player in parition $\pi$ in order
+required to encode coalition labels of every player in partition $\pi$ in order
 to transmit this partition over a communication channel.
 
-Given another partition made of $y$ coalitions $\pi' = \{S'_1, \cdots, S'_y\}$,
-if we already know $\pi'$, we can then ask what would be the amount of data
-required to encode $\pi$ given $\pi'$ --- this is \textit{Conditional Entropy}:
+Suppose now we have the structure of another partition 
+$\pi' = \{S'_1, \cdots, S'_y\}$ made of $y$ coalitions, we can then ask what
+would be the amount of data required to encode $\pi$ given $\pi'$ 
+--- this is \textit{Conditional Entropy}:
 $H(\pi|\pi') = - \sum^x_{i=1} \sum^y_{j=1} \frac{|S_i \cap S'_j|}{|N|} \log{\frac{|S_i \cap S'_j|/|N|}{|S_j|/|N|}}$.
 
 \textit{Mutual Information} represents how much the knowledge of $\pi'$ help

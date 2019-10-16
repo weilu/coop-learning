@@ -5,13 +5,15 @@
 \label{ch:preliminaries}
 \vspace{2em}
 
-Consider a parliament; who are ``natural allies''? One way to model this is by
-assuming that each member has a preference relation over various groups they
-wish to be part of; our objective is to identify partitions of parliament members
-that satisfy certain desirable properties, such as stability.
+Consider a parliament; who are ``natural allies'' amongst the parliament members?
+One way to model this is by assuming that each member has a preference ranking 
+over various groups they wish to be part of; 
+our objective is to identify partitions of parliament members such that no member
+can be any happier by leaving their current group and joining a different group, 
+thus making such partitions ``stable''.
 
 In this chapter, we present necessary definitions and examples relating to
-hedonic preference models (Section~\ref{sec:hedonic_game} and
+hedonic preference models (Section~\ref{sec:hedonic_game}) and
 stability solution concepts (Section~\ref{sec:stability_concepts},
 Section~\ref{sec:pac_learning_pac_stability}).
 
@@ -25,7 +27,8 @@ $P = (\succeq_1, \cdots, \succeq_n)$.
 A \textit{preference relation} $\succeq_i$ is a reflective, complete, and
 transitive binary relation on $\mathcal{N}_i$, where $\mathcal{N}_i$ is the set
 of all non-empty subset of $N$ that includes player $i$;
-i.e., $\mathcal{N}_i = \{S \subseteq N: i \in S, S \neq \emptyset \}$
+i.e., $\mathcal{N}_i = \{S \subseteq N: i \in S, S \neq \emptyset \}$.
+A \textit{coalition} is a nonempty subset of $N$.
 
 \begin{example}
 \label{example:not_top_responsive_pref}
@@ -41,6 +44,19 @@ i.e., $\mathcal{N}_i = \{S \subseteq N: i \in S, S \neq \emptyset \}$
 
   player 3: $\{1, 3\} \succ_3 \{2, 3\} \succ_3 \{1, 2, 3\} \succ_3  \{3\}$
 \end{example}
+
+A \textit{coalition structure} is a partition of players $N$ into disjoint
+coalitions;
+we also simply refer to a coalitions structure as a \textit{partition},
+denoted as $\pi$.
+Given a coalition structure, a deviation by a single player is a
+move from their current coalition to a different coalition.
+A player has the incentive to deviate when they can achieve higher utility for
+themselves.
+A coalition structure is stable when no player has the incentive to deviate.
+Stability is the main criterion used to analyze which coalition structure will 
+form.
+We will formally define stability concepts in Section~\ref{sec:stability_concepts}.
 
 Observe that hedonic games describe a very broad family of games --- it does not
 place any restriction on any preference relation\footnote{``reflective, complete, 
@@ -79,6 +95,8 @@ does not satisfy top responsiveness because the grand coalition $\{1, 2, 3\}$
 contains every player's top choice, which is their choice set when all players
 are considered, but is outranked by another two-player coalition every time.
 
+Now let us look at an example of top responsive games:
+
 \begin{example}
 \label{example:top_responsive_pref}
   Consider a similar game of three players with the following choice sets:
@@ -110,7 +128,7 @@ large in the number of players, as each player needs to rank all possible
 coalitions they may belong to.
 In our implementation and experiments in Chapter~\ref{ch:hedonic}, we explore
 top responsive models in both its generic form
-(Subsection~\ref{subsec:handcrafted_value_function}) and a specific sub-class of
+(Section~\ref{subsec:handcrafted_value_function}) and a specific sub-class of
 this preference model named Appreciation of Friends
 (Subsection~\ref{subsec:appreciation_of_friends}).
 
@@ -144,6 +162,8 @@ If in addition to the above two conditions, a game also satisfies
 $|\Av(i, S)| = 1$ for all $i \in N$ and all $S \in \mathcal{N}_i$,
 then it is strongly bottom responsive. The unique avoid set in $\Av(i, S)$
 is denoted $\av(i, S)$.
+
+Following is an example of bottom responsive games:
 
 \begin{example}
 \label{example:bottom_responsive_pref}
@@ -218,7 +238,7 @@ Chapter~\ref{ch:hedonic} Section~\ref{sec:boolean_hedonic_game}.
 \section{Stability Concepts}
 \label{sec:stability_concepts}
 We are particularly interested in models that produce partitions that satisfy
-strategic considerations; specifically, we focus our attention on stability
+strategic considerations; specifically, we focus our attention on solution
 concepts that capture the idea that no group of players can be better off by
 leaving and forming their own coalition.
 Group based stability notions are stronger than those based on individual deviation,
@@ -254,9 +274,9 @@ stable partition which is $\{\{1\}, \{2\}, \{3\}\}$.
 \label{subsec:strong_nash_strict_strong_nash}
 Next we cover two solution concepts with even stronger notions of stability
 based on group deviation.
-If a partition $\pi' \neq \pi$ exists with movement of players $S \subseteq N$
-and $S \neq \emptyset$ (denoted as $\pi \xrightarrow{S} \pi'$), where
-$\forall i \in S$, $\pi'(i) \succ_i \pi(i)$,
+Given a partition $\pi$, if another partition $\pi' \neq \pi$ exists with
+movement of players $S \subseteq N$ and $S \neq \emptyset$ (denoted as
+$\pi \xrightarrow{S} \pi'$), where $\forall i \in S$, $\pi'(i) \succ_i \pi(i)$,
 and $\forall j \in N\text{\textbackslash}S$, $\pi'(j) = \pi(j)$,
 then $S$ strongly Nash blocks $\pi$.
 A partition that admits no strongly Nash blocking set $S \subseteq N$ is said
@@ -266,6 +286,10 @@ $\forall i \in S$, $\pi'(i) \succeq_i \pi(i)$ and $\exists j \in S$,
 $\pi'(j) \succ_j \pi(j)$.
 A partition that admits no weakly Nash blocking set $S \subseteq N$ is said to
 be strict strong Nash stable (SSNS).
+SSNS is a stronger notion of stability than SNS because unlikely SNS where a
+movement is only possible when all players involved are strictly better off, 
+under SSNS neutral players are agreeable to a movement as long as someone benefits
+from and nobody is harmed by the movement.
 
 Strict core stable solutions for Example~\ref{example:top_responsive_pref}
 and Example~\ref{example:bottom_responsive_pref} are also SSNS.
@@ -313,5 +337,14 @@ $\frac{1}{\varepsilon}$, and $\log{\frac{1}{\delta}}$.
 In the same paper, \citenameyear{ijcai2017-380} also show that top responsive games
 are efficiently PAC stablizable even though they are not PAC learnable.
 A PAC stable partition can be computed with Algorithm~\ref{alg:pac_top_covering}
-which we describe in detail in Chapter~\ref{ch:hedonic}
-Section~\ref{sec:top_responsive_game} Subsection~\ref{subsec:algorithms}.
+which we describe in detail in Section~\ref{subsec:algorithms}.
+
+Recall that describing a complete top responsive preference profile is exponential
+in the number of players; to programmatically compute a core stable partition
+we need such a full preference profile as input.
+PAC stability allows us to trade some uncertainty in output partition stability
+for a partial input preference profile, which is much smaller in size
+(polynomial in the number of players).
+In our experiments (Chapter~\ref{ch:hedonic}), if the full preference profile is
+available for a model, we compute a core stable partition as well as a PAC stable
+partition; we discuss and compare the resulting partitions in Chapter~\ref{ch:analysis}.
