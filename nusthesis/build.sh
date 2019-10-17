@@ -39,4 +39,4 @@ export TRIMBIB_ARGS=("--pages")
 # shellcheck disable=SC1090
 source "${FAIRY_HOME}/latex/build_latex.sh"
 
-./texcount.pl -inc  main.tex
+perl ./texcount.pl -inc  main.tex
