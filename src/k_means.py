@@ -1,4 +1,5 @@
 from sklearn.cluster import KMeans
+from sklearn.metrics import silhouette_score
 import numpy as np
 import pandas as pd
 
@@ -26,7 +27,7 @@ def cluster_labels_to_sets(labels):
 def get_clustering_partition(k):
     X = votes_to_np_array()
     kmeans = KMeans(n_clusters=k, random_state=42).fit(X)
-    return cluster_labels_to_sets(kmeans.labels_), kmeans.inertia_
+    return cluster_labels_to_sets(kmeans.labels_), kmeans.inertia_, silhouette_score(X, kmeans.labels_)
 
 
 if __name__ == '__main__':
