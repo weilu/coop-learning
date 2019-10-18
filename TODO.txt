@@ -283,3 +283,23 @@ Sep 29 Notes:
 - PAC algo: What exactly is D? D represents prob distribution of likelihood of each coalition observed?
   what's the point of "informative utility model"?
 - how to use abb.bib?
+
+
+18 Oct
+
+Status & Estimates
+ch 1: partial, needs 1 day to complete draft
+ch 2: partial, needs 2 days to complete draft (25 Oct)
+ch 3: draft done, comments addressed
+ch 4: draft done, comments addressed, but 1 more measurement to add needs 1 day
+ch 5: draft done, reviewed, need to address comments, 1 day
+ch 6: draft half way done, needs 1 day to complete draft (18 Oct)
+ch 7: 5 days to draft (23 Oct)
+ch 8: 1 day to draft
+
+total: 10 days to draft
+
+Chapter 7:
+- explain the viz
+- explain comparison measurements
+check selective friends/enemies
