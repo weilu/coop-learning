@@ -6,6 +6,7 @@
 \vspace{2em}
 
 \section{$k$-means Clustering}
+\label{sec:k_means_clustering}
 
 $k$-means clustering partitions a given set of samples $x_1, \cdots, x_n$ into
 $k$ disjoint sets $C$, each described by the mean $\mu_j$ of the samples in the
@@ -73,4 +74,62 @@ significantly thereafter.
   \label{Comparison:fig:k_means_silhouette}
 \end{figure}
 
-\section{Stochastic Block Models}
+We present results from both $k=2$ and $k=10$ in Chapter~\ref{ch:analysis}.
+
+\section{Stochastic Block Model}
+\label{sec:stochastic_block_model}
+
+Stochastic block model (SBM) commonly serves as a benchmark model in community
+detection.
+This approach models dataset as a graph; for our Knesset dataset, parliament
+members make the nodes of this graph and how frequently each pair of members
+voted together/differently form the edge weights.
+The stochastic block model assumes nodes that belong to the same group have
+the same probability of being connected with other nodes of the network.
+Using Bayesian inference, it finds a partition that maximizes the likelihood of
+observed network.
+It is equivalent to the \textit{minimum description length method} where given the
+same explanatory power, the simplest model is selected.
+This gives the SBM approach some tolerance for stochastic noise.
+
+We construct the first SBM with only positive edge weights --- each edge weight
+represents the number of times a pair of politicians voted together, either
+``for'' or ``against'' a bill.
+We model the edge weights using the geometric distribution given the weights are
+non-negative and discrete values.
+We plot the normalized frequencies of edge weights in
+Figure~\ref{Comparison:fig:sbm_edge_weight_hist}.
+
+\begin{figure}[!t]
+  \centering
+  \includegraphics[width=\linewidth]{\Pic{png}{sbm_edge_weight_hist}}
+  \vspace{\BeforeCaptionVSpace}
+  \caption{The Knesset under SBM: normalized histogram of positive edge weights}
+  \label{Comparison:fig:sbm_edge_weight_hist}
+\end{figure}
+
+Our second SBM accounts for instances when a pair of politicians' votes
+disagreed --- edge weight is the difference of the number of times their votes
+agreed and the number of times their votes disagreed.
+Since the edge weights can be negative, we model the weights using the normal
+distribution.
+See Figure~\ref{Comparison:fig:sbm_edge_weight_neg_hist} for the normalized
+frequencies of potentially negative edge weights.
+
+\begin{figure}[!t]
+  \centering
+  \includegraphics[width=\linewidth]{\Pic{png}{sbm_edge_weight_neg_hist}}
+  \vspace{\BeforeCaptionVSpace}
+  \caption{The Knesset under SBM: normalized histogram of possible negative edge weights}
+  \label{Comparison:fig:sbm_edge_weight_neg_hist}
+\end{figure}
+
+Given that we are analysing an empirical network, there could be more than one
+fit of the SBM with similar likelihoods of generating the observed network.
+Therefore instead of finding the maximum, we sample partitions from the
+posterior distribution, and take the average weighted by posterior probabilities
+across different model fits (aka.\ model averaging).
+We use the SBM implemented in the graph-tool library, which supports model
+averaging using an efficient Markov chain Monte Carlo (MCMC) algorithm.
+This further optimizes the SBM models.
+
