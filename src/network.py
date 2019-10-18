@@ -3,6 +3,7 @@ from graph_tool.all import *
 from votes_to_game import read_votes_and_player_data
 import matplotlib.pyplot as plt
 import logging
+import numpy as np
 
 logging.basicConfig(format='%(asctime)s [%(levelname)s] %(message)s',
                     level=logging.INFO)
@@ -74,6 +75,8 @@ def plot_edge_weight_pmf(together_counter):
     heights,bins = np.histogram(counts, bins=30)
     heights = heights/sum(heights)
     plt.bar(bins[:-1],heights,width=(max(bins) - min(bins))/len(bins), color="blue", alpha=0.5)
+    plt.xlabel('Edge weight')
+    plt.ylabel('Normalized frequency')
     plt.show()
 
 
