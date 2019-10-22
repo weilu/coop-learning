@@ -191,7 +191,7 @@ $H(\pi|\pi') = - \sum^x_{i=1} \sum^y_{j=1} \frac{|S_i \cap S'_j|}{|N|} \log{\fra
 reduce the number of bits required to encode $\pi$:
 $\MI(\pi, \pi') = H(\pi) - H(\pi|\pi')$
 
-\textit{Variation of Information} can be interpreted as the total amount of
+\textit{Variation of Information} (VI) can be interpreted as the total amount of
 information change going from partition $\pi$ to partition $\pi'$;
 $H(\pi|\pi')$ represent the amount of information we lose about $\pi$
 $H(\pi'|\pi)$ represent the amount of information we gain about $\pi'$:
@@ -202,3 +202,69 @@ Different from mutual information, variation of information satisfies the
 properties of a true metric: non-negativity, symmetry and triangle inequality.
 Being a metric makes it a measure that matches our intuitive understanding of
 distance.
+
+Variation of information between two partitions has a range of $[0, \log(|N|)]$.
+Since VI is a distance measure, the smaller the value the closer two partitions
+are; two identical partitions has a VI of 0, while the VI value for two very
+different partitions is bounded by logarithm of total number of players to be
+partitioned.
+
+Consider three conceptually ``bad'' partitions of the Knesset:
+
+\begin{enumerate}
+  \item Singletons: all singleton coalitions
+  \item All-in-one: The grand coalition
+  \item Random 10: 10 roughly equal sized coalitions with every player randomly
+    assigned to one of the coalitions.
+    10 corresponds to the number of parties in the Knesset.
+\end{enumerate}
+
+Using party affiliations as the ground truth partition, the VIs between the
+bad partitions and our ground truth partition are visualize in Figure~\ref{Experiment:fig:vi_baselines}.
+
+\begin{figure}[!t]
+  \centering
+  \includegraphics[width=\linewidth]{\Pic{png}{vi_baselines}}
+  \vspace{\BeforeCaptionVSpace}
+  \caption{The Knesset Partition Baseline VIs}
+  \label{Experiment:fig:vi_baselines}
+\end{figure}
+
+Notice under VI, Singletons and All-in-one partitions are not as bad, this is
+because despite metrical, VI is not a measure corrected for chance.
+For this reason, we adopt another measure named \textit{Adjusted Mutual
+Information} (AMI):
+
+\[
+  \AMI(\pi, \pi') = \frac{I(\pi, \pi') - E(I(\pi, \pi'))}{\max(H(\pi), H(\pi')) - E(I(\pi, \pi'))}
+\]
+
+$E(I(\pi, \pi'))$ is the expected value of mutual information between
+the two given partitions $\pi$ and $\pi'$.
+Two random partitions have an expected mutual information of 0, their AMI
+is therefore around 0.
+When two partitions are identical their AMI is 1.
+AMI is more sensitive in detecting bad partitions, however it is not metrical
+\cite{Vinh:2010:ITM:1756006.1953024}.
+
+We compute the AMI values for our baseline bad partitions on the Knesset.
+The resulting values are indeed tightly around zero (Table~\ref{experiment:table:ami_baselines}).
+
+
+\begin{table}[h!]
+\label{experiment:table:ami_baselines}
+\centering
+\begin{tabular}{|c|c|}
+\hline
+       & Ajusted Mutual Information \\ \hline
+Singletons & 3e-14 \\
+All-in-One & -5e-16 \\
+Randome 10 & 0.007 \\
+\hline
+\end{tabular}
+\end{table}
+
+We use both VI and AMI as the quantitative measurements in our experiments,
+as VI has the advantage of being a metric and AMI is good for detecting bad
+partitions.
+

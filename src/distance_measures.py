@@ -10,10 +10,10 @@ def normalized_mutual_information(partition1, partition2):
 
 
 def adjusted_mutual_information(partition1, partition2):
-    if type(partition1[0]) in [list, set, frozenset]:
+    if type(partition1) == set or (type(partition1[0]) in [list, set, frozenset]):
         partition1 = to_label_array(partition1)
         partition2 = to_label_array(partition2)
-    return metrics.adjusted_mutual_info_score(partition1, partition2)
+    return metrics.adjusted_mutual_info_score(partition1, partition2, average_method='max')
 
 
 def to_label_array(pi):
