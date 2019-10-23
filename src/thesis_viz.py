@@ -1,10 +1,14 @@
 import math
+import glob
 import random
+import re
+import sys
 import numpy as np
 import matplotlib.pyplot as plt
 from vi import variation_of_information
 from distance_measures import adjusted_mutual_information
-from partition_ids_to_viz_data import read_knesset_partition_by_party
+from partition_ids_to_viz_data import read_knesset_partition_by_party, partition_str_to_list
+from partition_stats import print_stats
 
 
 def baseline_partitions():
@@ -49,10 +53,7 @@ def plot_horizontal_bars(values, x_labels, y_axis_name, min_y=None, max_y=None):
 
     plt.show()
 
-
-if __name__ == '__main__':
-    random.seed(42)
-
+def quantitative_measurement_baselines():
     party_partition, singletons, all_in_one, random_ten = baseline_partitions()
     x_labels = ('Singletons', 'All-in-One', 'Random 10')
 
@@ -62,3 +63,36 @@ if __name__ == '__main__':
     amis = ami_baselines(party_partition, singletons, all_in_one, random_ten)
     print(amis)
     plot_horizontal_bars(amis, x_labels, 'AMI')
+
+
+def calculate_pair_wise_amis(partitions):
+    scores = []
+    for i in range(len(partitions) - 1):
+        p1 = partitions[i]
+        for j in range(i+1, len(partitions)):
+            p2 = partitions[j]
+            scores.append(adjusted_mutual_information(p1, p2))
+    return scores
+
+
+def pac_variability():
+    files = glob.glob('data/partitions_*_50_runs.txt')
+    print(files)
+    for filename in files:
+        partitions = []
+        with open(filename) as f:
+            key = re.search('partitions_(.*)_\d+_run', filename).group(1)
+            for line in f:
+                pi = partition_str_to_list(line)
+                partitions.append(pi)
+            print(f'\nExperiment {key}')
+        num_coalitions = list(len(pi) for pi in partitions)
+        print_stats('Number of Coalitions', num_coalitions)
+        amis = calculate_pair_wise_amis(partitions)
+        print_stats('Pair-wise AMIs', amis)
+
+if __name__ == '__main__':
+    random.seed(42)
+    # quantitative_measurement_baselines()
+    pac_variability()
+

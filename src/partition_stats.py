@@ -7,12 +7,15 @@ from vi import variation_of_information, normalized_variation_of_information, no
 
 def print_stats(label, data):
     if len(data) > 1:
+        mean = statistics.mean(data)
+        sd = statistics.stdev(data)
         out = (f'  {label}:\n'
                f'     max: {max(data)},\n'
-               f'     min: {min(data)},\n'
+               f'     min: {round(min(data), 2)},\n'
                f'     median: {statistics.median(data)}, \n'
-               f'     mean: {statistics.mean(data)}, \n'
-               f'     sd: {statistics.stdev(data)}, \n'
+               f'     mean: {round(mean, 2)}, \n'
+               f'     cv: {round(sd/mean, 2)}, \n'
+               f'     sd: {round(sd, 2)}, \n'
                f'     variance: {statistics.variance(data)}')
     else:
         out = f'  {label}: {data[0]}'

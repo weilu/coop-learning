@@ -7,6 +7,77 @@
 
 \section{Results}
 
+\subsection{Variability among PAC Partitions}
+\label{subsec:variability_among_pac_partitions}
+
+Before we can meaningfully aggregate 50 partition results from every PAC model
+we need to assess how different these 50 partitions are from each other.
+If they are vastly different, it would be evidence that there is error in the
+PAC algorithm that produces these partitions; otherwise it would act as a sanity
+check on the correctness of our implementation of each corresponding algorithm.
+
+Table~\ref{analysis:table:pac_num_coalitions} presents the mean and standard
+deviation of the number of coalitions across 50 runs for every PAC model.
+Coefficient of variation (CV) is the ratio of the standard deviation to the mean.
+Note that all the PAC models have CV values well below 1, so there is very low
+variation in terms of partition size across 50 runs for every PAC model.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c|c|c|c|}
+\hline
+       & Mean Partition Size & Standard Deviation & CV \\ \hline
+Value Function & 87 & 0 & 0 \\
+General Friends & 13 & 1.29 & 0.10  \\
+Selective Friends & 20 & 1.83 & 0.09  \\
+Selective Enemies & 10 & 0 & 0 \\
+General Enemies & 34 & 0.84 & 0.02 \\
+Boolean & 31 & 0.46 & 0.02  \\
+\hline
+\end{tabular}
+\caption{PAC Model Partition Size Statistics}
+\label{analysis:table:pac_num_coalitions}
+\end{table}
+
+Recall that Adjusted Mutual Information (AMI) measures how similar two
+partitions are and is very sensitive in detecting very different partitions (
+Chapter~\ref{subsec:information_theoretic_measures}).
+We calculate the pairwise AMIs among the 50 partitions for each PAC model;
+the resulting statistics are presented in
+Table~\ref{analysis:table:pac_pairwise_amis}.
+We observe even the smallest pairwise AMI for every PAC model $>> 0$ and all CVs
+$<< 1$, from which we can conclude that, beyond partition size, the content
+of every partition is not dissimilar from each other, consistently across 50
+partitions.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c|c|c|c|}
+\hline
+       & Minimum Pairwise AMI & Mean Pairwise AMI & CV \\ \hline
+Value Function & 1 & 1 & 0 \\
+General Friends & 0.6 & 0.78 & 0.09  \\
+Selective Friends & 0.66 & 0.84 & 0.08  \\
+Selective Enemies & 0.97 & 0.99 & 0.01 \\
+General Enemies & 0.93 & 0.97 & 0.01 \\
+Boolean & 0.83 & 0.93 & 0.06  \\
+\hline
+\end{tabular}
+\caption{PAC Model Partition Pairwise AMI Statistics}
+\label{analysis:table:pac_pairwise_amis}
+\end{table}
+
+Now that we have established there is little variation within every set of 50
+PAC partitions, as described in Section~\ref{sec:experiment_design}, we select
+the ``centroid'' of each set as the representative.
+Since all the partitions are reasonably close to each other, it does not
+matter either we use AMI or VI for selecting the centroid.
+Given that VI is a distance measure therefore more intuitive to work with in
+this case, we choose each representative partition as the one with the smallest
+sum of VIs to the rest 49 partitions.
+
+% TODO: partition assignments of every parliament member under every model
+
 \subsection{Handcrafted Value Function}
 
 \begin{figure}[!t]
