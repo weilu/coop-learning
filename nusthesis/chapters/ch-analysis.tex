@@ -69,7 +69,7 @@ Boolean & 0.83 & 0.93 & 0.06  \\
 
 Now that we have established there is little variation within every set of 50
 PAC partitions, as described in Section~\ref{sec:experiment_design}, we select
-the ``centroid'' of each set as the representative.
+the ``centroid'' of each set as the representative of its corresponding PAC model.
 Since all the partitions are reasonably close to each other, it does not
 matter either we use AMI or VI for selecting the centroid.
 Given that VI is a distance measure therefore more intuitive to work with in
@@ -80,14 +80,6 @@ sum of VIs to the rest 49 partitions.
 
 \subsection{Handcrafted Value Function}
 
-\begin{figure}[!t]
-  \centering
-  \includegraphics[width=\linewidth]{\Pic{png}{value_function}}
-  \vspace{\BeforeCaptionVSpace}
-  \caption{Coalition structure produced by the value function model}
-  \label{Analysis:fig:value_function}
-\end{figure}
-
 Out of the 50 runs of the algorithm we observe that the resulting partition
 is consistent with little variability.
 It is not core stable with respect to the partial preference profile.
@@ -95,14 +87,6 @@ This is unsurprising due to the PAC model.
 The partition has one large coalition consisting of around 60 members
 and the rest are all singleton coalitions.
 All members of the only large coalition are from right wing parties.
-
-\begin{figure}[!t]
-  \centering
-  \includegraphics[width=\linewidth]{\Pic{png}{pac_value_function}}
-  \vspace{\BeforeCaptionVSpace}
-  \caption{Coalition structure produced by the PAC value function model}
-  \label{Analysis:fig:pac_value_function}
-\end{figure}
 
 % TODO: doublecheck if this makes sense
 The singleton coalitions are likely a result of the limited size of the derived partial preference profile --- Upon discovery of the smallest $\CC$ in each iteration, we also remove any coalition that contains any of the removed player from the remaining player's preference relation. Since we took away a large number of players in one of the first few iterations, many coalitions are removed from remaining players' preference relations, resulting in isolated nodes in the updated graph which leads to singleton coalitions.
@@ -112,21 +96,6 @@ The singleton coalitions are likely a result of the limited size of the derived 
 
 \textbf{Complete Preference Profiles}
 
-\begin{figure}[!t]
-  \centering
-  \includegraphics[width=\linewidth]{\Pic{png}{friends}}
-  \vspace{\BeforeCaptionVSpace}
-  \caption{Coalition structure produced by the general friends model}
-  \label{Analysis:fig:friends}
-\end{figure}
-
-\begin{figure}[!t]
-  \centering
-  \includegraphics[width=\linewidth]{\Pic{png}{selective_friends}}
-  \vspace{\BeforeCaptionVSpace}
-  \caption{Coalition structure produced by the selective friends model}
-  \label{Analysis:fig:selective_friends}
-\end{figure}
 
 The broad disagreement (aka general friends) setup produced a partition with 18
 coalitions out of which there are two large coalitions with 66 and 58 members,
@@ -143,40 +112,10 @@ two friends models, in hope that sampling would dampen such sensitivity.
 
 \textbf{PAC Models}
 
-\begin{figure}[!t]
-  \centering
-  \includegraphics[width=\linewidth]{\Pic{png}{pac_friends}}
-  \vspace{\BeforeCaptionVSpace}
-  \caption{Coalition structure produced by the PAC general friends model}
-  \label{Analysis:fig:pac_friends}
-\end{figure}
-
-\begin{figure}[!t]
-  \centering
-  \includegraphics[width=\linewidth]{\Pic{png}{pac_selective_friends}}
-  \vspace{\BeforeCaptionVSpace}
-  \caption{Coalition structure produced by the PAC selective friends model}
-  \label{Analysis:fig:pac_selective_friends}
-\end{figure}
 
 TODO: comment on results of PAC friends and selective friends
 
 \subsection{Boolean Hedonic Games}
 
-\begin{figure}[!t]
-  \centering
-  \includegraphics[width=\linewidth]{\Pic{png}{boolean}}
-  \vspace{\BeforeCaptionVSpace}
-  \caption{Coalition structure produced by the Boolean model}
-  \label{Analysis:fig:boolean}
-\end{figure}
-
-\begin{figure}[!t]
-  \centering
-  \includegraphics[width=\linewidth]{\Pic{png}{pac_boolean}}
-  \vspace{\BeforeCaptionVSpace}
-  \caption{Coalition structure produced by the PAC Boolean model}
-  \label{Analysis:fig:pac_boolean}
-\end{figure}
 
 \section{Discussion}
