@@ -184,23 +184,66 @@ function make_line_plot(exp_partitions, method_name) {
 
 function make_bar_plot(exp_partitions, metric, max_y){
   const x = Object.keys(exp_partitions).sort()
-  const y = x.map(key => exp_partitions[key][0].stats[metric])
-  const data = [{ x: x, y: y, type: 'bar' }]
+  // const pac_x = x.filter(x => x.indexOf('pac_') >= 0)
+  // const non_pac_x = x.filter(x => x.indexOf('pac_') < 0)
+
+  // we want full control over the order of x
+  const non_pac_x = ['value_function', 'friends', 'friends_selective', 'enemies_selective', 'enemies', 'boolean']
+  const pac_x = non_pac_x.map(x => 'pac_' + x)
+  const non_pac_colors = non_pac_x.map(_ => d3.schemeCategory10[0])
+  for (var comp_model of ['k_10_means', 'k_2_means', 'network_block_model_auto_B_discrete-geometric_mcmc_sweep_True', 'network_block_model_auto_B_real-normal_mcmc_sweep_True']) {
+    non_pac_x.push(comp_model)
+    non_pac_colors.push(d3.schemeCategory10[2])
+  }
+  console.log(non_pac_x)
+  const x_labels = [
+    'Value Function', 'Friends', 'Selective Friends', 'Selective Enemies', 'Enemies', 'Boolean',
+    'k-means (k=10)', 'k-means (k=2)', 'SBM Geometric', 'SBM Normal'
+  ]
+
+  function get_y(key) {
+    return exp_partitions[key][0].stats[metric]
+  }
+  const pac_y = pac_x.map(get_y)
+  const non_pac_y = non_pac_x.map(get_y)
+
+  const pac_data = {
+    y: x_labels,
+    x: pac_y,
+    text: pac_y.map(n => n.toFixed(2)),
+    textposition: "outside",
+    type: 'bar',
+    orientation: 'h',
+    name: 'PAC'
+  }
+  const non_pac_data = {
+    y: x_labels,
+    x: non_pac_y,
+    text: non_pac_y.map(n => n.toFixed(2)),
+    textposition: "outside",
+    type: 'bar',
+    orientation: 'h',
+    name: 'Full Info',
+    marker:{
+      color: non_pac_colors
+    },
+  }
+
   var layout = {
     title: `Model ${metric} values`,
     height: 700,
     font: { size: 10 },
+    barmode: 'group',
     xaxis: {
       automargin: true
+    },
+    yaxis: {
+      automargin: true,
+      autorange: 'reversed'
     }
   }
 
-  if (max_y != null) {
-    layout['yaxis'] = {
-      range: [0, max_y]
-    }
-  }
-  Plotly.newPlot(`bar_reps_${metric}`, data, layout);
+  Plotly.newPlot(`bar_reps_${metric}`, [non_pac_data, pac_data], layout);
 }
 
 
@@ -220,12 +263,9 @@ Plotly.d3.json("partition_reps_vi.json", exp_partitions => {
   var metric = 'vi'
   create_sankey_and_bar_el(metric)
   make_sankey_plot(exp_partitions, metric)
-  make_bar_plot(exp_partitions, metric, Math.log2(147))
-})
+  make_bar_plot(exp_partitions, metric)
 
-Plotly.d3.json("partition_reps_ami.json", exp_partitions => {
   var metric = 'ami'
   create_sankey_and_bar_el(metric)
-  make_sankey_plot(exp_partitions, metric)
   make_bar_plot(exp_partitions, metric)
 })
