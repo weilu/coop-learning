@@ -117,7 +117,8 @@ def gather_experiment_partitions():
 SINGLE_RUN_MODELS = [
     'network_block_model_auto_B_discrete-geometric_mcmc_sweep_True',
     'network_block_model_auto_B_real-normal_mcmc_sweep_True',
-    'k_auto_means',
+    'k_10_means',
+    'k_2_means',
     'boolean',
     'value_function',
     'friends',

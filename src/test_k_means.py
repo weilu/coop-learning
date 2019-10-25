@@ -28,36 +28,42 @@ class TestKMeans(unittest.TestCase):
                     print(f'done cluster size: {k}')
 
     def test_knesset_auto_k(self):
-        search_range = range(2, 50)
-        wcss_scores = []
-        silhouette_scores = []
-        for k in search_range:
-            pi, wcss, silhouette_score = get_clustering_partition(k)
-            wcss_scores.append(wcss)
-            silhouette_scores.append(silhouette_score)
-            if k % 10 == 0:
-                print(f'done cluster size: {k}')
-
-        with open('data/k-means_wcss_scores.pickle', 'wb') as fd:
-            pickle.dump(wcss_scores, fd, protocol=pickle.HIGHEST_PROTOCOL)
-        with open('data/k-means_silhouette_scores.pickle', 'wb') as fd:
-            pickle.dump(silhouette_scores, fd, protocol=pickle.HIGHEST_PROTOCOL)
-
-        plt.plot(search_range, wcss_scores, marker='o')
-        plt.xlabel('Number of clusters')
-        plt.ylabel('WCSS')
-        plt.show()
-
-        plt.clf
-        plt.plot(search_range, silhouette_scores, marker='o')
-        plt.xlabel('Number of clusters')
-        plt.ylabel('Average silhouette score')
-        plt.show()
+        # search_range = range(2, 50)
+        # wcss_scores = []
+        # silhouette_scores = []
+        # for k in search_range:
+        #     pi, wcss, silhouette_score = get_clustering_partition(k)
+        #     wcss_scores.append(wcss)
+        #     silhouette_scores.append(silhouette_score)
+        #     if k % 10 == 0:
+        #         print(f'done cluster size: {k}')
+        #
+        # with open('data/k-means_wcss_scores.pickle', 'wb') as fd:
+        #     pickle.dump(wcss_scores, fd, protocol=pickle.HIGHEST_PROTOCOL)
+        # with open('data/k-means_silhouette_scores.pickle', 'wb') as fd:
+        #     pickle.dump(silhouette_scores, fd, protocol=pickle.HIGHEST_PROTOCOL)
+        #
+        # plt.plot(search_range, wcss_scores, marker='o')
+        # plt.xlabel('Number of clusters')
+        # plt.ylabel('WCSS')
+        # plt.show()
+        #
+        # plt.clf
+        # plt.plot(search_range, silhouette_scores, marker='o')
+        # plt.xlabel('Number of clusters')
+        # plt.ylabel('Average silhouette score')
+        # plt.show()
 
         # pick k = 10 because elbow
-        filename = f'data/partitions_k_auto_means_1_run.txt'
+        filename = f'data/partitions_k_10_means_1_runs.txt'
         with open(filename, 'w') as f:
-            pi, _ = get_clustering_partition(10)
+            pi, _, _ = get_clustering_partition(10)
+            f.write(str(pi) + '\n')
+
+        # pick k = 2 because silhouette
+        filename = f'data/partitions_k_2_means_1_runs.txt'
+        with open(filename, 'w') as f:
+            pi, _, _ = get_clustering_partition(2)
             f.write(str(pi) + '\n')
 
 
