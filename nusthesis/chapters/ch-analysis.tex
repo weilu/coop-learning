@@ -76,7 +76,97 @@ Given that VI is a distance measure therefore more intuitive to work with in
 this case, we choose each representative partition as the one with the smallest
 sum of VIs to the rest 49 partitions.
 
-% TODO: partition assignments of every parliament member under every model
+\subsection{Model Partitions Compared to Partition by Party Affiliation}
+\label{subsec:partition_comparisons}
+
+Using party affiliations as the ground truth partition allows us to use
+quantitative information theoretic measures to quickly compare across all
+models.
+We can then pick out those models with partitions that are drastically
+different from the party affiliations and delve into the reason behind such
+differences.
+Recall that Adjusted Mutual Information (AMI) is suitable in performing
+this task (Section~\ref{subsec:information_theoretic_measures}).
+For partition produced by every model described in Chapter~\ref{ch:hedonic} and
+Chapter~\ref{ch:comparison}, we calculate the (AMI) between it and the partition
+by party affiliation.
+The results are visualized in Figure~\ref{Analysis:fig:ami}.
+
+\begin{figure}[!t]
+  \centering
+  \includegraphics[width=\linewidth]{\Pic{png}{ami}}
+  \vspace{\BeforeCaptionVSpace}
+  \caption{Adjusted Mutual Information (AMI) between model partition and party affiliations}
+  \label{Analysis:fig:ami}
+\end{figure}
+
+The full-information friends model scored an AMI of $0.00$ as the partition is
+simply the grand coalition.
+As discussed in Section~\ref{subsec:appreciation_of_friends}, under both general
+friends and selective friends model, a player prefer coalitions with more
+friends --- it means that the more generous the definition of ``friends'' the
+more likely we can expect to observe the grand coalition as the core stable
+coalition structure.
+This intuition is verified by the fact that the AMI for the full-information
+selective friends model is much higher (0.29) compared to that of the general
+friends model.
+
+It also demonstrates a major drawback of the full-information versions of the
+appreciation of friends model --- they are sensitive to the definition of
+``friends''; a slight change from the narrow disagreement of general friends
+to the broad disagreement of selective friends produces two very different, yet
+both core stable coalition structures with respect to their own definition of
+friends.
+In our friends models, a player effectively considers someone a friend when
+this person agrees with their votes over $50\%$ of the time.
+We can easily adjust this threshold up or down to produce a spectrum of
+definitions of friends.
+Without peeking at the ground truth coalition, it is unclear how one can pick
+the ``best'' definition.
+
+Observe that the AMIs for the PAC versions of the two friends models are much
+closer: $\AMI_{\text{PAC friends}} = 0.292, \AMI_{\text{PAC selective friends}} = 0.287$.
+This is evidence that through sampling, PAC models dampen their sensitivity to
+the definition of friends.
+
+The second worst partition, according to AMI with the party affiliation
+partition, is the full-information Boolean model.
+% TODO: ref figure
+
+Upon close inspection, we notice that the partition produced by the
+full-information Boolean model contains one large coalition made of 115 players
+of various parties from both sides of the aisle, and one two-member coalition
+made of two players from the Joint List; all other coalitions are singletons.
+This is a result of a combination of the preference model and the core finding
+algorithm for Boolean hedonic games:
+Since the algorithm looks for the largest coalition in which everyone is
+satisfied, the largest bill with cross-party support/disapproval forms the
+largest coalition.
+Once this largest coalition is formed, we remove any preference with players
+in this coalition, effectively removing most satisfactory coalitions for
+remaining players.
+Since a player in indifferent among unsatisfactory coalitions, we default to
+placing them in coalitions containing themselves, resulting in most remaining
+players in singleton coalitions.
+
+\begin{figure}[!t]
+  \centering
+  \includegraphics[width=\linewidth]{\Pic{png}{vi}}
+  \vspace{\BeforeCaptionVSpace}
+  \caption{Variation of Information (VI) between model partition and party affiliations}
+  \label{Analysis:fig:vi}
+\end{figure}
+
+\subsection{Partition Visualization}
+\label{subsec:partition_visualization}
+
+We color the political parties according to their political position --- 
+right wing parties in red-ish hues and left wing parties in blue-ish hues.
+
+% TODO: add parties visualized in color
+
+We visualize the partition assignments of every parliament member under every model
+in Section~\ref{sec:detailed_partitions}.
 
 \subsection{Handcrafted Value Function}
 
