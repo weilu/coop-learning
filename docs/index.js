@@ -1,11 +1,15 @@
 function make_sankey_plot(exp_partitions, metric) {
   Plotly.d3.json("sankey.json", fig => {
-
     const party_list = ["The Jewish Home", "Shas", "United Torah Judaism", "Likud", "Yisrael Beiteinu", "Kulanu", "Yesh Atid", "Zionist Union", "Meretz", "Joint List"]
     const party_colors = d3.schemeRdYlBu[party_list.length + 1]
     const color_fn = d3.scaleOrdinal(party_list, party_colors)
     const node_parties = fig.data[0].node.party
     const colors = node_parties.map(color_fn)
+
+    const vote_counts = fig.data[0].node.votes
+    const vote_color_fn = d3.scaleSequential(d3.interpolateGreens)
+                            .domain(d3.extent(vote_counts))
+    const link_color_by_votes = vote_counts.map(vote_color_fn)
 
     const members = fig.data[0].node.label.map((l, idx) => idx + ' ' + l)
     const max_group_labels = members.map((_, idx) => 'Coalition ' + (idx + 1))
@@ -26,6 +30,7 @@ function make_sankey_plot(exp_partitions, metric) {
     // TODO: hack plotly.js to preserve order
     const group_values = party_list.map(p => party_to_member[p])
     const group_colors = party_list.map(color_fn)
+    const node_color_by_party = colors.concat(colors).concat(colors).concat(group_colors)
 
     const partition_link_source = Array(members.length).fill().map((e,i) => i + members.length)
     const partition_link_target = Array(members.length).fill().map((e,i) => i + members.length * 2)
@@ -55,7 +60,7 @@ function make_sankey_plot(exp_partitions, metric) {
           width: 0.5
         },
         label: members.concat(members).concat(members).concat(party_list).concat(max_group_labels),
-        color: colors.concat(colors).concat(colors).concat(group_colors),
+        color: node_color_by_party,
         groups: partition_tuples[0][1]
       },
       link: {
@@ -63,7 +68,8 @@ function make_sankey_plot(exp_partitions, metric) {
         target: partition_link_target,
         value: link_value,
         label: members,
-        color: colors
+        color: colors,
+        label: vote_counts.map((c,i) => members[i] + ' with ' + c +  ' effective votes')
       }
     }
 
@@ -98,6 +104,25 @@ function make_sankey_plot(exp_partitions, metric) {
         xanchor: 'left',
         yanchor: 'top',
         pad: {'t': -30},
+      }, {
+        xanchor: 'left',
+        yanchor: 'top',
+        buttons: [
+          {
+            label: 'color by party',
+            method: 'restyle',
+            args: [
+              {"link.color": [colors]}
+            ]
+          },
+          {
+            label: 'color by vote count',
+            method: 'restyle',
+            args: [
+              {"link.color": [link_color_by_votes]}
+            ]
+          }
+        ]
       }]
     }
 

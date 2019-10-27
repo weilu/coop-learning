@@ -111,13 +111,18 @@ def read_votes_and_player_data():
         return votes, player_labels
 
 
-def filter_infrequent_voters(min_num_votes):
-    votes, player_labels = read_votes_and_player_data()
+def count_votes_per_player(votes):
     vote_counter = Counter()
     for row in votes:
         for player, vote in enumerate(row):
             if vote in [1, 2]:
                 vote_counter[player] += 1
+    return vote_counter
+
+
+def filter_infrequent_voters(min_num_votes):
+    votes, player_labels = read_votes_and_player_data()
+    vote_counter = count_votes_per_player(votes)
 
     all_players = set(player for player in vote_counter.keys())
     remaining_players = set(player for player, num_votes in vote_counter.items() if num_votes > min_num_votes)
@@ -131,3 +136,16 @@ def filter_infrequent_voters(min_num_votes):
 
     return votes, player_labels
 
+
+if __name__ == '__main__':
+    votes, player_labels = read_votes_and_player_data()
+    vote_counter = count_votes_per_player(votes)
+    for i in range(len(votes[0])):
+        # for sankey.json
+        print(f'{vote_counter[i]},')
+    # for quick barchart with Tableau
+    with open('data/vote_count_by_member.csv', 'w') as f:
+        csv_writer = csv.writer(f)
+        csv_writer.writerow(['name', 'num_votes'])
+        for t in sorted(vote_counter, key=vote_counter.get, reverse=True):
+            csv_writer.writerow([player_labels[t], vote_counter[t]])
