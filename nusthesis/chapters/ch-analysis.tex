@@ -5,7 +5,8 @@
 \label{ch:analysis}
 \vspace{2em}
 
-\section{Results}
+\section{Results \& Discussion}
+\label{sec:results_and_discussion}
 
 \subsection{Variability among PAC Partitions}
 \label{subsec:variability_among_pac_partitions}
@@ -100,7 +101,7 @@ The results are visualized in Figure~\ref{Analysis:fig:ami}.
   \label{Analysis:fig:ami}
 \end{figure}
 
-The full-information friends model scored an AMI of $0.00$ as the partition is
+The full-information friends model scored an AMI of $0.000$ as the partition is
 simply the grand coalition.
 As discussed in Section~\ref{subsec:appreciation_of_friends}, under both general
 friends and selective friends model, a player prefer coalitions with more
@@ -125,18 +126,29 @@ Without peeking at the ground truth coalition, it is unclear how one can pick
 the ``best'' definition.
 
 Observe that the AMIs for the PAC versions of the two friends models are much
-closer: $\AMI_{\text{PAC friends}} = 0.292, \AMI_{\text{PAC selective friends}} = 0.287$.
+closer: $\AMI_{\text{PAC friends}} = 0.292,
+\AMI_{\text{PAC selective friends}} = 0.287$.
 This is evidence that through sampling, PAC models dampen their sensitivity to
 the definition of friends.
 
-The second worst partition, according to AMI with the party affiliation
-partition, is the full-information Boolean model.
-% TODO: ref figure
+\paragraph{} The second worst partition, according to AMI with the party affiliation
+partition, is the full-information Boolean model ($\AMI_{\text{Boolean}} = 0.018$).
 
-Upon close inspection, we notice that the partition produced by the
-full-information Boolean model contains one large coalition made of 115 players
-of various parties from both sides of the aisle, and one two-member coalition
-made of two players from the Joint List; all other coalitions are singletons.
+% TODO: how not to duplicate figure? Inline reference of figure from appendix?
+\begin{figure}[!t]
+  \centering
+  \includegraphics[width=\linewidth]{\Pic{png}{boolean}}
+  \vspace{\BeforeCaptionVSpace}
+  \caption{Coalition structure produced by the Boolean model}
+  \label{Analysis:fig:boolean_partition}
+\end{figure}
+
+Upon close inspection of the partition produced by the full-information Boolean
+model compared to party affiliations (Figure~\ref{Analysis:fig:boolean_partition},
+we notice that the Boolean partition contains one large coalition made of 115
+players of various parties from both sides of the aisle (Coalition 1),
+and one two-member coalition made of two players from the Joint List (Coalition 2);
+all other coalitions are singletons.
 This is a result of a combination of the preference model and the core finding
 algorithm for Boolean hedonic games:
 Since the algorithm looks for the largest coalition in which everyone is
@@ -145,9 +157,60 @@ largest coalition.
 Once this largest coalition is formed, we remove any preference with players
 in this coalition, effectively removing most satisfactory coalitions for
 remaining players.
-Since a player in indifferent among unsatisfactory coalitions, we default to
+Since a player is indifferent among unsatisfactory coalitions, we default to
 placing them in coalitions containing themselves, resulting in most remaining
 players in singleton coalitions.
+
+\paragraph{} The third worst partition, which is also the worst PAC partition
+among all PAC models, is that of the PAC value function model
+($\AMI_{\text{PAC Value Fuction}} = 0.144$).
+As illustrated in Figure~\ref{Analysis:fig:value_function_pac_partition}, the
+PAC value function partition has one large coalition consisting of around 60
+members and the rest are all singleton coalitions.
+All members of the only large coalition are from right wing parties that
+together form the thirty-fourth government of Israel.
+Observe that the full-information version of the value function model also
+produces a similar government coalition (Coalition 2 of
+Figure~\ref{Analysis:fig:value_function_partition}).
+Apart from the government coalition, the full-information value function model
+also produces a opposition coalition (Coalition 1) made of left wing party
+members and a few members from a center-right/right-wing party
+(Yisrael Beiteinu).
+The full-information value function model suggests that most parliament members
+are voting according to their party's political position (i.e. left wing vs.
+right wing, government vs. opposition).
+This matches our understanding of the Israel political system described in
+Section~\ref{sec:data}.
+However, lumping six out of eight Yisrael Beiteinu members together with other
+opposition/left-wing party members in Coalition 1 is not in line with reality.
+One possible reason why we observe the opposition coalition dissolve while the
+government coalition remains in the PAC version of the model is that the
+government party members has a dominating advantage in the Knesset --- since our
+value function (Function~\ref{eq:value_function} values a winning majority over
+a losing coalition, the parties forming the government more frequently pass
+or oppose bills successfully than the opposition, therefore they are more
+likely getting picked by the PAC sampling process.
+This also highlights the limitations of our handcrafted value function.
+
+\begin{figure}[!t]
+  \centering
+  \begin{minipage}{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{\Pic{png}{value_function}}
+    \vspace{\BeforeCaptionVSpace}
+    \caption{Coalition structure produced by the value function model}
+    \label{Analysis:fig:value_function_partition}
+  \end{minipage}\hfill
+  \hspace{.03\linewidth}
+  \begin{minipage}{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{\Pic{png}{value_function_pac}}
+    \vspace{\BeforeCaptionVSpace}
+    \caption{Coalition structure produced by the PAC value function model}
+    \label{Analysis:fig:value_function_pac_partition}
+  \end{minipage}
+\end{figure}
+
 
 \begin{figure}[!t]
   \centering
@@ -167,45 +230,3 @@ right wing parties in red-ish hues and left wing parties in blue-ish hues.
 
 We visualize the partition assignments of every parliament member under every model
 in Section~\ref{sec:detailed_partitions}.
-
-\subsection{Handcrafted Value Function}
-
-Out of the 50 runs of the algorithm we observe that the resulting partition
-is consistent with little variability.
-It is not core stable with respect to the partial preference profile.
-This is unsurprising due to the PAC model.
-The partition has one large coalition consisting of around 60 members
-and the rest are all singleton coalitions.
-All members of the only large coalition are from right wing parties.
-
-% TODO: doublecheck if this makes sense
-The singleton coalitions are likely a result of the limited size of the derived partial preference profile --- Upon discovery of the smallest $\CC$ in each iteration, we also remove any coalition that contains any of the removed player from the remaining player's preference relation. Since we took away a large number of players in one of the first few iterations, many coalitions are removed from remaining players' preference relations, resulting in isolated nodes in the updated graph which leads to singleton coalitions.
-% END TODO: doublecheck if this makes sense
-
-\subsection{Appreciation of Friends}
-
-\textbf{Complete Preference Profiles}
-
-
-The broad disagreement (aka general friends) setup produced a partition with 18
-coalitions out of which there are two large coalitions with 66 and 58 members,
-respectively.
-One of these two large coalitions is made of left wing party politicians,
-while the other of right wing party members.
-In contrast, by being slightly less selective of friends, the narrow disagreement
-(aka selective friends) setup resulted in the grand coalition as the strict core
-stable outcome.
-This shows that the appreciation of friends model is very sensitive to the
-definition of friends.
-This outcome further motivates our experiments with the PAC version of these
-two friends models, in hope that sampling would dampen such sensitivity.
-
-\textbf{PAC Models}
-
-
-TODO: comment on results of PAC friends and selective friends
-
-\subsection{Boolean Hedonic Games}
-
-
-\section{Discussion}

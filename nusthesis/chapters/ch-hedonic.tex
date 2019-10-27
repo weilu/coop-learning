@@ -281,13 +281,14 @@ $S_a$ the set of members who voted ``against''.
 $S$ can take on one of the two values $\{S_f, S_a\}$ at a time.
 $S_p$ denotes the set of parliament members who participated: $S_p = S_f \cup S_a$.
 
-\[
+\begin{equation}
+\label{eq:value_function}
   v_i(S) =
   \begin{dcases}
       1 + \frac{1}{|S|} + \frac{|S_p|}{|N|},& \text{if $S$ is the winning majority}\\
       0,              & \text{otherwise}
   \end{dcases}
-\]
+\end{equation}
 
 $S_f$ is the winning majority if $|S_f| > |S_a|$, vice versa. When $|S_f| = |S_a|$, $S_a$ is considered to be the winning majority.
 
