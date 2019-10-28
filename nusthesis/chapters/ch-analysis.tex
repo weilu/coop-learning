@@ -77,6 +77,44 @@ Given that VI is a distance measure therefore more intuitive to work with in
 this case, we choose each representative partition as the one with the smallest
 sum of VIs to the rest 49 partitions.
 
+\subsection{Partition Visualization}
+\label{subsec:partition_visualization}
+
+Before delving into the model outcome comparisons and analysis, we briefly
+describe the visualizations used to depict coalition assignments of each
+parliament member, and to compare against their party affiliations which are
+used as the ground truth in our quantitative analysis.
+
+We choose \textit{Sankey Diagram} as our main method of visualization as it
+allows intuitive comparison of two different partitions through ``flows''.
+Sankey diagrams are a type of flow diagram which is often used to represent
+change of states in a system \cite{doi:10.1111/j.1530-9290.2008.00004.x}.
+In our case, on the left we have the ground truth state which is the partition
+by party affiliation; on the right is one of our model partition.
+We produce two types of Sankey diagrams:
+
+\begin{enumerate}
+  \item With every parliament member as nodes in the middle, thus the flow links
+    from left to middle represent their party affiliations and the flow links
+    from middle to right represent our model assignments
+    (Section~\ref{sec:detailed_partitions}).
+  \item Without individual members, the left party partition state is directly
+    linked to the right model partition (Section~\ref{sec:partitions}).
+\end{enumerate}
+
+The first type provides detailed view for when we want to drill into exactly
+which parliament member is grouped with which other members; it has the
+downside of being very verbose.
+The second type removes the verbosity, which is good for visual comparison
+of the ground truth partition against any given model partition.
+
+We color the political parties according to their political position ---
+right wing parties in red-ish hues and left wing parties in blue-ish hues.
+This way, we can quickly judge if a model successfully separates the government
+(right wing) parties from the opposition (central to left wing) parties.
+
+% TODO: add parties visualized in color
+
 \subsection{Model Partitions Compared to Partition by Party Affiliation}
 \label{subsec:partition_comparisons}
 
@@ -269,13 +307,3 @@ SBM Normal & 4th Worst & Worst \\
 \label{Analysis:table:ami_vi_worst_rankings}
 \end{table}
 
-\subsection{Partition Visualization}
-\label{subsec:partition_visualization}
-
-We color the political parties according to their political position --- 
-right wing parties in red-ish hues and left wing parties in blue-ish hues.
-
-% TODO: add parties visualized in color
-
-We visualize the partition assignments of every parliament member under every model
-in Section~\ref{sec:detailed_partitions}.
