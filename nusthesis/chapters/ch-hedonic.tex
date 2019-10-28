@@ -5,7 +5,7 @@
 \label{ch:hedonic}
 \vspace{2em}
 
-\section{Top Responsive Game}
+\section{Top Responsive Games}
 \label{sec:top_responsive_game}
 Recall that top responsiveness models a preference profile where every player
 derives their utility for a given coalition based on only the most preferred
@@ -165,7 +165,7 @@ maximizes each player's utility (Step~\ref{pac_top_cover:argmax}).
 
 \subsection{Improved PAC Algorithm}
 \label{subsec:improved_pac_algorithm}
-We discover that we can make Algorithm~\ref{alg:pac_top_covering} more efficient
+We can make Algorithm~\ref{alg:pac_top_covering} more efficient
 by replacing the step of finding the smallest $\CC$ with finding the largest
 Strongly Connected Component ($\SCC$).
 We name the resulting algorithm \textit{$\SCC$ based PAC top covering algorithm}.
@@ -180,8 +180,7 @@ a PAC stable partition but with improved running time complexity.
 
 \begin{proposition}
 \label{prop:scc_generalizes}
-  The appreciation-of-friends algorithm produces a strictly core stable partition
-  given any top responsive preference profile.
+  The appreciation-of-friends algorithm produces a strictly core stable partition given any top responsive preference profile.
 \end{proposition}
 
 \begin{proof}
@@ -240,21 +239,19 @@ stabilizes top responsive games.
 The correctness of their PAC algorithm relies on the fact that the coalition
 selection and deletion procedure based on finding the smallest $\CC$ produces
 a core stable partition when there's full visibility to players' choice sets;
-the PAC guarantee is an artefact of choice set approximation through sampling
+the PAC guarantee is an artifact of the choice set approximation via sampling
 (Algorithm~\ref{alg:pac_top_covering} Step~\ref{pac_top_cover:sample_begin} to
 Step~\ref{pac_top_cover:sample_end}).
 Our modification to their algorithm does not change how players' choice sets
-are approximated; we only modified how coalitions are selected.
-We show in Proposition~\ref{prop:scc_generalizes} that modifying the coalition
-selection procedure from $\CC$ to $\SCC$ still produces a strict core stable
-partition for top responsive games, therefore the $\SCC$ based PAC algorithm
+are approximated; we only modify how coalitions are selected.
+We show in Proposition~\ref{prop:scc_generalizes} that modifying the coalition selection procedure from $\CC$ to $\SCC$ still produces a strict core stable partition for top responsive games, therefore the $\SCC$ based PAC algorithm
 still produces a PAC stable partition.
 \end{proof}
 
 The largest $\SCC$ procedure provides a running time improvement over the
 smallest $\CC$ procedure because finding the smallest $\CC$ requires
 $\mathcal{O}(|V|(|V| + |E|))$ time while the largest $\SCC$ can be found using
-Tarjan's algorithm in linear time $\mathcal{O}(|V| + |E|)$\cite{Tarjan72depthfirst}.
+Tarjan's algorithm in linear time $\mathcal{O}(|V| + |E|)$ \cite{Tarjan72depthfirst}.
 This running time improvement is only meaningful for the PAC version of the
 top covering algorithm due to the input size of the original top covering
 algorithm being exponential in the number of players.
@@ -337,7 +334,7 @@ the consistency of the partitions produced.
 Note that when we make the sample size $100\%$ of all bills and sample
 with replacement, the PAC algorithm should produce the same partition
 as the original top covering algorithm.
-Aside from the test cases we manually constructed, we also use this property to parameterize the PAC implementation and verify correctness of
+Aside from the test cases we manually construct, we also use this property to parameterize the PAC implementation and verify correctness of
 our top covering algorithm implementation.
 
 
@@ -349,7 +346,7 @@ which is a proper subset of top responsive games.
 In this preference model, a player classifies other players as either friends
 or enemies, and prefers any coalition with more friends and fewer enemies:
 
-Let $G_i$ be player $i$'s set of friends, and $B_i$ the set of enemies. $G_i \cup B_i \cup i = N$ and $G_i \cap B_i = \emptyset$. A preference profile $P^f$ is based on \textit{appreciation of friends} if for all player $i \in N$, $S \succeq_i T$ if and only if $|S \cap G_i| > |T \cap G_i|$ or $|S \cap G_i| = |T \cap G_i|$ and $|S \cap B_i| \leq |T \cap B_i|$.
+More formally, let $G_i$ be player $i$'s set of friends, and $B_i$ the set of enemies. $G_i \cup B_i \cup i = N$ and $G_i \cap B_i = \emptyset$. A preference profile $P^f$ is based on \textit{appreciation of friends} if for all player $i \in N$, $S \succeq_i T$ if and only if $|S \cap G_i| > |T \cap G_i|$ or $|S \cap G_i| = |T \cap G_i|$ and $|S \cap B_i| \leq |T \cap B_i|$.
 
 We define friends of a player's as anyone whose votes agreed with the given
 player's more often than they disagreed.
@@ -428,10 +425,9 @@ As a result, we expect to observe smaller and more coalitions in comparison.
 \section{Bottom Responsive Game}
 \label{sec:bottom_responsive_game}
 
-Bottom responsive games is the counterpart of top responsive games, but is a
-much less studied class of hedonic game models in comparison.
-In the context of our parliament voting dataset, we are curious to learn what
-coalition structure can be produced from this similar yet ``opposite''
+Bottom responsive games are the counterpart of top responsive games, but are
+much less studied class of hedonic games.
+In the context of our parliament voting dataset, we are curious to learn what coalition structure can be produced from this similar yet ``opposite''
 preference model.
 
 \subsection{Aversion to Enemies}
@@ -450,14 +446,14 @@ of enemies:
 
 Let $G_i$ be player $i$'s set of friends, and $B_i$ the set of enemies.
 $G_i \cup B_i \cup i = N$ and $G_i \cap B_i = \emptyset$.
-A preference profile $P^e$ is based on \textit{aversion to enemies} if for all
+A preference profile $P^e$ is based on \textit{aversion to enemies} if for every
 player $i \in N$, $S \succeq_i T$ if and only if $|S \cap B_i| < |T \cap B_i|$
 or $|S \cap B_i| = |T \cap B_i|$ and $|S \cap G_i| \geq |T \cap G_i|$.
 
 Given 3 players and their votes in Example~\ref{example:votes_friends},
 under general friends, both player 1 and player 2 view player 3 as enemy, and
 player 3 reciprocates this relation.
-The expanded preference profile is as follow:
+The expanded preference profile is as follows:
 
 player 1: $\{1, 2\} \succ_1 \{1\} \succ_1 \{1, 2, 3\} \succ_1 \{1, 3\} $
 

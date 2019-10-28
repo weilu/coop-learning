@@ -1,7 +1,7 @@
 \SetPicSubDir{ch-Experiment}
 \SetExpSubDir{ch-Experiment}
 
-\chapter{Experiment Methodology}
+\chapter{Experimental Methodology}
 \label{ch:experiment}
 \vspace{2em}
 
@@ -9,14 +9,16 @@
 \label{sec:data}
 
 The Israeli political system, in thanks partially to its use of
-proportional representation, is made of multiple parties.
+proportional representation, and its diverse political landscape, is made of multiple parties.
 The Israeli Knesset is the national legislative branch of the Israeli government.
 We limit our study to the 20th Knesset (2015-2019), which is the last
 Knesset preceding the current one.
-In this Knesset there are 10 parties, but some parties are unions of smaller parties.
-In some cases the parties have merged (e.g., the Likud or Meretz),
-and in some cases, they have different organizational structure
-(e.g., the Jewish Home party or the Joint List).
+In this Knesset there are ten parties, however, its political landscape is far more nuanced.
+% In some cases the parties have merged (e.g., the Jewish Home party or the Joint List),
+% and in some cases, they have different organizational structure (e.g., the Likud or Meretz).
+
+Some parties are `artificial' in the sense that they are the result of a merge of smaller political factions. For example, the Jewish Home party comprises of three conservative religious parties which agreed to run together. Similarly, the Joint List (as its name suggests) comprises of all Arab National parties. 
+In addition, party leadership and member election methods vary widely. For example, the Likud (the leadership party in the 20th Knesset) and Meretz (a socialist progressive party) hold primary elections to elect their leader and party members; other parties, such as Yesh Atid (a centrist party) do not hold elections but rather have the party leader elect its members. 
 
 While in the past, this preponderance of parties led to a multi-dimensional
 party system, leading to unexpected coalitions and combinations,
@@ -33,14 +35,13 @@ form the government, as well as between opposition parties.
 No Israeli party has ever been elected with a majority of Knesset seats,
 which means all governments are made of coalitions.
 In the past few years (including the Knesset we investigate)
-governments have tightened their grip over coalition parties
-by having a government committee issue a generally mandatory
+governments have tightened their grip over coalition parties by having a government committee issue generally mandatory
 voting instructions for every proposed bill.
 The opposition, of course, is under no such control,
 but due to their relative ideologies, there is significant agreement.
 
 The Knesset website provides data access through Open Data Protocol (OData)
-on all its parliament members, laws, and every member's votes on every law.
+on all its parliament members, laws, and member votes on every law.
 The Kenesset has 120 seats, but the 20th Knesset has 147 parliament members
 due to some Knesset members resigning or joining mid-term.
 We download all 147 parliament members' information including name,
@@ -59,7 +60,7 @@ every bill, including total number of ``for'' votes, ``against'' votes,
 ``abstained'' votes, and if the bill is accepted.
 We download bill summary data set for the 20th Knesset and use it
 to check against the tallied vote numbers from the individual vote data.
-We end up discovering more inconsistencies:
+We ended up discovering more inconsistencies:
 
 \begin{itemize}
   \item Total bills checked: 7513,
@@ -70,19 +71,16 @@ We end up discovering more inconsistencies:
   \item Number of bills with abstain count inconsistent : 2
 \end{itemize}
 
-We reach out to the Knesset data management team regarding the data inconsistency between
-two API endpoints, as well as the missing value issue.
-They state that the inconsistency
-is likely a result of manual vote entries instead of votes recorded
-as a result of pressing the electronic button.
-Such manual vote entries are captured by the bill summary dataset
-but not individual member's vote dataset.
+We reached out to the Knesset data management team regarding the data inconsistency between
+the two API endpoints, as well as the missing value issue.
+They stated that the inconsistency
+is likely a result of manual vote entries instead of electronic votes recorded\footnote{This practice violates the parliament voting protocol, but was, nevertheless, accepted by the Speaker of the Knesset.}.
+Such manual vote entries are captured by the bill summary dataset but not individual members' vote dataset.
 
-For the purpose of our research, we use the dataset with individual member's
+For the purpose of our research, we use the dataset with individual member
 votes on every bill since it has the level of granularity required for modeling.
 We remove the 26 bills whose pass/reject status is inconsistent between
-the summary and individual data sets, since it's most likely that
-the individual data is wrong.
+the summary and individual data sets, since it is most likely that the individual data is wrong.
 
 % Maybe include data summary tables?
 % total bills, total parliament members
@@ -105,20 +103,19 @@ in describing real-world data, it usually involves the following two steps:
 \end{enumerate}
 
 The rationale is that the closer the learned preference profile is to reality,
-the more likely we are to observe theoretically stable partition matching
+the more likely we are to observe theoretically stable partitions matching
 the ground truth partition in real-world data, such as party affiliation in
 our dataset.
 The problem with this approach lies in verifying the fidelity of the learned
-preference profile --- we observe even simple preference profiles such as top
-and bottom responsive games are exponentially large in the number of players
+preference profile --- we observe that even simple preference profiles such as top
+and bottom responsive games have an exponentially large representation in the number of players
 (Sections~\ref{subsec:top_responsive_preferences}~and~\ref{subsec:bottom_responsive_preferences}).
 Given our dataset, it means each player's complete preference relation contains
-an order of $2^147 \approx 10^{44}$ coalitions.
+an order of $2^{147} \approx 10^{44}$ coalitions.
 Even if we have access to every parliament member, it is unrealistic to ask them
 to rank this many possible coalitions.
 
-PAC stability inspires an alternative approach: instead of first learning the
-complete preference profile then computing a stable partition, we directly
+PAC stability inspires an alternative approach: instead of first learning the complete preference profile then computing a stable partition, we directly
 infer a PAC stable partition from partial preference relations we observe
 each player demonstrates in a dataset.
 The resulting partition does not have as strong stability guarantees as that
@@ -136,7 +133,7 @@ directly from sample data, i.e. partial preference relations inferred from
 voting behaviors observed in a subset of all bills.
 
 For each PAC model, we simulate i.i.d. by sampling with replacement $3/4$ of
-all bills; repeat the run 50 times to evaluate the consistency between
+all bills; we repeat the run 50 times to evaluate the consistency between
 different runs and for producing a robust PAC stable partition minimizing the
 impact of chance.
 We use information theoretic measures to measure the distance among the 50
@@ -154,7 +151,7 @@ representative.
 With one partition produced by every model, we then compare it against our
 ground truth, which is party affiliation, both quantitatively and qualitatively.
 The quantitative measures give us a quick way to compare across multiple models;
-while there are qualitative subtleties not captured by the quantitative
+that said, there are qualitative subtleties not captured by the quantitative
 measures, such as a parliament member who is known to hold opinions that
 mismatch her party ideologies and vote differently, which we will examine
 separately.
@@ -162,7 +159,7 @@ separately.
 \subsection{Information Theoretic Measures}
 \label{subsec:information_theoretic_measures}
 
-We need to be able to quantify distance between two given partitions, in order
+We need to quantify the distance between two given partitions, in order
 to select a representative out of multiple runs of a PAC model and to compare
 model partitions to the ground truth partition.
 We turn to information theoretic measures, which are frequently used in cluster
@@ -190,7 +187,7 @@ would be the amount of data required to encode $\pi$ given $\pi'$
 --- this is \textit{Conditional Entropy}:
 $H(\pi|\pi') = - \sum^x_{i=1} \sum^y_{j=1} \frac{|S_i \cap S'_j|}{|N|} \log{\frac{|S_i \cap S'_j|/|N|}{|S_j|/|N|}}$.
 
-\textit{Mutual Information} represents how much the knowledge of $\pi'$ help
+\textit{Mutual Information} represents how much the knowledge of $\pi'$ helps
 reduce the number of bits required to encode $\pi$:
 $\MI(\pi, \pi') = H(\pi) - H(\pi|\pi')$
 
