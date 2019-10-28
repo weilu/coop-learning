@@ -1,15 +1,26 @@
 \SetPicSubDir{ch-Analysis}
 \SetExpSubDir{ch-Analysis}
 
-\chapter{Experiment Analysis}
+\chapter{Results \& Discussion}
 \label{ch:analysis}
 \vspace{2em}
 
-\section{Results \& Discussion}
-\label{sec:results_and_discussion}
+In this chapter, we first examine and aggregate our experiment results
+(Section~\ref{sec:variability_among_pac_partitions}.
+We then describe how we visually present partition results from various models
+such that it is not only intuitively understandable but also aids our analysis
+(Section~\ref{sec:partition_visualization}).
+Following the presentation of results\footnote{In the interest of space we
+place the presentation of results in Appendix~\ref{append:viz}}, we conduct
+quantitative analysis by comparing model clusters against party affiliations
+using information theoretic measures (Section~\ref{sec:quantitative_analysis}).
+After narrowing down the number of models using quantitative analysis, we
+proceed to comparing and discussing the validity of and insights revealed by
+the selected models (Section~\ref{sec:qualitative_analysis}).
 
-\subsection{Variability among PAC Partitions}
-\label{subsec:variability_among_pac_partitions}
+
+\section{Variability among PAC Partitions}
+\label{sec:variability_among_pac_partitions}
 
 Before we can meaningfully aggregate 50 partition results from every PAC model
 we need to assess how different these 50 partitions are from each other.
@@ -77,8 +88,8 @@ Given that VI is a distance measure therefore more intuitive to work with in
 this case, we choose each representative partition as the one with the smallest
 sum of VIs to the rest 49 partitions.
 
-\subsection{Partition Visualization}
-\label{subsec:partition_visualization}
+\section{Partition Visualization}
+\label{sec:partition_visualization}
 
 Before delving into the model outcome comparisons and analysis, we briefly
 describe the visualizations used to depict coalition assignments of each
@@ -107,6 +118,10 @@ which parliament member is grouped with which other members; it has the
 downside of being very verbose.
 The second type removes the verbosity, which is good for visual comparison
 of the ground truth partition against any given model partition.
+In addition, the interactive version of type 2 Sankey diagrams
+\footnote{available at \url{https://weilu.github.io/coop-learning/}} allows
+for readers to mouse over any link to bring up a tooltip containing the name
+of the parliament member that link represents.
 
 We color the political parties according to their political position ---
 right wing parties in red-ish hues and left wing parties in blue-ish hues.
@@ -115,8 +130,8 @@ This way, we can quickly judge if a model successfully separates the government
 
 % TODO: add parties visualized in color
 
-\subsection{Model Partitions Compared to Partition by Party Affiliation}
-\label{subsec:partition_comparisons}
+\section{Quantitative Analysis}
+\label{sec:quantitative_analysis}
 
 Using party affiliations as the ground truth partition allows us to use
 quantitative information theoretic measures to quickly compare across all
@@ -306,4 +321,91 @@ SBM Normal & 4th Worst & Worst \\
 \caption{VI and AMI Rankings of selected models}
 \label{Analysis:table:ami_vi_worst_rankings}
 \end{table}
+
+
+\section{Qualitative Analysis}
+\label{sec:qualitative_analysis}
+
+One technical note before we delve into qualitative analysis of the selected
+models: due to Knesset members resigning mid term, some Knesset members have
+only been able to participate in some of the votes, and therefore they will
+often be clustered separately.
+Moreover, some government ministers which are also Knesset members have a low
+rate of participation in the votes, and therefore, once again, their data is
+sometimes skewed.
+
+\paragraph{Coherence}
+Seeing whether the opposition and government coalition party members were well
+separated by the different models, resulting in a coherent and logical map.
+
+Under this criterion, all three selected PAC models: selective friends,
+selective enemies, and Boolean are the only ones which did not include several
+groups involving many members of different ideological hue.
+The $k$-means (with $k=10$), and the community model (SBM geometric) tend to
+join together members with fewer votes.
+%TODO: insert viz by vote count%
+Examples of such cross-ideological infrequent-voter groups are: Coalition 2
+of the $k=10$ $k$-means model, Coalition 8 of the SBM geometric model.
+The $k=2$ $k$-means model partition includes five members of the right wing
+parties in the opposition group (Coalition 2), out of which only one such
+assignment makes sense --- Orly Levy left the right/center-right Yisrael
+Beiteinu and formed her own party Gesher, which ran together with the center
+left Labor Party in the 2019 Knesset elections
+\footnote{\url{https://en.wikipedia.org/wiki/Orly_Levy}}; so it is reasonable to
+see her grouped together with the opposition group.
+
+In comparison, the PAC models fair much better in terms of coherence:
+the PAC selective friends model has only two cross-ideological groups ---
+Coalition 2 involves Orly Levy which, as mentioned before, has a reasonable
+explanation; Coalition 5 is a small coalition combining two low-attendance
+members, one on the right edge of the left wing (Daniel Atar with 708 effective
+votes\footnote{We only consider ``for'' and ``against'' as effective votes}),
+and the other, which switched between coalition and opposition
+(Avigdor Lieberman with 725 effective votes).
+The PAC selective enemies model includes two right wing party members in the
+opposition group (Orly Levy and Avigdor Lieberman), both of which we have
+explained before.
+The PAC Boolean model only has one cross-ideological group involving Orly Levy,
+the member who changed parties.
+
+\paragraph{Overall structure}
+Both PAC models and the $k$-means (with $k=2$) are able to figure out that
+there is a main government group and a main opposition group, to which most
+of their respective members were attached.
+This stresses the fact that despite their differences, even the opposition
+parties which do not have a centralized binding instructions, still tend to
+vote together due to their relative ideological cohesion.
+The community based SBM geometric model and $k=10$ $k$-means model, however,
+do not really pick up on the existence of generally quite coherent group of
+government and opposition Knesset members.
+
+Most other groups were created based on attendance, with the PAC models more
+clearly creating a few singleton coalitions for less present members, while
+clustering ministers, which tend to miss out on votes, together.
+Ministers are clustered in two different coalitions by PAC selective friends:
+Coalition 3 and Coalition 4, and are clustered in Coalition 4 by PAC selective
+enemies model.
+PAC Boolean model notably creates singletons for most low attendance members.
+The $k=10$ $k$-means clusters tended to remove more ministers from the overall
+main government group, and divide them into more separate coalitions (this is
+also true for the SBM geometric model).
+
+\paragraph{Sub groups}
+None of the models was able to differentiate between the subgroups inside
+parties, apart from identifying a significant change (e.g., a member switches
+parties).
+We believe this is more of an indication of the process of ideological
+coherence happening in Israeli parties.
+Parties that have been running sharing a similar location on the ideological
+spectrum and recently join together to run as a single ticket do not have many
+opportunities to flaunt their differences.
+Thus, even for a party, such as the Joint List, that did not run together in
+the following election, it does not seem that their Knesset members voted
+differently.
+Indeed, several of their Knesset members, despite being from different parties
+(and running separately in the following election) have not been assigned to
+different coalitions by any model.
+As noted above, we believe this tells us a meaningful statement on the real,
+day to day, ideological difference between them, and is not a failure of the
+algorithms.
 
