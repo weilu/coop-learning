@@ -22,9 +22,11 @@ def print_stats(label, data):
     print(out)
 
 
-def print_summary_stats(key, partitions, num_coalitions, vis, nvis, nids):
+def print_summary_stats(key, partitions, num_coalitions, vis, nvis, nids, coalition_sizes=None):
     print(f'\nExperiment {key} ({len(partitions)} runs)')
     print_stats('Number of Coalitions', num_coalitions)
+    if coalition_sizes:
+        print_stats('Coalition Sizes', coalition_sizes)
     print_stats('VI', vis)
     print_stats('NVI', nvis)
     print_stats('NID', nids)
@@ -48,12 +50,16 @@ if __name__ == '__main__':
             vis.append(stats['vi'])
             nvis.append(stats['nvi'])
             nids.append(stats['nid'])
+        if len(partitions) == 1:
+            coalition_sizes = list(len(coal) for coal in part['data'])
+        else:
+            coalition_sizes = None
 
         if 'k_means' in key:
             if vis[0] < best_k_means_nid:
                 best_k_means_nid = vis[0]
                 best_k_means = (key, partitions, num_coalitions, vis, nvis, nids)
         else:
-            print_summary_stats(key, partitions, num_coalitions, vis, nvis, nids)
+            print_summary_stats(key, partitions, num_coalitions, vis, nvis, nids, coalition_sizes=coalition_sizes)
     print_summary_stats(*best_k_means)
 

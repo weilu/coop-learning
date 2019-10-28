@@ -17,7 +17,7 @@ If they are vastly different, it would be evidence that there is error in the
 PAC algorithm that produces these partitions; otherwise it would act as a sanity
 check on the correctness of our implementation of each corresponding algorithm.
 
-Table~\ref{analysis:table:pac_num_coalitions} presents the mean and standard
+Table~\ref{Analysis:table:pac_num_coalitions} presents the mean and standard
 deviation of the number of coalitions across 50 runs for every PAC model.
 Coefficient of variation (CV) is the ratio of the standard deviation to the mean.
 Note that all the PAC models have CV values well below 1, so there is very low
@@ -37,7 +37,7 @@ Boolean & 31 & 0.46 & 0.02  \\
 \hline
 \end{tabular}
 \caption{PAC Model Partition Size Statistics}
-\label{analysis:table:pac_num_coalitions}
+\label{Analysis:table:pac_num_coalitions}
 \end{table}
 
 Recall that Adjusted Mutual Information (AMI) measures how similar two
@@ -45,7 +45,7 @@ partitions are and is very sensitive in detecting very different partitions (
 Chapter~\ref{subsec:information_theoretic_measures}).
 We calculate the pairwise AMIs among the 50 partitions for each PAC model;
 the resulting statistics are presented in
-Table~\ref{analysis:table:pac_pairwise_amis}.
+Table~\ref{Analysis:table:pac_pairwise_amis}.
 We observe even the smallest pairwise AMI for every PAC model $>> 0$ and all CVs
 $<< 1$, from which we can conclude that, beyond partition size, the content
 of every partition is not dissimilar from each other, consistently across 50
@@ -65,7 +65,7 @@ Boolean & 0.83 & 0.93 & 0.06  \\
 \hline
 \end{tabular}
 \caption{PAC Model Partition Pairwise AMI Statistics}
-\label{analysis:table:pac_pairwise_amis}
+\label{Analysis:table:pac_pairwise_amis}
 \end{table}
 
 Now that we have established there is little variation within every set of 50
@@ -211,6 +211,18 @@ This also highlights the limitations of our handcrafted value function.
   \end{minipage}
 \end{figure}
 
+\paragraph{} Partition produced by the SBM with normal edge weight distribution
+also performed poorly when measured against party affiliations
+($\AMI_{\text{SBM normal}} = 0.192$).
+It contains 32 coalitions, all of which are small in size (2-9 player in each
+coalition).
+As visualized in Figure~\ref{fig:sbm_normal_partition}, though it mostly
+clusters left wing party members with left wing party members, and right wing
+party members with other right wing party members, it fails to discern the
+government group from the opposition group.
+The edge weight distribution's departure from the normal distribution
+(as depicted in Figure~\ref{Comparison:fig:sbm_edge_weight_neg_hist}) could
+have contributed to the poor clustering results.
 
 \begin{figure}[!t]
   \centering
@@ -219,6 +231,43 @@ This also highlights the limitations of our handcrafted value function.
   \caption{Variation of Information (VI) between model partition and party affiliations}
   \label{Analysis:fig:vi}
 \end{figure}
+
+We now cross check the four worst performing models discussed above using the
+Variation of Information (VI) measurements (Figure~\ref{Analysis:fig:vi}).
+The rankings of the four models are summarized in
+Table~\ref{Analysis:table:ami_vi_worst_rankings}.
+Both measurements agree that Boolean, PAC value function, and SBM Normal poorly
+compare to the party affiliations, however they disagree on the general friends
+model.
+If we focus our attention on comparing the general vs. selective friends, we
+observe that both measures deem the selective friends versions outperform
+(or perform equally as) their general counterpart.
+Likewise, selective enemies models outperform their general counterpart in
+both AMI and VI measurements. \footnote{Recall that selective enemies models
+use narrow disagreement while selective friends models use broad disagreement;
+they essentially use different definitions of ``friends'' despite sharing
+similar names}.
+With in selective friends and selective enemies models, the PAC versions
+score very similarly to their full-information versions.
+As such, we will focus our comparisons on the PAC models with selective friends
+, selective enemies and Boolean, the 2-group and 10-group k-means outcomes
+(selected using the average silhouette method and elbow method respectively),
+and the geometric SBM for the community models.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c|c|c|c|}
+\hline
+       & AMI Ranking & VI Ranking \\ \hline
+General Friends & Worst & 8th Worst \\
+Boolean & 2nd Worst & 2nd Worst \\
+Value Function (PAC) & 3rd Worst & 5th Worst \\
+SBM Normal & 4th Worst & Worst \\
+\hline
+\end{tabular}
+\caption{VI and AMI Rankings of selected models}
+\label{Analysis:table:ami_vi_worst_rankings}
+\end{table}
 
 \subsection{Partition Visualization}
 \label{subsec:partition_visualization}
