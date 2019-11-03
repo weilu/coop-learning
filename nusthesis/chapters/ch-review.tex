@@ -1,19 +1,54 @@
 \chapter{Literature Review}
 \label{ch:review}
 
-Past works on hedonic preferences focus on the existence and computational aspect
-of stability concepts in various sub-classes of hedonic coalition formation games
-\cite{Aziz:2012:ESH:2343776.2343806}, \cite{aziz_savani_moulin_2016}.
-The specific subclass we are interested in is top responsive games,
-which captures the idea that a player's utility is derived from
-the most preferred set of other players in her coalition.
-\citenameyear{ALCALDE2004869} show that top responsive games guarantee
-the existence of a core stable partition,
-which is discoverable through the Top Covering Algorithm.
+Past works on hedonic preferences focus on the existence and computational
+aspect of stability concepts in various sub-classes of hedonic coalition
+formation games
+\cite{Aziz:2012:ESH:2343776.2343806}, \cite{aziz_savani_moulin_2016},
+\cite{Aziz:2016:BHG:3032027.3032048}.
+
+Specifically on the topic of top responsive games,
+\citenameyear{ALCALDE2004869} show that top responsive games guarantee the
+existence of a core stable partition, which is discoverable through the Top
+Covering Algorithm.
 \citenameyear{DIMITROV2007130} simplify the original Top Covering Algorithm
 and proved that it not only constructs a core, but a strict core.
 \citenameyear{Dimitrov2006TopRA} also show that adding the mutuality condition
 to the simplified top covering algorithm produces a Nash stable partition.
 \citenameyear{Aziz:2012:ESH:2343776.2343806} further prove that with mutuality the partition produced
 is in fact strict strong Nash stable for any top responsive game.
-We formulate our empirical experiments upon recent work by \citenameyear{ijcai2017-380} on PAC stability.
+
+%TODO: Boolean & Bottom Responsive
+
+The abovementioned works build solid theoretical foundations for various
+classes of hedonic games, however all of them assumes knowledge of every
+player's preferences, which is often unattainable in real-world scenario.
+
+Some AI/economics researchers focus their attention on allowing uncertainty in
+player valuation of coalitions in hedonic games.
+\citenameyear{Chalkiadakis2004, Chalkiadakis:2008:SDM:1402383.1402435} take the
+Bayesian approach where every agent derives value for coalitions through
+reasoning about the capabilities of other agents and possible actions that a
+coalition may take.
+Their reinforcement learning model is based on the assumption that players
+learn about other players' preferences through repeated interactions; the model
+produces a solution that converges to a \textit{Bayesian core}.
+\citenameyear{Chalkiadakis2007} subsequently extend Bayesian core to
+non-cooperative games through coalitional bargaining.
+Extending the concept of PAC (Probably Approximately Correct) learning,
+\citenameyear{Balcan:2015:LCG:2832249.2832315} introduce the concept of PAC
+core stability.
+Building on top of the PAC stability solution concept, recent work by
+\citenameyear{ijcai2017-380} establishes the existance of PAC core solutions
+of top responsive games and proposes an algorithm to find such PAC solutions.
+
+% TODO: application of cooperative game theory model on real world data
+
+Our empirical work in this thesis is based upon the theoretical works on PAC
+stability.
+This thesis, to a minor degree, improves the PAC core finding algorithm in
+\cite{ijcai2017-380} (Section~\ref{subsec:improved_pac_algorithm}) on top
+responsive games and extends it to apply in bottom responsive games as well as
+Boolean hedonic games.
+More importantly, we demonstrate, using real-world parliament data, the
+efficacy of PAC hedonic game theoretical models (See Chapter~\ref{ch:analysis}).
