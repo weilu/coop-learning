@@ -44,9 +44,9 @@ Section~\ref{subsec:boolean_preferences}.
 The abovementioned works build solid theoretical foundations for various
 classes of hedonic games, however all of them assumes knowledge of every
 player's preferences, which is often unattainable in real-world scenario.
-
 Some AI/economics researchers focus their attention on allowing uncertainty in
 player' valuations of coalitions in hedonic games.
+
 Chalkiadakis and Boutilier take the Bayesian approach where every agent derives
 value for coalitions through reasoning about the capabilities of other agents
 and possible actions that a coalition may take
@@ -64,13 +64,22 @@ Building on top of the PAC stability solution concept, recent work by
 \citenameyear{ijcai2017-380} establishes the existance of PAC core solutions
 of top responsive games and provides an algorithm to find such PAC solutions.
 
-% TODO: application of cooperative game theory model on real world data
-
-Our empirical work in this thesis is based upon the theoretical works on PAC
-stability.
-This thesis improves the PAC core finding algorithm in \cite{ijcai2017-380}
+In this thesis, we base our uncertainty models upon the theoretical works on
+PAC stability.
+We also improve the PAC core finding algorithm in \cite{ijcai2017-380}
 (Section~\ref{subsec:improved_pac_algorithm}) on top responsive games and
 extends it to apply to other classes of hedonic games including bottom
 responsive games and Boolean hedonic games.
 More importantly, we demonstrate, using real-world parliament data, the
 efficacy of PAC hedonic game theoretical models (See Chapter~\ref{ch:analysis}).
+
+It is also worth mentioning that all past empirical works on hedonic games we
+can find are prescriptive --- hedonic games are used to model agents'
+strategic/selfish behaviors; agents are allowed to self-organize, resulting in
+stable reource partitions that are also efficient
+\cite{5674046, 5137409, 6846512}.
+Whereas our empirical study is primarily descriptive --- taking real voting
+data of the Israeli parliament, ``translating'' it into hedonic preferences for
+each parliament member, searching for a stable partition, and eventually
+evaluating the efficacy of the model partition by comparing it to a ground
+truth partition.
