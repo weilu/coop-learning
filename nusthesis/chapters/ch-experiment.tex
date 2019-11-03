@@ -17,8 +17,17 @@ In this Knesset there are ten parties, however, its political landscape is far m
 % In some cases the parties have merged (e.g., the Jewish Home party or the Joint List),
 % and in some cases, they have different organizational structure (e.g., the Likud or Meretz).
 
-Some parties are `artificial' in the sense that they are the result of a merge of smaller political factions. For example, the Jewish Home party comprises of three conservative religious parties which agreed to run together. Similarly, the Joint List (as its name suggests) comprises of all Arab National parties. 
-In addition, party leadership and member election methods vary widely. For example, the Likud (the leadership party in the 20th Knesset) and Meretz (a socialist progressive party) hold primary elections to elect their leader and party members; other parties, such as Yesh Atid (a centrist party) do not hold elections but rather have the party leader elect its members. 
+Some parties are `artificial' in the sense that they are the result of a merge
+of smaller political factions.
+For example, the Jewish Home party comprises of three conservative religious
+parties which agreed to run together.
+Similarly, the Joint List (as its name suggests) comprises of all Arab National
+parties. 
+In addition, party leadership and member election methods vary widely.
+For example, the Likud (the leadership party in the 20th Knesset) and Meretz
+(a socialist progressive party) hold primary elections to elect their leader
+and party members; other parties, such as Yesh Atid (a centrist party) do not
+hold elections but rather have the party leader elect its members. 
 
 While in the past, this preponderance of parties led to a multi-dimensional
 party system, leading to unexpected coalitions and combinations,
@@ -51,6 +60,7 @@ A vote can take on one of the following values
 3 (abstained), 4 (did not attend).
 
 \subsection{Data Preprocessing}
+\label{subsec:data_preprocessing}
 
 During data processing, we notice that more than half of all the vote values
 are missing despite the presence of value 4 for ``did not attend''.
@@ -108,7 +118,7 @@ the ground truth partition in real-world data, such as party affiliation in
 our dataset.
 The problem with this approach lies in verifying the fidelity of the learned
 preference profile --- we observe that even simple preference profiles such as top
-and bottom responsive games have an exponentially large representation in the number of players
+and bottom responsive games have an exponentially large representation in the number of players \footnote{The underlying reason is actually that they have a high VC dimension as noted in \cite{ijcai2017-380}.}
 (Sections~\ref{subsec:top_responsive_preferences}~and~\ref{subsec:bottom_responsive_preferences}).
 Given our dataset, it means each player's complete preference relation contains
 an order of $2^{147} \approx 10^{44}$ coalitions.
@@ -116,26 +126,28 @@ Even if we have access to every parliament member, it is unrealistic to ask them
 to rank this many possible coalitions.
 
 PAC stability inspires an alternative approach: instead of first learning the complete preference profile then computing a stable partition, we directly
-infer a PAC stable partition from partial preference relations we observe
-each player demonstrates in a dataset.
+infer a PAC stable partition from the partial preference relations observed in the Knesset data.
 The resulting partition does not have as strong stability guarantees as that
 of the previous approach: the trade-off we make is to remove the requirement for
 the complete preference profile, which is unverifiable given the size of
 real-world data, such as our parliament voting data.
 
-For every hedonic game model we investigate, we formulate ways to translate the
-voting data to preference relations of each parliament member, satisfying the
-requirements of the given model.
+Most hedonic game models we consider require players to submit a ranking of
+coalitions they belong to. 
+In the Knesset data however, we observe only approval/disapproval of bills,
+therefore we need to formulate ways to translate the voting data to preference 
+relations of each parliament member, satisfying the requirements of the given 
+model.
 If the formulation results in a complete preference profile, we use it to
 compute a deterministic stable partition.
-We then attempt to PAC-ify the formulation to discover a PAC stable partition
+We then attempt to ``PAC-ify'' the formulation to discover a PAC stable partition
 directly from sample data, i.e. partial preference relations inferred from
 voting behaviors observed in a subset of all bills.
 
-For each PAC model, we simulate i.i.d. by sampling with replacement $3/4$ of
-all bills; we repeat the run 50 times to evaluate the consistency between
-different runs and for producing a robust PAC stable partition minimizing the
-impact of chance.
+For each PAC model, we simulate i.i.d. by sampling with replacement 
+$\frac{3}{4}$ of all bills; we repeat the run 50 times to evaluate the
+consistency between different runs.
+How do we know whether the resulting outputs are robust?
 We use information theoretic measures to measure the distance among the 50
 partitions.
 If most partitions are in agreement, the average information distance is
@@ -171,32 +183,34 @@ non-linear similarities \cite{Vinh:2010:ITM:1756006.1953024}.
 The information theoretic measure we are interested in is Variation of
 Information proposed by \citenameyear{MEILA2007873}.
 
-Given a partition made of $x$ coalitions $\pi = \{S_1, \cdots S_x\}$, the
-probability of a randomly picked player being in coalition $S_i$ is
-$\frac{|S_i|}{|N|}$.
+Given a partition made of $J$ coalitions $\pi = \{S_1, \cdots S_J\}$, the
+probability of a randomly picked player being in coalition $S_j$ is
+$\frac{|S_j|}{|N|}$.
 The uncertainty (a.k.a. \textit{Entropy}) associated with the given partition
 $\pi$ is defined as
-$H(\pi) = - \sum^x_{i=1} \frac{|S_i|}{|N|} \log{\frac{|S_i|}{|N|}}$.
+$H(\pi) = - \sum^J_{j=1} \frac{|S_j|}{|N|} \log{\frac{|S_j|}{|N|}}$.
 It can be interpreted as the average amount of data, in bits for example,
 required to encode coalition labels of every player in partition $\pi$ in order
 to transmit this partition over a communication channel.
 
 Suppose now we have the structure of another partition 
-$\pi' = \{S'_1, \cdots, S'_y\}$ made of $y$ coalitions, we can then ask what
+$\pi' = \{S'_1, \cdots, S'_K\}$ made of $K$ coalitions, we can then ask what
 would be the amount of data required to encode $\pi$ given $\pi'$ 
 --- this is \textit{Conditional Entropy}:
-$H(\pi|\pi') = - \sum^x_{i=1} \sum^y_{j=1} \frac{|S_i \cap S'_j|}{|N|} \log{\frac{|S_i \cap S'_j|/|N|}{|S_j|/|N|}}$.
+$H(\pi|\pi') = - \sum^J_{j=1} \sum^K_{k=1} \frac{|S_j \cap S'_k|}{|N|} \log{\frac{|S_j \cap S'_k|/|N|}{|S_k|/|N|}}$.
 
-\textit{Mutual Information} represents how much the knowledge of $\pi'$ helps
-reduce the number of bits required to encode $\pi$:
-$\MI(\pi, \pi') = H(\pi) - H(\pi|\pi')$
-
-\textit{Variation of Information} (VI) can be interpreted as the total amount of
-information change going from partition $\pi$ to partition $\pi'$;
+\begin{description}
+    \item[Mutual Information (MI)] represents how much the knowledge of
+$\pi'$ helps reduce the number of bits required to encode $\pi$:
+$\MI(\pi, \pi') = H(\pi) - H(\pi|\pi')$.
+    \item[Variation of Information (VI)] can be interpreted as the total 
+amount of information change going from partition $\pi$ to partition $\pi'$;
 $H(\pi|\pi')$ represent the amount of information we lose about $\pi$
 $H(\pi'|\pi)$ represent the amount of information we gain about $\pi'$:
 $\VI(\pi, \pi') = H(\pi|\pi') + H(\pi'|\pi)$.
-It can also be expressed using mutual information:
+\end{description}
+
+Variation of information can also be expressed using mutual information:
 $\VI(\pi, \pi') = H(\pi) + H(\pi') - 2\MI(\pi, \pi')$.
 Different from mutual information, variation of information satisfies the
 properties of a true metric: non-negativity, symmetry and triangle inequality.
@@ -268,4 +282,3 @@ Randome 10 & 0.007 \\
 We use both VI and AMI as the quantitative measurements in our experiments,
 as VI has the advantage of being a metric and AMI is good for detecting bad
 partitions.
-

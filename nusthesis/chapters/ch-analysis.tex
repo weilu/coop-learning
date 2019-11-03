@@ -6,7 +6,7 @@
 \vspace{2em}
 
 In this chapter, we first examine and aggregate our experiment results
-(Section~\ref{sec:variability_among_pac_partitions}.
+(Section~\ref{sec:variability_among_pac_partitions}).
 We then describe how we visually present partition results from various models
 such that it is not only intuitively understandable but also aids our analysis
 (Section~\ref{sec:partition_visualization}).
@@ -52,8 +52,7 @@ Boolean & 31 & 0.46 & 0.02  \\
 \end{table}
 
 Recall that Adjusted Mutual Information (AMI) measures how similar two
-partitions are and is very sensitive in detecting very different partitions (
-Chapter~\ref{subsec:information_theoretic_measures}).
+partitions are and is very sensitive in detecting very different partitions (Section~\ref{subsec:information_theoretic_measures}).
 We calculate the pairwise AMIs among the 50 partitions for each PAC model;
 the resulting statistics are presented in
 Table~\ref{Analysis:table:pac_pairwise_amis}.
@@ -86,14 +85,13 @@ Since all the partitions are reasonably close to each other, it does not
 matter either we use AMI or VI for selecting the centroid.
 Given that VI is a distance measure therefore more intuitive to work with in
 this case, we choose each representative partition as the one with the smallest
-sum of VIs to the rest 49 partitions.
+sum of VIs to the others 49 partitions.
 
 \section{Partition Visualization}
 \label{sec:partition_visualization}
 
 Before delving into the model outcome comparisons and analysis, we briefly
-describe the visualizations used to depict coalition assignments of each
-parliament member, and to compare against their party affiliations which are
+describe the visualizations used to depict coalition assignments of parliament members, and to compare against their party affiliations which are
 used as the ground truth in our quantitative analysis.
 
 We choose \textit{Sankey Diagram} as our main method of visualization as it
@@ -101,7 +99,7 @@ allows intuitive comparison of two different partitions through ``flows''.
 Sankey diagrams are a type of flow diagram which is often used to represent
 change of states in a system \cite{doi:10.1111/j.1530-9290.2008.00004.x}.
 In our case, on the left we have the ground truth state which is the partition
-by party affiliation; on the right is one of our model partition.
+by party affiliation; on the right is one of our model partitions.
 We produce two types of Sankey diagrams:
 
 \begin{enumerate}
@@ -115,8 +113,8 @@ We produce two types of Sankey diagrams:
 
 The first type provides detailed view for when we want to drill into exactly
 which parliament member is grouped with which other members; it has the
-downside of being very verbose.
-The second type removes the verbosity, which is good for visual comparison
+downside of being very complex.
+The second type simplifies the presentation, which is good for visual comparison
 of the ground truth partition against any given model partition.
 In addition, the interactive version of type 2 Sankey diagrams
 \footnote{available at \url{https://weilu.github.io/coop-learning/}} allows
@@ -142,7 +140,7 @@ differences.
 Recall that Adjusted Mutual Information (AMI) is suitable in performing
 this task (Section~\ref{subsec:information_theoretic_measures}).
 For partition produced by every model described in Chapter~\ref{ch:hedonic} and
-Chapter~\ref{ch:comparison}, we calculate the (AMI) between it and the partition
+Chapter~\ref{ch:comparison}, we calculate the AMI between it and the partition
 by party affiliation.
 The results are visualized in Figure~\ref{Analysis:fig:ami}.
 
@@ -171,7 +169,7 @@ appreciation of friends model --- they are sensitive to the definition of
 to the broad disagreement of selective friends produces two very different, yet
 both core stable coalition structures with respect to their own definition of
 friends.
-In our friends models, a player effectively considers someone a friend when
+In our friends models, a player considers someone a friend when
 this person agrees with their votes over $50\%$ of the time.
 We can easily adjust this threshold up or down to produce a spectrum of
 definitions of friends.
@@ -196,8 +194,8 @@ partition, is the full-information Boolean model ($\AMI_{\text{Boolean}} = 0.018
   \label{Analysis:fig:boolean_partition}
 \end{figure}
 
-Upon close inspection of the partition produced by the full-information Boolean
-model compared to party affiliations (Figure~\ref{Analysis:fig:boolean_partition},
+Upon closer inspection of the partition produced by the full-information Boolean
+model compared to party affiliations (Figure~\ref{Analysis:fig:boolean_partition}),
 we notice that the Boolean partition contains one large coalition made of 115
 players of various parties from both sides of the aisle (Coalition 1),
 and one two-member coalition made of two players from the Joint List (Coalition 2);
@@ -232,7 +230,7 @@ members and a few members from a center-right/right-wing party
 The full-information value function model suggests that most parliament members
 are voting according to their party's political position (i.e. left wing vs.
 right wing, government vs. opposition).
-This matches our understanding of the Israel political system described in
+This matches our understanding of the Israeli political system described in
 Section~\ref{sec:data}.
 However, lumping six out of eight Yisrael Beiteinu members together with other
 opposition/left-wing party members in Coalition 1 is not in line with reality.
@@ -271,7 +269,7 @@ It contains 32 coalitions, all of which are small in size (2-9 player in each
 coalition).
 As visualized in Figure~\ref{fig:sbm_normal_partition}, though it mostly
 clusters left wing party members with left wing party members, and right wing
-party members with other right wing party members, it fails to discern the
+party members with other right wing party members, it fails to distinguish the
 government group from the opposition group.
 The edge weight distribution's departure from the normal distribution
 (as depicted in Figure~\ref{Comparison:fig:sbm_edge_weight_neg_hist}) could
@@ -289,8 +287,8 @@ We now cross check the four worst performing models discussed above using the
 Variation of Information (VI) measurements (Figure~\ref{Analysis:fig:vi}).
 The rankings of the four models are summarized in
 Table~\ref{Analysis:table:ami_vi_worst_rankings}.
-Both measurements agree that Boolean, PAC value function, and SBM Normal poorly
-compare to the party affiliations, however they disagree on the general friends
+Both measurements agree that Boolean, PAC value function, and SBM Normal compare poorly
+to the party affiliations, however they disagree on the general friends
 model.
 If we focus our attention on comparing the general vs. selective friends, we
 observe that both measures deem the selective friends versions outperform
@@ -304,7 +302,7 @@ With in selective friends and selective enemies models, the PAC versions
 score very similarly to their full-information versions.
 As such, we will focus our comparisons on the PAC models with selective friends
 , selective enemies and Boolean, the 2-group and 10-group k-means outcomes
-(selected using the average silhouette method and elbow method respectively),
+(selected using the average silhouette method and elbow method respectively, see Section \#\#),
 and the geometric SBM for the community models.
 
 \begin{table}[h!]
@@ -334,7 +332,7 @@ Moreover, some government ministers which are also Knesset members have a low
 rate of participation in the votes, and therefore, once again, their data is
 sometimes skewed.
 
-\paragraph{Coherence}
+\paragraph{Coherence.}
 Seeing whether the opposition and government coalition party members were well
 separated by the different models, resulting in a coherent and logical map.
 
@@ -342,11 +340,11 @@ Under this criterion, all three selected PAC models: selective friends,
 selective enemies, and Boolean are the only ones which did not include several
 groups involving many members of different ideological hue.
 The $k$-means (with $k=10$), and the community model (SBM geometric) tend to
-join together members with fewer votes.
+join together members with fewer votes, regardless of actual voting patterns.
 %TODO: insert viz by vote count%
 Examples of such cross-ideological infrequent-voter groups are: Coalition 2
-of the $k=10$ $k$-means model, Coalition 8 of the SBM geometric model.
-The $k=2$ $k$-means model partition includes five members of the right wing
+of the $k$-means ($k=10$) model, Coalition 8 of the SBM geometric model.
+The $k$-means ($k=2$) model partition includes five members of the right wing
 parties in the opposition group (Coalition 2), out of which only one such
 assignment makes sense --- Orly Levy left the right/center-right Yisrael
 Beiteinu and formed her own party Gesher, which ran together with the center
@@ -364,18 +362,18 @@ and the other, which switched between coalition and opposition
 (Avigdor Lieberman with 725 effective votes).
 The PAC selective enemies model includes two right wing party members in the
 opposition group (Orly Levy and Avigdor Lieberman), both of which we have
-explained before.
+explained above.
 The PAC Boolean model only has one cross-ideological group involving Orly Levy,
 the member who changed parties.
 
 \paragraph{Overall structure}
-Both PAC models and the $k$-means (with $k=2$) are able to figure out that
-there is a main government group and a main opposition group, to which most
+Both PAC models and the $k$-means ($k=2$) are able to distinguish between the
+main government group and main opposition group, to which most
 of their respective members were attached.
-This stresses the fact that despite their differences, even the opposition
+This stresses the fact that despite their differences, especially the opposition
 parties which do not have a centralized binding instructions, still tend to
 vote together due to their relative ideological cohesion.
-The community based SBM geometric model and $k=10$ $k$-means model, however,
+The community based SBM geometric model and  $k$-means ($k=10$) model, however,
 do not really pick up on the existence of generally quite coherent group of
 government and opposition Knesset members.
 
@@ -383,14 +381,14 @@ Most other groups were created based on attendance, with the PAC models more
 clearly creating a few singleton coalitions for less present members, while
 clustering ministers, which tend to miss out on votes, together.
 Ministers are clustered in two different coalitions by PAC selective friends:
-Coalition 3 and Coalition 4, and are clustered in Coalition 4 by PAC selective
+Coalition 3 and Coalition 4, and are clustered altogether in Coalition 4 by PAC selective
 enemies model.
 PAC Boolean model notably creates singletons for most low attendance members.
-The $k=10$ $k$-means clusters tended to remove more ministers from the overall
+The $k$-means ($k=10$) clusters tended to remove more ministers from the overall
 main government group, and divide them into more separate coalitions (this is
 also true for the SBM geometric model).
 
-\paragraph{Sub groups}
+\paragraph{Party Sub-groups}
 None of the models was able to differentiate between the subgroups inside
 parties, apart from identifying a significant change (e.g., a member switches
 parties).
