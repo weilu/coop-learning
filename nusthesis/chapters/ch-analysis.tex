@@ -36,7 +36,7 @@ Coefficient of variation (CV) is the ratio of the standard deviation to the mean
 Note that all the PAC models have CV values well below 1, so there is very low
 variation in terms of partition size across 50 runs for every PAC model.
 
-\begin{table}[h!]
+\begin{table}[ht]
 \centering
 \begin{tabular}{|c|c|c|c|}
 \hline
@@ -63,7 +63,7 @@ $<< 1$, from which we can conclude that, beyond partition size, the content
 of every partition is not dissimilar from each other, consistently across 50
 partitions.
 
-\begin{table}[h!]
+\begin{table}[ht]
 \centering
 \begin{tabular}{|c|c|c|c|}
 \hline
@@ -146,7 +146,7 @@ Chapter~\ref{ch:comparison}, we calculate the AMI between it and the partition
 by party affiliation.
 The results are visualized in Figure~\ref{Analysis:fig:ami}.
 
-\begin{figure}[!t]
+\begin{figure}[ht]
   \centering
   \includegraphics[width=\linewidth]{\Pic{png}{ami}}
   \vspace{\BeforeCaptionVSpace}
@@ -188,7 +188,7 @@ the definition of friends.
 partition, is the full-information Boolean model ($\AMI_{\text{Boolean}} = 0.018$).
 
 % TODO: how not to duplicate figure? Inline reference of figure from appendix?
-\begin{figure}[!t]
+\begin{figure}[ht]
   \centering
   \includegraphics[width=\linewidth]{\Pic{png}{boolean}}
   \vspace{\BeforeCaptionVSpace}
@@ -245,7 +245,7 @@ or oppose bills successfully than the opposition, therefore they are more
 likely getting picked by the PAC sampling process.
 This also highlights the limitations of our handcrafted value function.
 
-\begin{figure}[!t]
+\begin{figure}[ht]
   \centering
   \begin{minipage}{0.48\linewidth}
     \centering
@@ -277,7 +277,7 @@ The edge weight distribution's departure from the normal distribution
 (as depicted in Figure~\ref{Comparison:fig:sbm_edge_weight_neg_hist}) could
 have contributed to the poor clustering results.
 
-\begin{figure}[!t]
+\begin{figure}[ht]
   \centering
   \includegraphics[width=\linewidth]{\Pic{png}{vi}}
   \vspace{\BeforeCaptionVSpace}
@@ -307,7 +307,7 @@ As such, we will focus our comparisons on the PAC models with selective friends
 (selected using the average silhouette method and elbow method respectively, see Section~\ref{sec:k_means_clustering}),
 and the geometric SBM for the community models.
 
-\begin{table}[h!]
+\begin{table}[ht]
 \centering
 \begin{tabular}{|c|c|c|c|}
 \hline
