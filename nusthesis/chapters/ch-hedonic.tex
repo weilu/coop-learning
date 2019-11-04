@@ -531,7 +531,7 @@ players until we exhaust all the players.
 \label{sec:boolean_hedonic_game}
 
 Recall Boolean hedonic preferences means that each player partitions all possible
-coalitions they are a part of, into two equivalence classes:
+coalitions they are a part of into two equivalence classes:
 satisfactory or unsatisfactory; in other words, a player either likes to be
 a member of a coalition or hates it (Section~\ref{subsec:boolean_preferences}).
 
@@ -646,7 +646,7 @@ will produce a large number of satisfactory coalitions for every player. However
 Step~\ref{pac_top_cover:argmax}, it violates the definition of Boolean
 preferences where a player is indifferent among satisfactory coalitions.
 
-% TODO: add visual maybe a van diagraim?
+% TODO: add visual maybe a van diagram?
 Instead of picking one ``best'' coalition we allow for a set of equally good
 coalitions from each set of samples of bills.
 Rather than taking the intersection of ``best'' coalitions, we take intersections
@@ -657,4 +657,3 @@ but a set of coalitions per player.
 In Step~\ref{pac_top_cover:select}, we follow the same select step as
 Algorithm~\ref{alg:boolean_core} (Step~\ref{boolean_core:select}), which picks
 the largest coalition that is satisfactory for every member in it.
-

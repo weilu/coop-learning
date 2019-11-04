@@ -6,9 +6,12 @@
 
 In this chapter, we first examine and aggregate our experiment results
 (Section~\ref{sec:variability_among_pac_partitions}).
-We then describe how we visually present partition results from various models
-such that it is not only intuitively understandable but also aids our analysis
-(Section~\ref{sec:partition_visualization}).
+In the process of reasoning about our experiment results, we realize the
+importance of good data visualization --- even after aggregation, we have over
+16 model partitions, each with over a hundred parliament members to present;
+as a result, we need to visually describe partition results from various models
+such that it is not only intuitively understandable but also aids our 
+qualitative analysis (Section~\ref{sec:partition_visualization}).
 Following the presentation of results\footnote{In the interest of space we
 place the presentation of results in Appendix~\ref{append:viz}}, we conduct
 quantitative analysis by comparing model clusters against party affiliations
@@ -84,7 +87,7 @@ Since all the partitions are reasonably close to each other, it does not
 matter either we use AMI or VI for selecting the centroid.
 Given that VI is a distance measure therefore more intuitive to work with in
 this case, we choose each representative partition as the one with the smallest
-sum of VIs to the others 49 partitions.
+sum of VIs to the other 49 partitions.
 
 \section{Partition Visualization}
 \label{sec:partition_visualization}
@@ -112,7 +115,7 @@ We produce two types of Sankey diagrams:
 
 The first type provides detailed view for when we want to drill into exactly
 which parliament member is grouped with which other members; it has the
-downside of being very complex.
+downside of being very verbose.
 The second type simplifies the presentation, which is good for visual comparison
 of the ground truth partition against any given model partition.
 In addition, the interactive version of type 2 Sankey diagrams
@@ -261,7 +264,7 @@ This also highlights the limitations of our handcrafted value function.
   \end{minipage}
 \end{figure}
 
-\paragraph{} Partition produced by the SBM with normal edge weight distribution
+\paragraph{} The partition produced by the SBM with normal edge weight distribution
 also performed poorly when measured against party affiliations
 ($\AMI_{\text{SBM normal}} = 0.192$).
 It contains 32 coalitions, all of which are small in size (2-9 player in each
@@ -301,7 +304,7 @@ With in selective friends and selective enemies models, the PAC versions
 score very similarly to their full-information versions.
 As such, we will focus our comparisons on the PAC models with selective friends
 , selective enemies and Boolean, the 2-group and 10-group k-means outcomes
-(selected using the average silhouette method and elbow method respectively, see Section \#\#),
+(selected using the average silhouette method and elbow method respectively, see Section~\ref{sec:k_means_clustering}),
 and the geometric SBM for the community models.
 
 \begin{table}[h!]
@@ -331,9 +334,10 @@ Moreover, some government ministers which are also Knesset members have a low
 rate of participation in the votes, and therefore, once again, their data is
 sometimes skewed.
 
-\paragraph{Coherence.}
-Seeing whether the opposition and government coalition party members were well
-separated by the different models, resulting in a coherent and logical map.
+\paragraph{Coherence}
+We want to see whether the opposition and government coalition party members
+are well separated by the different models, resulting in a coherent and
+logical map.
 
 Under this criterion, all three selected PAC models: selective friends,
 selective enemies, and Boolean are the only ones which did not include several
@@ -372,7 +376,7 @@ of their respective members were attached.
 This stresses the fact that despite their differences, especially the opposition
 parties which do not have a centralized binding instructions, still tend to
 vote together due to their relative ideological cohesion.
-The community based SBM geometric model and  $k$-means ($k=10$) model, however,
+The community based SBM geometric model and $k$-means ($k=10$) model, however,
 do not really pick up on the existence of generally quite coherent group of
 government and opposition Knesset members.
 
