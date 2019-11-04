@@ -3,46 +3,65 @@
 \chapter{Introduction}
 \label{ch:intro}
 
-A group of people has preferences over each other and possible groups
-they may form; how can they be clustered such that people are content
-with the resulting group they belong to, assuming we only observe partial data about their preferences?
+A group of people has preferences over each other and possible groups they may
+form; how can they be clustered such that people are content with the resulting
+group they belong to, assuming we only observe partial data about their
+preferences?
 
 Cluster analysis is an essential task of exploratory data mining.
 It has been studied extensively by the machine learning community.
-However, most works that took the data driven approach completely ignore an individual player's utility and their strategic behaviors.
-Meanwhile in the field of game theory, the computational social choice community puts in considerable efforts studying stability related solution concepts of coalition formation games with hedonic preferences;
+However, most works that took the data driven approach completely ignore an
+individual player's utility and their strategic behaviors.
+Meanwhile in the field of game theory, the computational social choice
+community puts in considerable efforts studying stability related solution
+concepts of coalition formation games with hedonic preferences;
 however most works are purely theoretical.
-In addition, many existing stable solution finding algorithms require full visibility of all agents' preferences, which is a major obstacle in applying the research on real-world collaborative activities.
+In addition, many existing stable solution finding algorithms require full
+visibility of all agents' preferences, which is a major obstacle in applying
+the research on real-world collaborative activities.
 
-\citenameyear{ijcai2017-380} lay the theoretical foundation of Probably Approximately Correct (PAC) stability;
-they provide an algorithm which produces a partition that is likely resistant to deviation given limited knowledge of agents' hedonic preferences as input.
-This opens the possibility of constructing models taking the data driven approach, while accounting for agents' strategic behaviors.
+\citenameyear{ijcai2017-380} lay the theoretical foundation of Probably
+Approximately Correct (PAC) stability; they provide an algorithm which
+produces a partition that is likely resistant to deviation given limited
+knowledge of agents' hedonic preferences as input.
+This opens the possibility of constructing models taking the data driven
+approach, while accounting for agents' strategic behaviors.
 
-We present the first application of strategic hedonic games models to real-world data.
-We answer the following research questions: 
+We present the first application of strategic hedonic games models to
+real-world data.
+We answer the following research questions:
 \begin{enumerate}
-    \item Can we use hedonic games to model real-world collaborative activities? (Chapter~\ref{ch:experiment}, Chapter~\ref{ch:hedonic})
-    \item How well does the outcome compare to ground truth? (Section~\ref{sec:quantitative_analysis}, Section~\ref{sec:qualitative_analysis})
-    \item How well does the outcome compare to that of canonical clustering and community detection models? (Chapter~\ref{ch:comparison})
+    \item Can we use hedonic games to model real-world collaborative
+      activities? (Chapter~\ref{ch:experiment}, Chapter~\ref{ch:hedonic})
+    \item How well does the outcome compare to ground truth?
+      (Section~\ref{sec:quantitative_analysis},
+      Section~\ref{sec:qualitative_analysis})
+    \item How well does the outcome compare to that of canonical clustering
+      and community detection models? (Chapter~\ref{ch:comparison})
 \end{enumerate}
 
 \section{Thesis Synopsis}
-Our contribution includes an algorithmic improvement for finding a PAC stable solution for top responsive games, a sub-class of hedonic games
-% (Section~\ref{sec:improved_algo})
-.  We take the Israeli parliament (the Knesset) members' past voting records on legislative bills 
-% (Section~\ref{subsec:data}),
-construct top responsive preference models, and apply the improved algorithm to produce PAC stable partitions
-% (Section~\ref{subsec:exp_pac_models})
-.  We detail in our analysis 
-% (Section~\ref{subsec:exp_analysis})
-, by using the party affiliations as the ground truth partition,
-our PAC partitions are able to reveal the Knesset members' political positions at large. 
-Comparing to $k$-means clustering and stochastic block models 
-% (Section~\ref{subsec:exp_comparison_models})
-, one of our PAC models reveals politicians whose voting behaviors are known to break from their party affiliations and whose allegiance is fickle.
+Our contribution includes an algorithmic improvement for finding a PAC stable
+solution for top responsive games, a sub-class of hedonic games
+(Section~\ref{subsec:improved_pac_algorithm}).
+We take the Israeli parliament (the Knesset) members' past voting records on
+legislative bills (Section~\ref{sec:data}), design experiments
+(Section~\ref{sec:experiment_design}) where we construct various hedonic game
+models and apply the improved algorithm, when applicable, to produce PAC stable
+partitions (Chapter~\ref{ch:hedonic}).
+We detail in our analysis (Chapter~\ref{ch:analysis}), by using the party
+affiliations as the ground truth partition, our PAC partitions are able to
+reveal the Knesset members' political positions at large.
+Comparing to $k$-means clustering and stochastic block models
+(Chapter~\ref{ch:comparison}), three of our PAC models reveals politicians
+whose voting behaviors are known to break from their party affiliations and
+whose allegiance is fickle.
 
-% The rest of this thesis is organized as follows. 
-% In \autoref{ch:review}, we conduct a literature review. 
-% \autoref{ch:rice} provides the study on rice. 
-% \autoref{ch:noodle} describes noodles. 
-% We conclude the entire thesis as well as discuss further directions for future research in \autoref{ch:concl}.
+The rest of this thesis is organized as follows:
+In \autoref{ch:review}, we present a summary of both literature our study is
+built upon, as well as other interesting theoretical and empirical works.
+\autoref{ch:preliminaries} provides a systematic account of relevant formal
+definitions and examples on the topic of hedonic games and stability solution
+concepts.
+Lastly, we conclude the entire thesis and discuss directions for future
+research in \autoref{ch:concl}.
