@@ -1,6 +1,29 @@
 \chapter{Conclusion}
 \label{ch:concl}
 
-\section{Summary}
-\section{Future Research Directions}
+To review, in this thesis we set out to cluster Israeli parliament members
+based on incomplete preferences derived from their votes on legislative bills.
+We take a data-driven approach while account for strategic behavior of
+parliament members as players of hedonic coalition formation games.
+In comparison, the clustering and community detection methods commonly used in
+the machine learning/AI community are also data-driven but fail to take into
+consideration individual player's utility and strategic behaviors.
+Whereas the game theory and computational social choice community has primarily
+studied the theoretical aspect of hedonic coalition formation games;
+the limited number of studies on the application aspect of hedonic games are
+``prescriptive'' and often with simulated data.
+Our study bridges the gap by bringing real-world data of scale and with ground
+truth, the Knesset voting data on over 7000 legislative bills, together with
+PAC stable solutions for hedonic games.
 
+We demonstrate that the top three performing PAC models, according to the
+information theoretical measures against party affiliations, not only are able
+to recover the overall structure of government vs.\ opposition groups, but also
+are more coherent compared to machine learning models such as $k$-means and
+Stochastic Block Models.
+By comparing the PAC setting and full-information setting for both the friends
+and Boolean models, we observe that through sampling, PAC models produce
+partition results that are more robust --- sampling help ``dampen'' the
+model's sensitivity to the definition of friends in the case of friends model,
+and ``smooth'' the effect of individual bills with significant cross-party
+support/disapproval in the case of Boolean model.
