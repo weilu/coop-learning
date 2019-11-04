@@ -23,19 +23,19 @@ the research on real-world collaborative activities.
 \citenameyear{ijcai2017-380} lay the theoretical foundation of Probably
 Approximately Correct (PAC) stability; they provide an algorithm which
 produces a partition that is likely resistant to deviation given limited
-knowledge of agents' hedonic preferences as input.
-This opens the possibility of constructing models taking the data driven
+knowledge of agents' hedonic preferences as input.  
+This opens the possibility of constructing models using a data driven
 approach, while accounting for agents' strategic behaviors.
 
-We present the first application of strategic hedonic games models to
+We present the first application of strategic hedonic games models on
 real-world data.
-We answer the following research questions:
+We address the following research questions:
 \begin{enumerate}
     \item Can we use hedonic games to model real-world collaborative
-      activities? (Chapter~\ref{ch:experiment}, Chapter~\ref{ch:hedonic})
+      activities? (Chapters~\ref{ch:experiment} and~\ref{ch:hedonic})
     \item How well does the outcome compare to ground truth?
-      (Section~\ref{sec:quantitative_analysis},
-      Section~\ref{sec:qualitative_analysis})
+      (Sections~\ref{sec:quantitative_analysis}
+      and~\ref{sec:qualitative_analysis})
     \item How well does the outcome compare to that of canonical clustering
       and community detection models? (Chapter~\ref{ch:comparison})
 \end{enumerate}
@@ -46,8 +46,8 @@ solution for top responsive games, a sub-class of hedonic games
 (Section~\ref{subsec:improved_pac_algorithm}).
 We take the Israeli parliament (the Knesset) members' past voting records on
 legislative bills (Section~\ref{sec:data}), design experiments
-(Section~\ref{sec:experiment_design}) where we construct various hedonic game
-models and apply the improved algorithm, when applicable, to produce PAC stable
+where we construct various hedonic game
+models (Section~\ref{sec:experiment_design}), and apply the improved algorithm, when applicable, to produce PAC stable
 partitions (Chapter~\ref{ch:hedonic}).
 We detail in our analysis (Chapter~\ref{ch:analysis}), by using the party
 affiliations as the ground truth partition, our PAC partitions are able to
@@ -59,7 +59,7 @@ whose allegiance is fickle.
 
 The rest of this thesis is organized as follows:
 In \autoref{ch:review}, we present a summary of both literature our study is
-built upon, as well as other interesting theoretical and empirical works.
+built upon, as well as other interesting theoretical and empirical works in the area.
 \autoref{ch:preliminaries} provides a systematic account of relevant formal
 definitions and examples on the topic of hedonic games and stability solution
 concepts.
