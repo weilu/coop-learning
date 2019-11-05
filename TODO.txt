@@ -303,3 +303,13 @@ Chapter 7:
 - explain the viz
 - explain comparison measurements
 check selective friends/enemies
+
+5 Nov
+- Emphysis super luck we have ground truth / baseline
+- What about PAC models that make them applicable in other dataset, possibly without ground truth
+- Able to identify people went against the grains
+- Yair to send another paper on voting (should cite)
+
+Question:
+- how not to refer to concepts before they are defined
+  use parliament example instead of jargons in intro & preliminaries
