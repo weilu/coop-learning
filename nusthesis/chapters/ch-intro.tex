@@ -3,19 +3,23 @@
 \chapter{Introduction}
 \label{ch:intro}
 
-A group of people has preferences over each other and possible groups they may
-form; how can they be clustered such that people are content with the resulting
-group they belong to, assuming we only observe partial data about their
-preferences?
+Consider a parliament; who are ``natural allies'' amongst the parliament members?
+Assuming each member has preferences over each other and possible groups they may
+form, can we discover political alliances such that people are content with the 
+group they belong to, resulting in a stable situation where nobody has any
+incentive to seek alternative alliance?
+What if we only observe partial data about each parliament member's preferences;
+are we still able to derive a set of stable clusters with confidence? 
 
-Cluster analysis is an essential task of exploratory data mining.
+Such a task of partitioning people into groups is commonly known as cluster
+analysis, which is an essential task of exploratory data mining.
 It has been studied extensively by the machine learning community.
 However, most works that took the data driven approach completely ignore an
 individual player's utility and their strategic behaviors.
 Meanwhile in the field of game theory, the computational social choice
-community puts in considerable efforts studying stability related solution
-concepts of coalition formation games with hedonic preferences;
-however most works are purely theoretical.
+community puts in considerable efforts studying the formation of stable
+partitions under various utility models for individual players; however most
+works are purely theoretical.
 In addition, many existing stable solution finding algorithms require full
 visibility of all agents' preferences, which is a major obstacle in applying
 the research on real-world collaborative activities.
