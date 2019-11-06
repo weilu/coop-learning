@@ -11,7 +11,7 @@ function make_sankey_plot(exp_partitions, metric) {
                             .domain(d3.extent(vote_counts))
     const link_color_by_votes = vote_counts.map(vote_color_fn)
 
-    const members = fig.data[0].node.label.map((l, idx) => l)
+    const members = fig.data[0].node.label.map((l, idx) => idx + ' ' + l)
     const max_group_labels = members.map((_, idx) => 'Coalition ' + (idx + 1))
     const link_source = [...Array(members.length).keys()]
     const link_target = Array(members.length).fill().map((e,i)=>i+members.length)
@@ -28,7 +28,7 @@ function make_sankey_plot(exp_partitions, metric) {
       return acc
     }, {})
     // TODO: hack plotly.js to preserve order
-    var group_values = party_list.map(p => party_to_member[p])
+    const group_values = party_list.map(p => party_to_member[p])
     const group_colors = party_list.map(color_fn)
     const node_color_by_party = colors.concat(colors).concat(colors).concat(group_colors)
 
@@ -64,11 +64,11 @@ function make_sankey_plot(exp_partitions, metric) {
         groups: partition_tuples[0][1]
       },
       link: {
-        source: link_source.concat(partition_link_source),
-        target: link_target.concat(partition_link_target),
-        value: link_value.concat(partition_link_value),
+        source: link_source,
+        target: partition_link_target,
+        value: link_value,
         label: members,
-        color: colors.concat(colors),
+        color: colors,
         label: vote_counts.map((c,i) => members[i] + ' with ' + c +  ' effective votes')
       }
     }
@@ -94,7 +94,7 @@ function make_sankey_plot(exp_partitions, metric) {
     }
     var layout = {
       title: title,
-      height: 1800,
+      height: 800,
       font: {
         size: 10
       },
@@ -103,7 +103,7 @@ function make_sankey_plot(exp_partitions, metric) {
         buttons: buttons,
         xanchor: 'left',
         yanchor: 'top',
-        pad: {'t': -45},
+        pad: {'t': -30},
       }, {
         xanchor: 'left',
         yanchor: 'top',
