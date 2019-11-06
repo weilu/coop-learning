@@ -1,8 +1,11 @@
+import copy
 import numpy as np
 import logging
 import random
+import time
 from graph_tool.all import *
 from top_covering import smallest_cc_from_pref, largest_scc_from_pref
+from votes_to_game import read_votes_and_player_data
 
 
 logging.basicConfig(format='%(asctime)s [%(levelname)s] %(message)s',
@@ -160,7 +163,7 @@ def approximate_preferences(votes, B, players, diff_matrix, coalition_matrix, sa
             else:
                 B[i] &= max_coalition
         if old_coal_len != len(B[i]):
-            logging.info(f'player {i}\'s coalition size changed: {old_coal_len} -> {len(B[i])}. {B[i]}')
+            logging.debug(f'player {i}\'s coalition size changed: {old_coal_len} -> {len(B[i])}. {B[i]}')
 
 
 def precalculate_coalitions(votes):
@@ -210,3 +213,14 @@ def pac_top_cover(votes, diff_matrix, sample_size=None, sample_method=random.cho
                     votes[i][j] = None
 
     return stable_partition
+
+
+if __name__ == '__main__':
+    random.seed(42)
+    original_votes, _ = read_votes_and_player_data()
+    sample_size = int(0.75 * len(original_votes))
+    votes = copy.deepcopy(original_votes)
+    diff_matrix = precalculate_frenemy_per_player_per_bill(votes, False)
+    start = time.time()
+    pi = pac_top_cover(votes, diff_matrix, sample_size)
+    print(f'pac_top_cover took {time.time() - start}ms')
