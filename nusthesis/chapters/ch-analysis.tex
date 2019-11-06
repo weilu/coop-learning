@@ -98,6 +98,14 @@ Before delving into the model outcome comparisons and analysis, we briefly
 describe the visualizations used to depict coalition assignments of parliament members, and to compare against their party affiliations which are
 used as the ground truth in our quantitative analysis.
 
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=.6\linewidth]{\Pic{png}{k_means_2}}
+  \vspace{\BeforeCaptionVSpace}
+  \caption{Type 1 Sankey diagram example: coalition structure produced by the $k$-means model ($k=2$)}
+  \label{Analysis:fig:k_means_2_partition}
+\end{figure}
+
 We choose \textit{Sankey Diagrams} as our main visualization method. 
 It allows intuitive comparison of two different partitions through ``flows''.
 Sankey diagrams are a type of flow diagram which is often used to represent
@@ -115,6 +123,11 @@ We produce two types of Sankey diagrams:
     (Section~\ref{sec:detailed_partitions}).
 \end{enumerate}
 
+\autoref{Analysis:fig:k_means_2_partition} is an example of the first type
+of Sankey diagram used to visualize one of the ML models, $k$-means ($k=2$).
+For the corresponding detailed view (Type 2) of the same model, see 
+\autoref{fig:k_means_2_partition_detailed}.
+
 The second type provides detailed view for when we want to delve into exactly
 which parliament member is grouped with which other members; it has the
 downside of being overly verbose.
@@ -129,8 +142,6 @@ We color the political parties according to their political position ---
 right wing parties in reddish hues and left wing parties in blueish hues.
 This way, we can quickly judge if a model successfully separates the government
 (right wing) parties from the opposition (central to left wing) parties.
-
-% TODO: add parties visualized in color
 
 \section{Quantitative Analysis}
 \label{sec:quantitative_analysis}
