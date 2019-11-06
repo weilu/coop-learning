@@ -215,22 +215,25 @@ function make_bar_plot(exp_partitions, metric, max_y){
   // we want full control over the order of x
   const non_pac_x = ['value_function', 'friends', 'friends_selective', 'enemies_selective', 'enemies', 'boolean']
   const pac_x = non_pac_x.map(x => 'pac_' + x)
-  const non_pac_colors = non_pac_x.map(_ => d3.schemeCategory10[0])
+  const ml_x = non_pac_x.map(_ => '')
   for (var comp_model of ['k_10_means', 'k_2_means', 'network_block_model_auto_B_discrete-geometric_mcmc_sweep_True', 'network_block_model_auto_B_real-normal_mcmc_sweep_True']) {
-    non_pac_x.push(comp_model)
-    non_pac_colors.push(d3.schemeCategory10[2])
+    ml_x.push(comp_model)
   }
-  console.log(non_pac_x)
+
   const x_labels = [
     'Value Function', 'Friends', 'Selective Friends', 'Selective Enemies', 'Enemies', 'Boolean',
     'k-means (k=10)', 'k-means (k=2)', 'SBM Geometric', 'SBM Normal'
   ]
 
   function get_y(key) {
+    if (!(key in exp_partitions)) {
+      return 0
+    }
     return exp_partitions[key][0].stats[metric]
   }
   const pac_y = pac_x.map(get_y)
   const non_pac_y = non_pac_x.map(get_y)
+  const ml_y = ml_x.map(get_y)
 
   const pac_data = {
     y: x_labels,
@@ -249,9 +252,14 @@ function make_bar_plot(exp_partitions, metric, max_y){
     type: 'bar',
     orientation: 'h',
     name: 'Full Info',
-    marker:{
-      color: non_pac_colors
-    },
+  }
+  const ml_data = {
+    y: x_labels,
+    x: ml_y,
+    text: ml_y.map(n => n.toFixed(2)),
+    type: 'bar',
+    orientation: 'h',
+    name: 'ML Baseline'
   }
 
   var layout = {
@@ -268,7 +276,7 @@ function make_bar_plot(exp_partitions, metric, max_y){
     }
   }
 
-  Plotly.newPlot(`bar_reps_${metric}`, [non_pac_data, pac_data], layout);
+  Plotly.newPlot(`bar_reps_${metric}`, [non_pac_data, pac_data, ml_data], layout);
 }
 
 
