@@ -7,15 +7,15 @@
 In this chapter we describe the construction of hedonic game models based on
 finding stable partitions of the parliament members given the Knesset voting
 data.
-We explore three preference models each with its own utility assumptions, 
-namely top responsive games (\autoref{sec:top_responsive_game}), bottom 
+We explore three preference models each with its own utility assumptions,
+namely top responsive games (\autoref{sec:top_responsive_game}), bottom
 responsive games (\autoref{sec:bottom_responsive_game}), and Boolean hedonic
 games (\autoref{sec:boolean_hedonic_game}).
 Under each preference model, we ``translate'' votes accordingly into preferences
-for every parliament member; if there are existing algorithms for stable 
+for every parliament member; if there are existing algorithms for stable
 partition discovery, we implement them and execute them on our dataset;
 if there is no existing algorithm, such as the PAC settings for bottom
-responsive games and Boolean games, we formulate algorithms ourselves before 
+responsive games and Boolean games, we formulate algorithms ourselves before
 implementation and execution.
 We also highlight our assumptions, design choices and their rationales for every
 model.
@@ -31,20 +31,20 @@ Since we do not observe quantifiable preferences of each of the Knesset member
 over other members, we derive their preferences from the Knesset voting data
 assuming top responsiveness.
 Top responsiveness guarantees a strictly core stable partition.
-With the addition of mutuality, as discussed in Section~\ref{sec:stability_concepts},
+With the addition of mutuality, as discussed in \autoref{sec:stability_concepts},
 a strict strong Nash stable partition can be computed if the full preference
 profile is given.
 When the complete preference profile is not available, we can approximate
 a strict strong Nash stable partition.
 
 We will first introduce existing top responsive game algorithms for producing a
-stable partition and a PAC stable partition in Subsection~\ref{subsec:algorithms},
+stable partition and a PAC stable partition in \autoref{subsec:algorithms},
 followed by our improved PAC algorithm in
-Subsection~\ref{subsec:improved_pac_algorithm}.
+\autoref{subsec:improved_pac_algorithm}.
 We then present two specific top responsive game models that we formulate and
 implement as part of our experiments in
-Subsection~\ref{subsec:handcrafted_value_function} and
-Subsection~\ref{subsec:appreciation_of_friends}.
+\autoref{subsec:handcrafted_value_function} and
+\autoref{subsec:appreciation_of_friends}.
 
 \subsection{Existing Algorithms}
 \label{subsec:algorithms}
@@ -86,8 +86,8 @@ In Algorithm~\ref{alg:top_covering}, to further specify Step~\ref{top_cover:sele
 we need to define the concept of \textit{connect component}:
 Let $C^1(i, S) = \ch(i, S)$ for player $i \in S, S \subseteq N$,
 $C^{t + 1}(i, S) = \underset{j \in C^t(i, S)}{\ch(j, S)}$, where $t$ is a positive
-integer; the \textit{connected component} of $i$ with respect to $S$ is 
-$C^{|N|}(i, S)$, denoted as $\CC(i, S)$. 
+integer; the \textit{connected component} of $i$ with respect to $S$ is
+$C^{|N|}(i, S)$, denoted as $\CC(i, S)$.
 $\CC(i, S)$ can be interpreted as a subgraph with $i$ as the root node in the graph
 induced by $S$ as vertices and directed edges $E$,
 $(i, j) \in E$ if $j \in \ch(i, S)$ for all $j \in S$.
@@ -260,7 +260,9 @@ the PAC guarantee is an artifact of the choice set approximation via sampling
 Step~\ref{pac_top_cover:sample_end}).
 Our modification to their algorithm does not change how players' choice sets
 are approximated; we only modify how coalitions are selected.
-We show in Proposition~\ref{prop:scc_generalizes} that modifying the coalition selection procedure from $\CC$ to $\SCC$ still produces a strict core stable partition for top responsive games, therefore the $\SCC$ based PAC algorithm
+We show in Proposition~\ref{prop:scc_generalizes} that modifying the coalition
+selection procedure from $\CC$ to $\SCC$ still produces a strict core stable
+partition for top responsive games, therefore the $\SCC$ based PAC algorithm
 still produces a PAC stable partition.
 \end{proof}
 
@@ -274,10 +276,10 @@ algorithm being exponential in the number of players.
 In addition, removing more players in the earlier iterations also reduces
 the amount of computation required for the later iterations, making our
 experiments run much faster than what it would have been with the original
-$\CC$ procedure. 
-For example, the friends model described in 
+$\CC$ procedure.
+For example, the friends model described in
 \autoref{subsec:appreciation_of_friends} runs three times faster using the
-improved algorithm\footnote{It takes $\sim30$ minutes with the top covering 
+improved algorithm\footnote{It takes $\sim30$ minutes with the top covering
 algorithm, and $\sim10$ minutes with the improved algorithm to run on a 2018
 MacBook Air with 1.6GHz i5 processor and 16GB memory}.
 
@@ -291,7 +293,7 @@ For each bill there are two natural coalitions:
 one formed by parliament members who voted ``for'',
 and the other formed by parliament members who voted ``against''.
 There are also parliament members who voted ``abstained'' or simply did
-not vote on certain bills; in these cases, we exclude them from 
+not vote on certain bills; in these cases, we exclude them from
 consideration for the corresponding bills.
 We refer to ``for'' and ``against'' votes ``effective votes'' in this thesis.
 For the two coalitions induced by the effective votes of a given bill, the
@@ -476,7 +478,7 @@ no disagreements with people in the set of members who voted with them.
 Aversion to enemies profile is a proper subclass of bottom responsive games
 \cite{SuSu10}.
 This preference model is closely related to appreciation of friends model
-(Section~\ref{subsec:appreciation_of_friends}).
+(\autoref{subsec:appreciation_of_friends}).
 Same as the appreciation of friends model, a player classifies other players as
 either friends or enemies; different from the friends model where a player
 derives utility from the number of friends in a coalition, under the aversion
@@ -574,7 +576,7 @@ players until we exhaust all the players.
 Recall Boolean hedonic preferences means that each player partitions all possible
 coalitions they are a part of into two equivalence classes:
 satisfactory or unsatisfactory; in other words, a player either likes to be
-a member of a coalition or hates it (Section~\ref{subsec:boolean_preferences}).
+a member of a coalition or hates it (\autoref{subsec:boolean_preferences}).
 
 \citenameyear{Aziz:2016:BHG:3032027.3032048} show that we can discover a core
 stable partition for a given Boolean hedonic game using the following procedure:
@@ -644,8 +646,8 @@ player 2: $\{2\} \sim \{2, 3\} \succ_2 \{1, 2\} \sim \{1, 2, 3\}$
 
 player 3: $\{1, 3\} \sim \{2, 3\} \succ_3 \{3\} \sim \{1, 2, 3\}$
 
-When we feed this preference profile to Algorithm~\ref{alg:boolean_core} as input, we
-get $\pi = \{\{1, 3\}, \{2\}\}$ as the core stable partition
+When we feed this preference profile to Algorithm~\ref{alg:boolean_core} as
+input, we get $\pi = \{\{1, 3\}, \{2\}\}$ as the core stable partition
 \footnote{$\pi' = \{\{2, 3\}, \{1\}\}$ is also a core stable partition, depends
 on how we break tie among coalitions that are satisfactory for all their members
 and are of the same size.}.
@@ -661,14 +663,15 @@ coalition in the final stable partition.
 We attempt to break this symmetry with an alternative, more complicated,
 formulation without much success.
 The details of that alternative formulation is described in
-Appendix~\ref{append:alternative_boolean}.
+\autoref{append:alternative_boolean}.
 
 We also would like to highlight two conscious design decisions in our
 implementation:
 
 \begin{enumerate}
-  \item When a player is matched and removed, we remove any satisfactory coalitions that
-    contain the removed player, instead of modifying those coalitions.
+  \item When a player is matched and removed, we remove any satisfactory
+    coalitions that contain the removed player, instead of modifying those
+    coalitions.
     This is to maintained integrity of the votes to preference relation
     translation; if we were to modify satisfactory coalitions by simply
     deleting removed players from them, we would be constructing satisfactory
@@ -683,7 +686,8 @@ implementation:
 
 Formulation of the PAC version of the Boolean hedonic games is tricky, because
 Algorithm~\ref{alg:pac_top_covering} does not directly apply --- sampling bills
-will produce a large number of satisfactory coalitions for every player. However, if we break the tie to pick one ``best'' coalition for each player at
+will produce a large number of satisfactory coalitions for every player.
+However, if we break the tie to pick one ``best'' coalition for each player at
 Step~\ref{pac_top_cover:argmax}, it violates the definition of Boolean
 preferences where a player is indifferent among satisfactory coalitions.
 

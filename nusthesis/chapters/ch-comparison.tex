@@ -3,8 +3,8 @@
 
 \chapter{Machine Learning Models}
 \label{ch:comparison}
-Hedonic coalition formation is, at its essence, a method of partitioning a set 
-of points (players) into groups. 
+Hedonic coalition formation is, at its essence, a method of partitioning a set
+of points (players) into groups.
 Partitioning a given set of points is a well studied field in machine learning
 known as {\em cluster analysis} or clustering;
 when the set of objects can be modeled as a network, people also refer to the
@@ -12,15 +12,17 @@ partitioning task as {\em community detection}.
 
 In this chapter, we explore two classes of machine learning models commonly used
 in clustering and community detection.
-We apply these models to the Knesset dataset, producing Knesset member partitions. These techniques serve as a baseline;
-in Chapter~\ref{ch:analysis} we compare the resulting partitions to those of our game theoretical models described in Chapter~\ref{ch:hedonic}.
+We apply these models to the Knesset dataset, producing Knesset member partitions.
+These techniques serve as a baseline;
+in \autoref{ch:analysis} we compare the resulting partitions to those of our game
+theoretical models described in \autoref{ch:hedonic}.
 
 
 \section{$k$-Means Clustering}
 \label{sec:k_means_clustering}
 
 $k$-means clustering\cite{Tan:2018:IDM:3208440} divides a given set of samples
-$x_1, \cdots, x_n$\footnote{Each sample $x_i$ is a vector of feature values. 
+$x_1, \cdots, x_n$\footnote{Each sample $x_i$ is a vector of feature values.
 A feature is an ``individual measurable property or characteristic of a
 phenomenon being observed'' \cite{Bishop:2006:PRM:1162264}} into $k$ disjoint
 sets $C$ (equivalently, $C$ is a partition of samples), each described by the
@@ -32,7 +34,7 @@ it produces a partition minimizing the {\em within-cluster sum-of-squares} (WCSS
 \]
 
 $k$-means clustering has the advantage of being a general-purpose method
-requiring little hyperparameter tuning. 
+requiring little hyperparameter tuning.
 It also runs quickly in practice.
 The main drawback of $k$-means is that it assumes the clusters to be of similar
 size.
@@ -53,17 +55,16 @@ votes are far from each other; anything else is neutral and is equidistant
 to ``for'' and ``against''.
 
 We run $k$-means clustering for $k$ in the range $[2, 50]$, and determine the
-best value ($k=10$) by plotting the number of clusters against the corresponding 
-partition's total WCSS. 
+best value ($k=10$) by plotting the number of clusters against the corresponding
+partition's total WCSS.
 We then pick the point where there is a ``bend'' in the plot
---- this is known as the elbow method for $k$ selection 
+--- this is known as the elbow method for $k$ selection
 \cite{Thorndike53whobelongs}.
 The elbow in the plot represents a point where adding one more cluster does not significantly improve WCSS.
 
-\begin{figure}[!t]
+\begin{figure}[h!]
   \centering
   \includegraphics[width=\linewidth]{\Pic{png}{k_means_wcss}}
-  \vspace{\BeforeCaptionVSpace}
   \caption{Average WCSS of Knesset partitions from $k$-means clusterings}
   \label{Comparison:fig:k_means_wcss}
 \end{figure}
@@ -84,15 +85,14 @@ silhouette score.
 On our Knesset dataset the average silhouette peaks at $k=2$ and decreases
 significantly thereafter.
 
-\begin{figure}[!t]
+\begin{figure}[h!]
   \centering
   \includegraphics[width=\linewidth]{\Pic{png}{k_means_silhouette}}
-  \vspace{\BeforeCaptionVSpace}
   \caption{Average silhouette scores of Knesset partitions from $k$-means clusterings}
   \label{Comparison:fig:k_means_silhouette}
 \end{figure}
 
-We present results from both $k=2$ and $k=10$ in Chapter~\ref{ch:analysis}.
+We present results from both $k=2$ and $k=10$ in \autoref{ch:analysis}.
 
 \section{Stochastic Block Model}
 \label{sec:stochastic_block_model}
@@ -101,7 +101,7 @@ The stochastic block model (SBM) \cite{HOLLAND1983109} commonly
 serves as a benchmark model in community detection.
 This approach models dataset as a graph; for our Knesset dataset, parliament
 members make the nodes of this graph and how frequently each pair of members
-voted together/differently form the edge weights \footnote{Since we need edge
+voted together/differently form the edge weights\footnote{Since we need edge
 weights in the graph model, we adopt the \textit{Nonparametric weighted
 stochastic block model} implementation by \citenameyear{Peixoto}}.
 The stochastic block model assumes nodes that belong to the same group have
@@ -118,13 +118,12 @@ represents the number of times a pair of politicians voted together, either
 We model the edge weights using the geometric distribution given the weights are
 non-negative and discrete values.
 We plot the normalized frequencies of edge weights in
-Figure~\ref{Comparison:fig:sbm_edge_weight_hist}.
+\autoref{Comparison:fig:sbm_edge_weight_hist}.
 Observe that the general shape of the plot follows that of the probability mass function for a geometric distribution.
 
-\begin{figure}[!t]
+\begin{figure}[h!]
   \centering
   \includegraphics[width=\linewidth]{\Pic{png}{sbm_edge_weight_hist}}
-  \vspace{\BeforeCaptionVSpace}
   \caption{The Knesset under SBM: normalized histogram of positive edge weights}
   \label{Comparison:fig:sbm_edge_weight_hist}
 \end{figure}
@@ -134,7 +133,7 @@ disagree --- edge weight is the difference between the number of times their vot
 agree and the number of times their votes disagree.
 Since the edge weights can be negative, we model the weights using the normal
 distribution.
-See Figure~\ref{Comparison:fig:sbm_edge_weight_neg_hist} for the normalized
+See \autoref{Comparison:fig:sbm_edge_weight_neg_hist} for the normalized
 frequencies of potentially negative edge weights.
 The overall shape of the plot is single-peaked like the bell shape of a normal
 distribution.
@@ -146,10 +145,9 @@ a baseline model.
 We discuss the implication of using the normal distribution to approximate the
 edge weights in \autoref{sec:quantitative_analysis}.
 
-\begin{figure}[!t]
+\begin{figure}[h!]
   \centering
   \includegraphics[width=\linewidth]{\Pic{png}{sbm_edge_weight_neg_hist}}
-  \vspace{\BeforeCaptionVSpace}
   \caption{The Knesset under SBM: normalized histogram of possible negative edge weights}
   \label{Comparison:fig:sbm_edge_weight_neg_hist}
 \end{figure}
@@ -160,5 +158,5 @@ Therefore instead of finding the maximum, we sample partitions from the
 posterior distribution, and take the average weighted by posterior probabilities
 across different model fits (also known as model averaging).
 We use the SBM implemented in the \texttt{graph-tool} library, which supports
-model averaging using an efficient Markov chain Monte Carlo (MCMC) algorithm 
+model averaging using an efficient Markov chain Monte Carlo (MCMC) algorithm
 \cite{PhysRevE.89.012804}, further optimizing the SBM models.
