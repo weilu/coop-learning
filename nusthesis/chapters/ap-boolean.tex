@@ -11,27 +11,27 @@ express their preference to be with other members whose votes are the same
 as theirs, but also not to be with the group that voted differently.
 
 Recall Example~\ref{example:votes_boolean}:
-From bill 1, we have $\{1, 3\} \succ_1 \{1, 2\}$, $\{2\} \succ_2 \{1, 2, 3\}$,
+From bill A, we have $\{1, 3\} \succ_1 \{1, 2\}$, $\{2\} \succ_2 \{1, 2, 3\}$,
 $\{1, 3\} \succ_3 \{2, 3\}$.
-From bill 2, we have $\{2, 3\} \succ_2 \{2\}$, $\{2, 3\} \succ_3 \{3\}$.
+From bill B, we have $\{2, 3\} \succ_2 \{2\}$, $\{2, 3\} \succ_3 \{3\}$.
 Player 1 is not involved as they voted abstained.
 Since there is nobody voted ``2 - against'', both player 2 and player 3 dislike
 joining an empty coalition.
-From bill 3, we have $\{1\} \succ_1 \{1, 2, 3\}$, $\{2, 3\} \succ_2 \{1, 2\}$,
+From bill B, we have $\{1\} \succ_1 \{1, 2, 3\}$, $\{2, 3\} \succ_2 \{1, 2\}$,
 $\{2, 3\} \succ_3 \{1, 3\}$.
 
-In order to combine the preferences from bill 1, 2 and 3, we need to handle
+In order to combine the preferences from bill A, B and C, we need to handle
 the cases when a coalition is both liked and disliked by a player, for example,
-player 3 likes $\{1, 3\}$ according to bill 1 but dislikes it according to bill 3;
-player 3 also likes $\{2, 3\}$ according to bill 2 and 3 but dislikes it
-according to bill 1.
+player 3 likes $\{1, 3\}$ according to bill A but dislikes it according to bill B;
+player 3 also likes $\{2, 3\}$ according to bill B and C but dislikes it
+according to bill A.
 We tally the number of times a given coalition is liked and disliked by a
 player and rule according to the preference with more occurrences.
 When there are equal number of likes and dislikes, we break tie in favor of dislike.
 As such, in the above Example~\ref{example:votes_boolean}, player 3 dislikes
 $\{1, 3\}$ and likes $\{2, 3\}$.
 
-Therefore we can merge the preferences derived from bill 1, 2, and 3:
+Therefore we can merge the preferences derived from bill A, B, and C:
 
 player 1: $\{1, 3\} \sim \{1\} \succ_1 \{1, 2\} \sim \{1, 2, 3\}$
 

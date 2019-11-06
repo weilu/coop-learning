@@ -4,6 +4,22 @@
 \chapter{Hedonic Game Stability Models}
 \label{ch:hedonic}
 
+In this chapter we describe the construction of hedonic game models based on
+finding stable partitions of the parliament members given the Knesset voting
+data.
+We explore three preference models each with its own utility assumptions, 
+namely top responsive games (\autoref{sec:top_responsive_game}), bottom 
+responsive games (\autoref{sec:bottom_responsive_game}), and Boolean hedonic
+games (\autoref{sec:boolean_hedonic_game}).
+Under each preference model, we ``translate'' votes accordingly into preferences
+for every parliament member; if there are existing algorithms for stable 
+partition discovery, we implement them and execute them on our dataset;
+if there is no existing algorithm, such as the PAC settings for bottom
+responsive games and Boolean games, we formulate algorithms ourselves before 
+implementation and execution.
+We also highlight our assumptions, design choices and their rationales for every
+model.
+
 \section{Top Responsive Games}
 \label{sec:top_responsive_game}
 Recall that top responsiveness models a preference profile where every player
@@ -91,7 +107,9 @@ stable coalition structure in polynomial time in the number of players
 specifically for appreciation-of-friends preference profiles.
 Their algorithm effectively replaces Step~\ref{top_cover:select} of
 Algorithm~\ref{alg:top_covering} with finding the largest strongly connected
-component (SCC) in the graph induced by $R^k$.
+component (SCC)\footnote{A strongly connected component in a directed graph is
+a subgraph in which all vertices are reachable from any other vertex.} in the
+graph induced by $R^k$.
 We refer to their algorithm as \textit{appreciation-of-friends algorithm}.
 Due to the definition of appreciation-of-friends preference profile,
 Step~\ref{top_cover:remove} no longer requires scanning through every remaining
@@ -169,8 +187,7 @@ by replacing the step of finding the smallest $\CC$ with finding the largest
 Strongly Connected Component ($\SCC$).
 We name the resulting algorithm \textit{$\SCC$ based PAC top covering algorithm}.
 Our improvement is based on \citenameyear{Dimitrov2006}'s appreciation-of-friends
-strict core partition discovery algorithm (See Subsection~\ref{subsec:algorithms},
-Paragraph~\ref{para:full_pref_algos}).
+strict core partition discovery algorithm (See \autoref{para:full_pref_algos}).
 
 We first show that the appreciation-of-friends algorithm generalizes to all top
 responsive games; then we demonstrate that making the same modification to the
@@ -257,7 +274,12 @@ algorithm being exponential in the number of players.
 In addition, removing more players in the earlier iterations also reduces
 the amount of computation required for the later iterations, making our
 experiments run much faster than what it would have been with the original
-$\CC$ procedure.
+$\CC$ procedure. 
+For example, the friends model described in 
+\autoref{subsec:appreciation_of_friends} runs three times faster using the
+improved algorithm\footnote{It takes $\sim30$ minutes with the top covering 
+algorithm, and $\sim10$ minutes with the improved algorithm to run on a 2018
+MacBook Air with 1.6GHz i5 processor and 16GB memory}.
 
 
 \subsection{Handcrafted Value Function}
@@ -268,9 +290,14 @@ through representing every player's utility model using a value function.
 For each bill there are two natural coalitions:
 one formed by parliament members who voted ``for'',
 and the other formed by parliament members who voted ``against''.
-Note that the values assigned by members to their respective coalitions
-are not immediately well defined,
-so we define the player $i$'s value function for coalition $S$ as follow:
+There are also parliament members who voted ``abstained'' or simply did
+not vote on certain bills; in these cases, we exclude them from 
+consideration for the corresponding bills.
+We refer to ``for'' and ``against'' votes ``effective votes'' in this thesis.
+For the two coalitions induced by the effective votes of a given bill, the
+values assigned by members to their respective coalitions are not immediately
+well defined, so we define the player $i$'s value function for coalition $S$
+as follow:
 
 Let $S_f$ be the set of members who voted ``for'' and
 $S_a$ the set of members who voted ``against''.
@@ -294,8 +321,16 @@ is always worth more than a losing coalition.
 $\frac{1}{|S|}$ reflects that a win is considered more valuable when it's
 achieved with fewer members, which is also conceptually consistent with
 top responsive game's preference for smaller coalitions.
-The partition term $\frac{|S_p|}{|N|}$ gives a win more value when more
-parliament members voted for or against the bill.
+The participation term $\frac{|S_p|}{|N|}$ gives a win more value when there
+are more effective votes for a given bill.
+This captures the idea that participation correlates to the importance of a
+bill in the eyes of the parliament members; the more important a bill, the more
+valuable the win, be it passing or blocking the bill successfully.
+For example, if two bills are both passed with the same number of ``for''
+votes $n_f > 2$, and bill A has no ``against'' vote while bill B has $n_f - 1$
+``against'' votes, then the ``for'' coalition in bill B derives higher utility
+than the ``for'' coalition in bill A in our formulation, as bill B is more
+closely contended.
 For simplicity, we assume every member in a given coalition assigns
 equal value to their coalition.
 
@@ -303,10 +338,10 @@ This handcrafted value function allows us to construct a partial preference
 relation for every parliament member.
 Note that the handcrafted value function does not guarantee that the generated partial preference profile satisfies top responsiveness.
 It makes this approach analogous to improper learning (a.k.a.\ representation independent learning).
-In learning theory, improper learning is when a learning algorithm is not
-restricted to output a hypothesis from the given hypothesis class,
-but should output a hypothesis with error not too far from that of
-the best hypothesis from the given hypothesis class.
+In learning theory, improper learning is when the target function is not from
+the class of functions that the learning algorithm can possibly output,
+regardless, the learning algorithm should output a hypothesis with error not
+too far from that of the best hypothesis from the given hypothesis class.
 Similar to the rationale behind improper learning, allowing the
 partial preference profile to be not strictly top responsive gives us
 the flexibility to choose an appropriate representation of the problem.
@@ -314,14 +349,19 @@ the flexibility to choose an appropriate representation of the problem.
 Although the original top covering algorithm expects the full preference
 profile as input, it would still terminate and produce a partition
 if the input is a partial preference profile.
-The produced partition is core stable with respect to the provided partial
-preference profile.
+The produced partition ensures that any of the observed coalitions would
+have no incentive to deviate.
 
-In our implementation, we assume any omitted coalition is less preferred
-than those explicitly stated, because the existence of an observed
-coalition is evidence that every member in that coalition prefers to be
-a part of that coalition than some unobserved coalition.
-Upon discovery of the smallest $\CC$ in each iteration, we also remove any coalition that contains any of the removed player from the remaining player's preference relation. This quickly shrinks the number of preference relations for each remaining member in every iteration of the algorithm.
+In our implementation, we assign all unobserved coalition the value of zero;
+this is to ensure that the values for observed, winning coalitions are always
+greater than any unobserved coalition, because intuitively the existence of
+an observed coalition is evidence that every member in that coalition prefers
+to be a part of that coalition than some unobserved coalition.
+Upon discovery of the largest $\SCC$ in each iteration, we also remove any
+coalition that contains any of the removed player from the remaining player's
+preference relation.
+This quickly shrinks the number of preference relations for each remaining
+member in every iteration of the algorithm.
 
 For the PAC version of the algorithm, we do not have nearly enough samples
 as required by the algorithm --- The algorithm requires $O(2n^4)$ samples
@@ -370,20 +410,20 @@ In both cases, for any player, those who are not friends are considered enemies.
   \centering
   \begin{tabular}{|c|c|c|c|}
   \hline
-         & player 1 & player 2 & player 3 \\ \hline
-  bill 1 & 1 & 1 & 2 \\
-  bill 2 & 3 & 1 & 3 \\
-  bill 3 & 3 & 2 & 3 \\
+         & player 1  & player 2 & player 3 \\ \hline
+  bill A & for       & for      & against \\
+  bill B & abstained & for      & abstained \\
+  bill C & abstained & against  & abstained \\
   \hline
   \end{tabular}
   \end{table}
 
 \end{example}
 
-Under general friends, players 1 and 2 are friends because they agreed on bill 1.
+Under general friends, players 1 and 2 are friends because they agreed on bill A.
 In comparison, under selective friends, from player 1's point of view, player 2
-is still a friend due to bill 1, while player 2 considers player 1 an enemy
-because player 1 did not vote with her for bill 2 and 3.
+is still a friend due to bill A, while player 2 considers player 1 an enemy
+because player 1 did not vote with her for bill B and C.
 
 The complete preference profile under general friends is therefore:
 
@@ -421,13 +461,14 @@ in choosing friends compared to their complete profile preference conterpart.
 As a result, we expect to observe smaller and more coalitions in comparison.
 
 
-\section{Bottom Responsive Game}
+\section{Bottom Responsive Games}
 \label{sec:bottom_responsive_game}
 
 Bottom responsive games are the counterpart of top responsive games, but are
 much less studied class of hedonic games.
-In the context of our parliament voting dataset, we are curious to learn what coalition structure can be produced from this similar yet ``opposite''
-preference model.
+In the context of our parliament voting dataset, by taking a bottom responsive
+model, we are implicitly assuming that parliament members care more about having
+no disagreements with people in the set of members who voted with them.
 
 \subsection{Aversion to Enemies}
 \label{subsec:aversion_to_enemies}
@@ -527,7 +568,7 @@ coalition, addition of coalition and removal of players with the remaining
 players until we exhaust all the players.
 
 
-\section{Boolean Hedonic Game}
+\section{Boolean Hedonic Games}
 \label{sec:boolean_hedonic_game}
 
 Recall Boolean hedonic preferences means that each player partitions all possible
@@ -569,18 +610,18 @@ coalitions --- for a given bill, those who voted ``for'' and those who voted
   \centering
   \begin{tabular}{|c|c|c|c|}
   \hline
-         & player 1 & player 2 & player 3 \\ \hline
-  bill 1 & 1 & 2 & 1 \\
-  bill 2 & 3 & 1 & 1 \\
-  bill 3 & 1 & 2 & 2 \\
+         & player 1  & player 2 & player 3 \\ \hline
+  bill A & for       & against  & for \\
+  bill B & abstained & for      & for \\
+  bill C & for       & against  & against \\
   \hline
   \end{tabular}
   \end{table}
 \end{example}
 
-From bill 1, we have player 1 and 3 being satisfied with coalition $\{1, 3\}$,
+From bill A, we have player 1 and 3 being satisfied with coalition $\{1, 3\}$,
 and player 2 satisfied with $\{2\}$.
-From bill 2, player 2 and 3 find $\{2, 3\}$ satisfactory; player 1's preference
+From bill B, player 2 and 3 find $\{2, 3\}$ satisfactory; player 1's preference
 is unknown as their vote is neither ``for'' nor ``against''.
 In summary, we have the following satisfactory coalitions for every player:
 
