@@ -222,6 +222,7 @@ remaining players.
 Since a player is indifferent among unsatisfactory coalitions, we default to
 placing them in coalitions containing themselves, resulting in most remaining
 players in singleton coalitions.
+%TODO: add how PAC solved this problem
 
 The third worst partition, which is also the worst PAC partition
 among all PAC models, is that of the PAC value function model
@@ -347,11 +348,13 @@ selective enemies, and Boolean are the only ones which did not include several
 groups involving many members of different ideological hue.
 The $k$-means (with $k=10$) model, and the community model (SBM geometric) tend to
 join together members with fewer votes, regardless of actual voting patterns.
-%TODO: insert viz by vote count%
 Examples of such cross-ideological infrequent-voter groups are: Coalition 2
-of the $k$-means ($k=10$) model, Coalition 8 of the SBM geometric model.
+of the $k$-means ($k=10$) model (See \autoref{fig:k_means_10_partition_vote_count}),
+Coalition 8 of the SBM geometric model (See
+\autoref{fig:sbm_geometric_partition_vote_count}).
 The $k$-means ($k=2$) model partition includes five members of the right wing
-parties in the opposition group (Coalition 2), out of which only one such
+parties in the opposition group (Coalition 2 in
+\autoref{fig:k_means_2_partition_detailed}), out of which only one such
 assignment makes sense --- Orly Levy left the right/center-right Yisrael
 Beiteinu and formed her own party `Gesher', which ran together with the center
 left Labor Party in the 2019 Knesset elections
@@ -359,7 +362,8 @@ left Labor Party in the 2019 Knesset elections
 see her grouped together with the opposition group.
 
 Overall, the PAC models fare much better in terms of coherence:
-the PAC selective friends model has only two cross-ideological groups ---
+the PAC selective friends model has only two cross-ideological groups (
+\autoref{fig:selective_friends_pac_partition_vote_count}) ---
 Coalition 2 involves Orly Levy which, as previously mentioned, has a reasonable
 explanation; Coalition 5 is a small coalition combining two low-attendance
 members, one on the right edge of the left wing (Daniel Atar with 708 effective
@@ -367,10 +371,11 @@ votes\footnote{Recall that we only consider ``for'' and ``against'' as
 effective votes}), and another, who switched between coalition and opposition
 (Avigdor Lieberman with 725 effective votes).
 The PAC selective enemies model includes two right wing party members in the
-opposition group (Orly Levy and Avigdor Lieberman), both of which we have
-explained above.
+opposition group (\autoref{fig:selective_enemies_partition_vote_count}),
+Orly Levy and Avigdor Lieberman, both of which we have explained above.
 The PAC Boolean model only has one cross-ideological group involving Orly Levy,
-the member who changed parties.
+the member who changed parties (\autoref{fig:pac_boolean_pac_partition_vote_count}
+and \autoref{fig:pac_boolean_pac_partition_detailed}).
 
 \paragraph{Overall structure}
 Both PAC models and the $k$-means ($k=2$) are able to distinguish between the
@@ -387,12 +392,16 @@ Most other groups were created based on attendance, with the PAC models more
 clearly creating a few singleton coalitions for less present members, while
 clustering ministers, who tend to miss votes, together.
 Ministers are clustered in two different coalitions by PAC selective friends:
-Coalition 3 and Coalition 4, and are clustered altogether in Coalition 4 by PAC selective
-enemies model.
-PAC Boolean model notably creates singletons for most low attendance members.
+Coalition 3 and Coalition 4
+(See \autoref{fig:selective_friends_pac_partition_detailed}), and are clustered
+altogether in Coalition 4 by PAC selective enemies model (See
+\autoref{fig:selective_enemies_pac_partition_detailed}).
+PAC Boolean model notably creates singletons for most low attendance members
+(\autoref{fig:pac_boolean_pac_partition_vote_count}).
 Both the $k$-means ($k=10$) and the SBM geometric clusters tended to remove
 more ministers from the overall main government group, and divide them into
-more separate coalitions.
+more separate coalitions (See \autoref{fig:k_means_10_partition_detailed} and 
+\autoref{fig:sbm_geometric_partition_detailed}).
 
 \paragraph{Party Sub-groups}
 None of the models were able to distinguish between the subgroups within
