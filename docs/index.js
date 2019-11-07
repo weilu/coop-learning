@@ -103,10 +103,12 @@ function make_sankey_plot(exp_partitions, metric) {
         buttons: buttons,
         xanchor: 'left',
         yanchor: 'top',
-        pad: {'t': -30},
+        pad: {'t': -40},
       }, {
         xanchor: 'left',
         yanchor: 'top',
+        pad: {'t': -40},
+        x: 0.25,
         buttons: [
           {
             label: 'color by party',
@@ -216,7 +218,7 @@ function make_bar_plot(exp_partitions, metric, max_y){
   const non_pac_x = ['value_function', 'friends', 'friends_selective', 'enemies_selective', 'enemies', 'boolean']
   const pac_x = non_pac_x.map(x => 'pac_' + x)
   const ml_x = non_pac_x.map(_ => '')
-  for (var comp_model of ['k_10_means', 'k_2_means', 'network_block_model_auto_B_discrete-geometric_mcmc_sweep_True', 'network_block_model_auto_B_real-normal_mcmc_sweep_True']) {
+  for (var comp_model of ['k_10_means', 'k_2_means', 'sbm_discrete-geometric', 'sbm_real-normal']) {
     ml_x.push(comp_model)
   }
 
