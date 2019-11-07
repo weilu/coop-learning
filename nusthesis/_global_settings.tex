@@ -157,9 +157,7 @@
 \newcommand*{\BeforeCaptionVSpace}{1ex}
 \newcommand*{\BeforeSubCaptionVSpace}{0.75ex}
 
-%%% For example code used only
-\usepackage{lipsum} % for generating dummy text
-\newcommand{\CMD}[1]{\texttt{\string#1}} % for typing a command
+\providecommand{\keywords}[1]{\textbf{\textit{keywords---}} #1}
 
 \usepackage{multirow}
 \usepackage{pdflscape}
@@ -194,4 +192,3 @@
 \theoremstyle{definition}
 \newtheorem{example}[theorem]{Example}
 \newtheorem{definition}[theorem]{Definition}
-

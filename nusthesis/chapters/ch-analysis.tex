@@ -101,7 +101,7 @@ used as the ground truth in our quantitative analysis.
 \begin{figure}[h]
   \centering
   \includegraphics[width=.6\linewidth]{\Pic{png}{k_means_2}}
-  \caption{Type 1 Sankey diagram example: coalition structure produced by the $k$-means model ($k=2$)}
+  \caption{Type 1 Sankey diagram example: partition produced by the $k$-means ($k=2$) model}
   \label{Analysis:fig:k_means_2_partition}
 \end{figure}
 
@@ -123,7 +123,9 @@ We produce two types of Sankey diagrams:
 \end{enumerate}
 
 \autoref{Analysis:fig:k_means_2_partition} is an example of the first type
-of Sankey diagram used to visualize one of the ML models, $k$-means ($k=2$).
+of Sankey diagram used to visualize one of the ML models, $k$-means 
+($k=2$)\footnote{\autoref{Analysis:fig:k_means_2_partition} is identical to
+\autoref{fig:k_means_2_partition}. It is inlined here for better readability}.
 For the corresponding detailed view (Type 2) of the same model, see
 \autoref{fig:k_means_2_partition_detailed}.
 
@@ -195,19 +197,11 @@ closer: $\AMI_{\text{PAC friends}} = 0.292,
 This is evidence that through sampling, PAC models dampen their sensitivity to
 the definition of friends.
 
-% TODO: how not to duplicate figure? Inline reference of figure from appendix?
-\begin{figure}[ht]
-  \centering
-  \includegraphics[width=\linewidth]{\Pic{png}{boolean}}
-  \caption{Coalition structure produced by the Boolean model}
-  \label{Analysis:fig:boolean_partition}
-\end{figure}
-
 \paragraph{Second Worst Performing Model Under AMI} 
 The second worst partition, according to AMI with the party affiliation
 partition, is the full-information Boolean model ($\AMI_{\text{Boolean}} = 0.018$).
 Upon closer inspection of the partition produced by the full-information Boolean
-model compared to party affiliations (\autoref{Analysis:fig:boolean_partition}),
+model compared to party affiliations (See \autoref{fig:boolean_partition}),
 we notice that the Boolean game partition contains one large coalition made of 115
 players of various parties from both sides of the aisle (Coalition 1),
 and one two-member coalition made of two players from the Joint List (Coalition 2);
@@ -223,7 +217,16 @@ remaining players.
 Since a player is indifferent among unsatisfactory coalitions, we default to
 placing them in coalitions containing themselves, resulting in most remaining
 players in singleton coalitions.
-%TODO: add how PAC solved this problem
+
+Notably under the PAC setting, the effect of this bill with large cross-party
+support/disapproval is significantly reduced due to sampling.
+This is because our PAC Boolean algorithm, in the first iteration before removing
+any player, samples $\frac{3}{4}$ of the bills in total $|N|=143$ times, and
+takes the intersection of every set of satisfactory coalitions for each player.
+It means this particular cross-party bill survives with probability 
+$(\frac{3}{4})^{143}$, which is minute.
+As such, we do not see this cross-party coalition appear in the PAC Boolean
+partition in \autoref{fig:boolean_pac_partition}.
 
 \paragraph{Third Worst Performing Model Under AMI}
 The third worst partition, which is also the worst PAC partition
@@ -349,7 +352,7 @@ Do models separate coalition and opposition parties? Models that are able to ide
 
 Under this criterion, all three selected PAC models: selective friends,
 selective enemies, and Boolean are the only ones which did not include several
-groups involving many members of different ideological hue.
+groups involving many members from both the left and the right.
 The $k$-means (with $k=10$) model, and the community model (SBM geometric) tend to
 join together members with fewer votes, regardless of actual voting patterns.
 Examples of such cross-ideological infrequent-voter groups are: Coalition 2
@@ -378,8 +381,8 @@ The PAC selective enemies model includes two right wing party members in the
 opposition group (\autoref{fig:selective_enemies_partition_vote_count}),
 Orly Levy and Avigdor Lieberman, both of which we have explained above.
 The PAC Boolean model only has one cross-ideological group involving Orly Levy,
-the member who changed parties (\autoref{fig:pac_boolean_pac_partition_vote_count}
-and \autoref{fig:pac_boolean_pac_partition_detailed}).
+the member who changed parties (\autoref{fig:boolean_pac_partition_vote_count}
+and \autoref{fig:boolean_pac_partition_detailed}).
 
 \paragraph{Overall structure}
 Both PAC models and the $k$-means ($k=2$) are able to distinguish between the
@@ -401,7 +404,7 @@ Coalition 3 and Coalition 4
 altogether in Coalition 4 by PAC selective enemies model (See
 \autoref{fig:selective_enemies_pac_partition_detailed}).
 PAC Boolean model notably creates singletons for most low attendance members
-(\autoref{fig:pac_boolean_pac_partition_vote_count}).
+(\autoref{fig:boolean_pac_partition_vote_count}).
 Both the $k$-means ($k=10$) and the SBM geometric clusters tended to remove
 more ministers from the overall main government group, and divide them into
 more separate coalitions (See \autoref{fig:k_means_10_partition_detailed} and 
