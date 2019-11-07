@@ -164,6 +164,7 @@ The results are visualized in \autoref{Analysis:fig:ami}.
   \label{Analysis:fig:ami}
 \end{figure}
 
+\paragraph{Worst Performing Model Under AMI}
 The full-information friends model scored an AMI of $0.000$ as the partition is
 simply the grand coalition.
 As discussed in \autoref{subsec:appreciation_of_friends}, under both general
@@ -194,9 +195,6 @@ closer: $\AMI_{\text{PAC friends}} = 0.292,
 This is evidence that through sampling, PAC models dampen their sensitivity to
 the definition of friends.
 
-The second worst partition, according to AMI with the party affiliation
-partition, is the full-information Boolean model ($\AMI_{\text{Boolean}} = 0.018$).
-
 % TODO: how not to duplicate figure? Inline reference of figure from appendix?
 \begin{figure}[ht]
   \centering
@@ -205,6 +203,9 @@ partition, is the full-information Boolean model ($\AMI_{\text{Boolean}} = 0.018
   \label{Analysis:fig:boolean_partition}
 \end{figure}
 
+\paragraph{Second Worst Performing Model Under AMI} 
+The second worst partition, according to AMI with the party affiliation
+partition, is the full-information Boolean model ($\AMI_{\text{Boolean}} = 0.018$).
 Upon closer inspection of the partition produced by the full-information Boolean
 model compared to party affiliations (\autoref{Analysis:fig:boolean_partition}),
 we notice that the Boolean game partition contains one large coalition made of 115
@@ -223,6 +224,7 @@ Since a player is indifferent among unsatisfactory coalitions, we default to
 placing them in coalitions containing themselves, resulting in most remaining
 players in singleton coalitions.
 
+\paragraph{Third Worst Performing Model Under AMI}
 The third worst partition, which is also the worst PAC partition
 among all PAC models, is that of the PAC value function model
 ($\AMI_{\text{PAC Value Fuction}} = 0.144$).
@@ -271,6 +273,7 @@ This also highlights the limitations of our handcrafted value function.
   \end{minipage}
 \end{figure}
 
+\paragraph{Fourth Worst Performing Model Under AMI}
 The partition produced by SBM with normal edge weight distribution
 also performed poorly when measured against party affiliations
 ($\AMI_{\text{SBM normal}} = 0.192$).
@@ -291,6 +294,7 @@ have contributed to the poor clustering results.
   \label{Analysis:fig:vi}
 \end{figure}
 
+\paragraph{Model Selection Using AMI \& VI}
 We now cross check the four worst performing models discussed above using the
 Variation of Information (VI) measurements (\autoref{Analysis:fig:vi}).
 The rankings of the four models are summarized in
