@@ -221,10 +221,10 @@ players in singleton coalitions.
 Notably under the PAC setting, the effect of this bill with large cross-party
 support/disapproval is significantly reduced due to sampling.
 This is because our PAC Boolean algorithm, in the first iteration before removing
-any player, samples $\frac{3}{4}$ of the bills in total $|N|=143$ times, and
+any player, samples $\frac{3}{4} * 7489 = 5617$ bills $|N|=147$ times, and
 takes the intersection of every set of satisfactory coalitions for each player.
-It means this particular cross-party bill survives with probability 
-$(\frac{3}{4})^{143}$, which is minute.
+It means this particular cross-party bill survives with probability
+$(1 - (\frac{7488}{7489})^{5617})^{147}$, which is minute.
 As such, we do not see this cross-party coalition appear in the PAC Boolean
 partition in \autoref{fig:boolean_pac_partition}.
 
