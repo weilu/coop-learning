@@ -699,14 +699,14 @@ of sets of equally good coalitions.
 The resulting approximated preferences are thus not one coalition per player,
 but a set of coalitions per player.
 
-In Step~\ref{pac_top_cover:select}, we follow the same selection step as
+In Step~\ref{pac_top_cover:select}, we follow the same select step as
 Algorithm~\ref{alg:boolean_core} (Step~\ref{boolean_core:select}), which picks
 the largest coalition that is satisfactory for every member in it.
 
 \citenameyear{jha2019learning} prove that a hedonic game is efficiently PAC
 stablizable if and only if there exists an algorithm that produces a partition
 that is consistent with the observed samples\footnote{See Theorem 3.2 in the
-original paper \cite{jha2019learning}}.
+original paper.}.
 Since our PAC algorithm takes the intersection of every set of satisfactory
 coalitions for a player at each round of sampling, the resulting set of
 satisfactory coalitions is a subset of each player's ``true'' set of preferred
