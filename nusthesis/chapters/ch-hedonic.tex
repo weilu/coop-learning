@@ -532,10 +532,10 @@ responsive preference profile:
 
   \State $S \leftarrow N$; $\pi \leftarrow \emptyset$.
   \While {$S \neq \emptyset$}
-    \State \label{bottom_responsive_core:select_begin} Set
-      $\Gamma \leftarrow \{S\}$; $\Phi \leftarrow \emptyset$.
+    \State \label{bottom_responsive_core:select_begin} Set $\Gamma \leftarrow \{S\}$.
+    \State Set $\Phi \leftarrow \lbrace X \in \Gamma | \{i\} \in \Av(i, X) \text{ for each } i \in X \rbrace$
     \While {$\Phi = \emptyset$}
-      \State $\Gamma \leftarrow \underset{X \in \Phi}{\bigcup} \underset{i \in X}{\bigcup} \{ X \text{\textbackslash} \{j\} | j \in Y \text{ for some } Y \in \Av(i, X)\}$
+      \State $\Gamma \leftarrow \underset{X \in \Gamma}{\bigcup} \underset{i \in X}{\bigcup} \{ X \text{\textbackslash} \{j\} | j \in Y \text{ for some } Y \in \Av(i, X)\}$
       \State $\Phi \leftarrow \lbrace X \in \Gamma | \{i\} \in \Av(i, X) \text{ for each } i \in X \rbrace$
     \EndWhile
     \State \label{bottom_responsive_core:select_end} Select a coalition
