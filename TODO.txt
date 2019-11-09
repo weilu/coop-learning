@@ -313,3 +313,22 @@ check selective friends/enemies
 Question:
 - how not to refer to concepts before they are defined
   use parliament example instead of jargons in intro & preliminaries
+
+Status & Estimates
+abstract: done
+acknowledgments: done
+ch 1 intro:   comments addressed
+ch 2 review:  comments addressed
+ch 3 prelim:  comments addressed
+ch 4 exp:     comments addressed
+ch 5 hedonic: comments addressed
+ch 6 comp:    comments addressed
+ch 7 analy:   comments addressed
+ch 8:         comments addressed
+
+TODO: Reference interactive viz multiple times to encourage people to go there
+
+for printing color pages:
+65-72 (47, 49, 52, 53)
+81-131 (63-114)
+
