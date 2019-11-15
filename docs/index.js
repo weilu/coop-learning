@@ -90,7 +90,7 @@ function make_sankey_plot(exp_partitions, metric) {
 
     var title = "Knesset Coalition Visualized"
     if (metric) {
-      title = title + `: based on ${metric}`
+      title = title + `: based on ${metric.toUpperCase()}`
     }
     var layout = {
       title: title,
@@ -210,21 +210,39 @@ function make_line_plot(exp_partitions, method_name) {
 }
 
 function make_bar_plot(exp_partitions, metric, max_y){
-  const x = Object.keys(exp_partitions).sort()
-  // const pac_x = x.filter(x => x.indexOf('pac_') >= 0)
-  // const non_pac_x = x.filter(x => x.indexOf('pac_') < 0)
-
   // we want full control over the order of x
-  const non_pac_x = ['value_function', 'friends', 'friends_selective', 'enemies_selective', 'enemies', 'boolean']
-  const pac_x = non_pac_x.map(x => 'pac_' + x)
-  const ml_x = non_pac_x.map(_ => '')
-  for (var comp_model of ['k_10_means', 'k_2_means', 'sbm_discrete-geometric', 'sbm_real-normal']) {
-    ml_x.push(comp_model)
-  }
+  const x = [
+    'friends', 'pac_friends',
+    'friends_selective', 'pac_friends_selective',
+    'value_function', 'pac_value_function',
+    'enemies', 'pac_enemies',
+    'enemies_selective', 'pac_enemies_selective',
+    'boolean', 'pac_boolean',
+    'k_10_means', 'k_2_means',
+    'sbm_discrete-geometric', 'sbm_real-normal'
+  ]
+  const colors = [
+    d3.schemeCategory10[0], d3.schemeCategory10[1],
+    d3.schemeCategory10[0], d3.schemeCategory10[1],
+    d3.schemeCategory10[0], d3.schemeCategory10[1],
+    d3.schemeCategory10[0], d3.schemeCategory10[1],
+    d3.schemeCategory10[0], d3.schemeCategory10[1],
+    d3.schemeCategory10[0], d3.schemeCategory10[1],
+    d3.schemeCategory10[2],
+    d3.schemeCategory10[2],
+    d3.schemeCategory10[2],
+    d3.schemeCategory10[2],
+  ]
 
   const x_labels = [
-    'Value Function', 'Friends', 'Selective Friends', 'Selective Enemies', 'Enemies', 'Boolean',
-    'k-means (k=10)', 'k-means (k=2)', 'SBM Geometric', 'SBM Normal'
+    'Friends', 'PAC Friends',
+    'Selective Friends', 'PAC Selective Friends',
+    'Value Function', 'PAC Value Function',
+    'Enemies', 'PAC Enemies',
+    'Selective Enemies', 'PAC Selective Enemies',
+    'Boolean', 'PAC Boolean',
+    'k-means (k=10)', 'k-means (k=2)',
+    'SBM Geometric', 'SBM Normal'
   ]
 
   function get_y(key) {
@@ -233,44 +251,27 @@ function make_bar_plot(exp_partitions, metric, max_y){
     }
     return exp_partitions[key][0].stats[metric]
   }
-  const pac_y = pac_x.map(get_y)
-  const non_pac_y = non_pac_x.map(get_y)
-  const ml_y = ml_x.map(get_y)
+  const y = x.map(get_y)
 
-  const pac_data = {
+  const data = {
     y: x_labels,
-    x: pac_y,
-    text: pac_y.map(n => n.toFixed(2)),
+    x: y,
+    text: y.map(n => n.toFixed(3)),
     textposition: "outside",
     type: 'bar',
     orientation: 'h',
-    name: 'PAC'
-  }
-  const non_pac_data = {
-    y: x_labels,
-    x: non_pac_y,
-    text: non_pac_y.map(n => n.toFixed(2)),
-    textposition: "outside",
-    type: 'bar',
-    orientation: 'h',
-    name: 'Full Info',
-  }
-  const ml_data = {
-    y: x_labels,
-    x: ml_y,
-    text: ml_y.map(n => n.toFixed(2)),
-    type: 'bar',
-    orientation: 'h',
-    name: 'ML Baseline'
+    marker:{
+      color: colors
+    },
   }
 
   var layout = {
-    title: `Model ${metric} values`,
+    title: `Model ${metric.toUpperCase()} values`,
     height: 700,
     font: { size: 10 },
-    barmode: 'group',
     xaxis: {
-      automargin: true
+      automargin: true,
+      range: [0, 0.4],
     },
     yaxis: {
       automargin: true,
@@ -278,7 +279,11 @@ function make_bar_plot(exp_partitions, metric, max_y){
     }
   }
 
-  Plotly.newPlot(`bar_reps_${metric}`, [non_pac_data, pac_data, ml_data], layout);
+  Plotly.newPlot(`bar_reps_${metric}`, [data], layout, {
+    toImageButtonOptions: {
+      format: 'jpeg'
+    }
+  });
 }
 
 
