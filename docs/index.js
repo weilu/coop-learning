@@ -282,25 +282,19 @@ function make_bar_plot(exp_partitions, metric, max_y){
 }
 
 
-Plotly.d3.json("partitions.json", exp_partitions => {
-  make_histogram(exp_partitions)
-  make_sankey_plot(exp_partitions)
-
-  make_line_plot(exp_partitions, 'k_means')
-})
-
 function create_sankey_and_bar_el(metric) {
   const el_container = document.getElementById('sankeys')
   el_container.insertAdjacentHTML('beforeend', `<div class="row"><div id="sankey_reps_${metric}"></div><div id="bar_reps_${metric}"></div></div>`)
 }
 
-Plotly.d3.json("partition_reps_vi.json", exp_partitions => {
-  var metric = 'vi'
-  create_sankey_and_bar_el(metric)
-  make_sankey_plot(exp_partitions, metric)
-  make_bar_plot(exp_partitions, metric)
+Plotly.d3.json("partition_reps_ami.json", exp_partitions => {
+  // var metric = 'vi'
+  // create_sankey_and_bar_el(metric)
+  // make_sankey_plot(exp_partitions, metric)
+  // make_bar_plot(exp_partitions, metric)
 
   var metric = 'ami'
   create_sankey_and_bar_el(metric)
+  make_sankey_plot(exp_partitions, metric)
   make_bar_plot(exp_partitions, metric)
 })
