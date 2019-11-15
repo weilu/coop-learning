@@ -40,7 +40,9 @@ def find_core(likes):
         filtered_likes = {}
         for i in remaining_players:
             filtered_likes[i] = set(coal for coal in likes[i] if coal is not None)
-        coalition = find_largest_liked_coalition(filtered_likes)
+        # coalition = find_largest_liked_coalition(filtered_likes)
+        # coalition = find_a_random_liked_coalition(filtered_likes)
+        coalition = find_median_sized_liked_coalition(filtered_likes)
         if coalition is not None:
             stable_partition.add(coalition)
             remaining_players = remaining_players - coalition
@@ -62,62 +64,40 @@ def find_core(likes):
     return stable_partition
 
 
-def approximate_preferences(players, votes, B, likes, sample_size,
-        sample_method=random.choices):
-    S_prime_indexes = sample_method(range(len(votes)), k=sample_size)
-    filtered_likes = {}
-    for i in players:
-        # filter out None values
-        filtered_likes[i] = set(likes[i][j] for j in S_prime_indexes if likes[i][j] is not None)
-    for i in players:
-        if i in B and B[i] == {i}: # already singleton, no need to check further
-            continue
-        if not filtered_likes[i]:
-            continue
-        old_coal_len = len(B[i]) if i in B else 0
-        if i not in B: # initialization round
-            B[i] = filtered_likes[i]
-        else:
-            B[i] &= filtered_likes[i]
-        if old_coal_len != len(B[i]):
-            logging.info(f'player {i}\'s coalition size changed: {old_coal_len} -> {len(B[i])}')
-
-
 def find_pac_core(votes, sample_size, sample_method=random.choices):
     players = set(range(len(votes[0])))
-    stable_partition = set()
     prefs = votes_to_pref_table(votes)
+    S_prime_indexes = sample_method(range(len(votes)), k=sample_size)
+    sampled_likes = {}
+    for i in players:
+        sampled_likes[i] = list(prefs[i][j] for j in S_prime_indexes)
+    return find_core(sampled_likes)
 
-    while players:
-        logging.info(f'{len(players)} players left')
-        B = {}
-        logging.info('done constructing pref tables')
-        approximate_preferences(players, votes, B, prefs, sample_size, sample_method)
-        for round_index in range(len(players)):
-            approximate_preferences(players, votes, B, prefs, sample_size, sample_method)
-        logging.debug(f'done approximating preferences')
 
-        coalition = find_largest_liked_coalition(B)
-        if coalition is not None:
-            stable_partition.add(coalition)
-            logging.info(f'players to remove: {coalition}')
-            players = players - coalition
+def find_a_random_liked_coalition(prefs):
+    all_likes = set()
+    for liked_groups in prefs.values():
+        all_likes |= liked_groups
 
-            # remove coalitions with removed players
-            for i, row in prefs.items():
-                if i in coalition:
-                    continue
-                for j, pref_coal in enumerate(row):
-                    if pref_coal is not None and (pref_coal & coalition):
-                        prefs[i][j] = None
-        else:
-            logging.info(f'exhausted all_likes')
-            for i in players:
-                p = frozenset([i])
-                stable_partition.add(p)
-            break
+    # all singletons left: handle at caller
+    if len(all_likes) == 0:
+        return None
 
-    return stable_partition
+    return random.sample(all_likes, k=1)[0]
+
+
+def find_median_sized_liked_coalition(prefs):
+    all_likes = set()
+    for liked_groups in prefs.values():
+        all_likes |= liked_groups
+
+    # all singletons left: handle at caller
+    if len(all_likes) == 0:
+        return None
+
+    sorted_potential = sorted(all_likes, key=len, reverse=True)
+    median_index = int(len(all_likes)/2)
+    return sorted_potential[median_index]
 
 
 def find_largest_liked_coalition(prefs):

@@ -3,7 +3,7 @@ import logging
 import random
 import unittest
 from boolean import votes_to_pref_table, find_largest_liked_coalition, find_core, find_pac_core
-from knesset_test import print_partition_stats, calculate_partition_edit_distances_and_print_stats
+from knesset_test import print_partition_stats
 from votes_to_game import read_votes_and_player_data
 
 
@@ -137,7 +137,6 @@ class TestBoolean(unittest.TestCase):
         logging.info('done reading votes data')
 
         sample_size = int(0.75 * len(original_votes))
-        partitions = []
 
         with open('data/partitions_pac_boolean_50_runs.txt', 'w') as f:
             for round in range(50):
@@ -146,10 +145,8 @@ class TestBoolean(unittest.TestCase):
                 f.write(str(pi) + '\n')
                 print(pi)
                 print_partition_stats(pi)
-                partitions.append(pi)
                 logging.info(f'done round {round + 1}')
 
-        calculate_partition_edit_distances_and_print_stats(partitions)
 
 
     def test_knesset(self):

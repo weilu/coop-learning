@@ -6,6 +6,16 @@ from friends import update_friend_matrix, precalculate_frenemy_per_player_per_bi
 logging.basicConfig(format='%(asctime)s [%(levelname)s] %(message)s',
                     level=logging.INFO)
 
+def pac_bottom_avoid(votes, diff_matrix, sample_size, sample_method=random.choices):
+    players = set(range(len(votes[0])))
+    stable_partition = set()
+    prefs = votes_to_pref_table(votes)
+    S_prime_indexes = sample_method(range(len(votes)), k=sample_size)
+    sampled_likes = {}
+    for i in players:
+        sampled_likes[i] = list(prefs[i][j] for j in S_prime_indexes)
+    return find_core(sampled_likes)
+
 
 def bottom_avoid(friend_matrix):
     stable_partition = set()
@@ -53,27 +63,5 @@ def approximate_friends(votes, players, diff_matrix, sample_size, sample_method)
 def pac_bottom_avoid(votes, diff_matrix, sample_size, sample_method=random.choices):
     num_players = len(votes[0])
     players = set(range(num_players))
-    stable_partition = set()
-
-    while players:
-        logging.info(f'{len(players)} players left')
-        B = {}
-        friend_matrix = approximate_friends(votes, players, diff_matrix, sample_size, sample_method)
-        # successive restriction loop
-        for round_index in range(len(players)):
-            logging.debug(f'round {round_index}')
-            new_friend_matrix = approximate_friends(votes, players, diff_matrix, sample_size, sample_method)
-            logging.debug(f'done approximating friends')
-            # take intersection of friends across samples
-            for i, row in enumerate(new_friend_matrix):
-                if row is None:
-                    continue
-                friend_matrix[i] &= row
-            logging.debug(f'done updating friends')
-
-        pref = to_avoid_sets(friend_matrix)
-        coalition = remove_bottom_players(pref, friend_matrix)
-        stable_partition.add(coalition)
-        players = players - coalition
-
-    return stable_partition
+    friend_matrix = approximate_friends(votes, players, diff_matrix, sample_size, sample_method)
+    return bottom_avoid(friend_matrix)

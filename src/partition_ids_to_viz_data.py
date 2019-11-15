@@ -12,8 +12,6 @@ warnings.filterwarnings("ignore")
 
 metric_to_fn = {
     'vi': variation_of_information,
-    'nid': normalized_information_distance,
-    'nmi': normalized_mutual_information,
     'ami': adjusted_mutual_information
 }
 
@@ -115,8 +113,8 @@ def gather_experiment_partitions():
 
 
 SINGLE_RUN_MODELS = [
-    'network_block_model_auto_B_discrete-geometric_mcmc_sweep_True',
-    'network_block_model_auto_B_real-normal_mcmc_sweep_True',
+    'sbm_discrete-geometric',
+    'sbm_real-normal',
     'k_10_means',
     'k_2_means',
     'boolean',
