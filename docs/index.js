@@ -214,9 +214,9 @@ function make_bar_plot(exp_partitions, metric, max_y){
   const x = [
     'friends', 'pac_friends',
     'friends_selective', 'pac_friends_selective',
-    'value_function', 'pac_value_function',
-    'enemies', 'pac_enemies',
-    'enemies_selective', 'pac_enemies_selective',
+    // 'value_function', 'pac_value_function',
+    // 'enemies', 'pac_enemies',
+    // 'enemies_selective', 'pac_enemies_selective',
     'boolean', 'pac_boolean',
     'k_10_means', 'k_2_means',
     'sbm_discrete-geometric', 'sbm_real-normal'
@@ -224,9 +224,9 @@ function make_bar_plot(exp_partitions, metric, max_y){
   const colors = [
     d3.schemeCategory10[0], d3.schemeCategory10[1],
     d3.schemeCategory10[0], d3.schemeCategory10[1],
-    d3.schemeCategory10[0], d3.schemeCategory10[1],
-    d3.schemeCategory10[0], d3.schemeCategory10[1],
-    d3.schemeCategory10[0], d3.schemeCategory10[1],
+    // d3.schemeCategory10[0], d3.schemeCategory10[1],
+    // d3.schemeCategory10[0], d3.schemeCategory10[1],
+    // d3.schemeCategory10[0], d3.schemeCategory10[1],
     d3.schemeCategory10[0], d3.schemeCategory10[1],
     d3.schemeCategory10[2],
     d3.schemeCategory10[2],
@@ -237,9 +237,9 @@ function make_bar_plot(exp_partitions, metric, max_y){
   const x_labels = [
     'Friends', 'PAC Friends',
     'Selective Friends', 'PAC Selective Friends',
-    'Value Function', 'PAC Value Function',
-    'Enemies', 'PAC Enemies',
-    'Selective Enemies', 'PAC Selective Enemies',
+    // 'Value Function', 'PAC Value Function',
+    // 'Enemies', 'PAC Enemies',
+    // 'Selective Enemies', 'PAC Selective Enemies',
     'Boolean', 'PAC Boolean',
     'k-means (k=10)', 'k-means (k=2)',
     'SBM Geometric', 'SBM Normal'
@@ -268,10 +268,10 @@ function make_bar_plot(exp_partitions, metric, max_y){
   var layout = {
     title: `Model ${metric.toUpperCase()} values`,
     height: 700,
-    font: { size: 10 },
+    font: { size: 12 },
     xaxis: {
       automargin: true,
-      range: [0, 0.4],
+      range: [0, 0.41],
     },
     yaxis: {
       automargin: true,
