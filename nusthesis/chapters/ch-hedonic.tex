@@ -665,6 +665,14 @@ formulation without much success.
 The details of that alternative formulation is described in
 \autoref{append:alternative_boolean}.
 
+Since players are indifferent among satisfactory coalitions, selecting any
+coalition (not necessarily the largest) whose members find satisfactory at
+Step~\ref{boolean_core:select} of Algorithm~\ref{alg:boolean_core} to add to
+the output partition $\pi$ maintains the core stability condition.
+To avoid always including the coalition corresponds to the bill with the
+largest multi-party support/disapproval, in our implementation we select the
+median-sized coalition among all satisfactory coalitions at that iteration.
+
 We also would like to highlight two conscious design decisions in our
 implementation:
 
@@ -684,39 +692,22 @@ implementation:
     the same explanatory power, the simplest model is selected.
 \end{enumerate}
 
-Formulation of the PAC version of the Boolean hedonic games is tricky, because
-Algorithm~\ref{alg:pac_top_covering} does not directly apply --- sampling bills
-will produce a large number of satisfactory coalitions for every player.
-However, if we break the tie to pick one ``best'' coalition for each player at
-Step~\ref{pac_top_cover:argmax}, it violates the definition of Boolean
-preferences where a player is indifferent among satisfactory coalitions.
-
-% TODO: add visual maybe a van diagram?
-Instead of picking one ``best'' coalition we allow for a set of equally good
-coalitions from each set of samples of bills.
-Rather than taking the intersection of ``best'' coalitions, we take intersections
-of sets of equally good coalitions.
-The resulting approximated preferences are thus not one coalition per player,
-but a set of coalitions per player.
-
-In Step~\ref{pac_top_cover:select}, we follow the same select step as
-Algorithm~\ref{alg:boolean_core} (Step~\ref{boolean_core:select}), which picks
-the largest coalition that is satisfactory for every member in it.
-
 \citenameyear{jha2019learning} prove that a hedonic game is efficiently PAC
 stablizable if and only if there exists an algorithm that produces a partition
 that is consistent with the observed samples\footnote{See Theorem 3.2 in the
 original paper.}.
-Since our PAC algorithm takes the intersection of every set of satisfactory
-coalitions for a player at each round of sampling, the resulting set of
-satisfactory coalitions is a subset of each player's ``true'' set of preferred
-coalitions.
-At the end of each iteration, we find the largest satisfactory coalition
-to add to the output partition, which means that all players in this coalition
-have no incentive to deviate from this assignment\footnote{Recall that in a
-Boolean hedonic game, players are indifferent among their satisfactory
-coalitions (\autoref{subsec:boolean_preferences}), therefore any satisfactory
-coalition assignment is just as good.}.
-As such, our PAC core finding algorithm indeed produces a partition that is
-consistent with samples evaluated by the given Boolean hedonic game; therefore
-the output partition is PAC core stable.
+Thus, Algorithm~\ref{alg:boolean_core} can be converted to a PAC variant as
+follows: given a sampled set of coalitions $S_1,\dots,S_m$, find the largest
+(or median in our version) size approved $S_j$ amongst the samples at every
+iteration, set its players to be in a group together under $\pi$, and remove
+any coalitions in the sample with a non-empty intersection with $S_j$;
+repeat until no coalitions are left.
+Let $L$ be the set of unassigned players: place the members of $L$ into
+singleton coalitions in $\pi$.
+The resulting partition $\pi$ is consistent with the samples: the members of
+every observed coalition that was added to $\pi$ are known to approve of their
+assigned coalition, and would not deviate.
+In addition, it is not possible that there exists some $S \in \{S_1,\dots,S_m\}$
+such that $S \subseteq L$: our PAC variant would have added $S$ to $\pi$.
+Thus, the PAC variant of Algorithm~\ref{alg:boolean_core} is a consistent solver,
+and outputs a PAC stable outcome given a sufficient number of samples.
