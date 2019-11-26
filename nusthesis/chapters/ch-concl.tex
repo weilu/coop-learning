@@ -22,20 +22,18 @@ information theoretical measures against party affiliations, are not only able
 to recover the overall structure of government vs. opposition groups, but also
 are more coherent compared to machine learning models such as $k$-means and
 Stochastic Block Models.
-By comparing the PAC and full-information settings for both the friends
-and Boolean models, we observe that through sampling, PAC models produce
-partition results that are more robust --- sampling helps ``dampen'' the
-model's sensitivity to the definition of friends in the case of friends model,
-and ``smooth'' the effect of individual bills with significant cross-party
-support/disapproval in the case of Boolean model.
+By comparing the PAC and full-information settings for the friends models, we
+observe that through sampling, PAC models produce partition results that are
+more robust --- sampling helps ``dampen'' the model's sensitivity to the
+definition of friends.
 
 One limitation of our study is that it is a case study based off a single
 dataset; it is only the first step, taking the empirical approach, to
 demonstrate the efficacy of PAC hedonic game models.
-A natural next step is to apply the three top performing models, namely
-selective friends, selective enemies, and Boolean models on other parliaments,
-and evaluate if the model partitions distinguish the left wing from the right
-wing, the government from the opposition parties.
+A natural next step is to apply the top performing models, namely selective
+friends and selective enemies models on other parliaments, and evaluate if the
+model partitions distinguish the left wing from the right wing, the government
+from the opposition parties.
 A good candidate is the Dutch parliament which also has a coalition government. 
 The Brazilian parliament data is public accessible\footnote{The data API is at
 \url{https://dadosabertos.camara.leg.br/swagger/api.html}}, and is studied by

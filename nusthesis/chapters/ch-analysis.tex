@@ -182,7 +182,7 @@ friends --- this means that the more generous the definition of ``friends'', the
 more likely we can expect to observe the grand coalition as the core stable
 coalition structure.
 This intuition is verified by the fact that the AMI for the full-information
-selective friends model is much higher (0.29) compared to that of the general
+selective friends model is much higher (0.293) compared to that of the general
 friends model.
 
 It also demonstrates a major drawback of the full-information versions of the
@@ -199,8 +199,8 @@ Under the full-information model, it is unclear how one can pick the ``best''
 threshold without access to prior ground-truth knowledge.
 
 Observe that the AMIs for the PAC versions of the two friends models are much
-closer: $\AMI_{\text{PAC friends}} = 0.292,
-\AMI_{\text{PAC selective friends}} = 0.287$.
+closer: $\AMI_{\text{PAC friends}} = 0.288,
+\AMI_{\text{PAC selective friends}} = 0.283$.
 This is evidence that through sampling, PAC models dampen their sensitivity to
 the definition of friends.
 
@@ -358,13 +358,13 @@ Do models separate coalition and opposition parties? Models that are able to ide
 Under this criterion, all three selected PAC models: selective friends,
 selective enemies, and Boolean are the only ones which did not include several
 groups involving many members from both the left and the right.
-The $k$-means (with $k=10$) model, and the community model (SBM geometric) tend to
+The 10-group $k$-means model, and the community model (SBM geometric) tend to
 join together members with fewer votes, regardless of actual voting patterns.
 Examples of such cross-ideological infrequent-voter groups are: Coalition 2
-of the $k$-means ($k=10$) model (See \autoref{fig:k_means_10_partition_vote_count}),
+of the 10-group $k$-means model (See \autoref{fig:k_means_10_partition_vote_count}),
 Coalition 8 of the SBM geometric model (See
 \autoref{fig:sbm_geometric_partition_vote_count}).
-The $k$-means ($k=2$) model partition includes five members of the right wing
+The 2-group $k$-means model partition includes five members of the right wing
 parties in the opposition group (Coalition 2 in
 \autoref{fig:k_means_2_partition_detailed}), out of which only one such
 assignment makes sense --- Orly Levy left the right/center-right Yisrael
@@ -390,13 +390,13 @@ the member who changed parties (\autoref{fig:boolean_pac_partition_vote_count}
 and \autoref{fig:boolean_pac_partition_detailed}).
 
 \paragraph{Overall structure}
-Both PAC models and the $k$-means ($k=2$) are able to distinguish between the
+Both PAC models and the 2-group $k$-means are able to distinguish between the
 main government and opposition groups, to which most of their respective
 members were attached.
 This stresses the fact that despite their differences, even the opposition
 parties (which do not have centralized binding instructions), still tend to
 vote together due to their relative ideological cohesion.
-The community based SBM geometric model and $k$-means ($k=10$) model, however,
+The community based SBM geometric model and 10-group $k$-means model, however,
 did not really pick up on the existence of the relatively coherent group of
 government and opposition Knesset members.
 
@@ -409,7 +409,7 @@ Coalition 3 and Coalition 4
 (See \autoref{fig:selective_friends_pac_partition_detailed}), and are clustered
 altogether in Coalition 4 by PAC selective enemies model (See
 \autoref{fig:selective_enemies_pac_partition_detailed}).
-Both the $k$-means ($k=10$) and the SBM geometric clusters tended to remove
+Both the 10-group $k$-means and the SBM geometric clusters tended to remove
 more ministers from the overall main government group, and divide them into
 more separate coalitions (See \autoref{fig:k_means_10_partition_detailed} and
 \autoref{fig:sbm_geometric_partition_detailed}).
