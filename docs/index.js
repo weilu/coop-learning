@@ -67,8 +67,12 @@ function make_sankey_plot(exp_partitions, metric) {
         source: link_source,
         target: partition_link_target,
         value: link_value,
+        // use below for individual viz
+        // source: link_source.concat(partition_link_source),
+        // target: link_target.concat(partition_link_target),
+        // value: link_value.concat(partition_link_value),
         label: members,
-        color: colors,
+        color: colors.concat(colors),
         label: vote_counts.map((c,i) => members[i] + ' with ' + c +  ' effective votes')
       }
     }
@@ -95,6 +99,8 @@ function make_sankey_plot(exp_partitions, metric) {
     var layout = {
       title: title,
       height: 800,
+      // use below for individual viz
+      // height: 1800,
       font: {
         size: 10
       },
@@ -212,11 +218,11 @@ function make_line_plot(exp_partitions, method_name) {
 function make_bar_plot(exp_partitions, metric, max_y){
   // we want full control over the order of x
   const x = [
+    'value_function', 'pac_value_function',
     'friends', 'pac_friends',
     'friends_selective', 'pac_friends_selective',
-    // 'value_function', 'pac_value_function',
-    // 'enemies', 'pac_enemies',
-    // 'enemies_selective', 'pac_enemies_selective',
+    'enemies_selective', 'pac_enemies_selective',
+    'enemies', 'pac_enemies',
     'boolean', 'pac_boolean',
     'k_10_means', 'k_2_means',
     'sbm_discrete-geometric', 'sbm_real-normal'
@@ -224,9 +230,9 @@ function make_bar_plot(exp_partitions, metric, max_y){
   const colors = [
     d3.schemeCategory10[0], d3.schemeCategory10[1],
     d3.schemeCategory10[0], d3.schemeCategory10[1],
-    // d3.schemeCategory10[0], d3.schemeCategory10[1],
-    // d3.schemeCategory10[0], d3.schemeCategory10[1],
-    // d3.schemeCategory10[0], d3.schemeCategory10[1],
+    d3.schemeCategory10[0], d3.schemeCategory10[1],
+    d3.schemeCategory10[0], d3.schemeCategory10[1],
+    d3.schemeCategory10[0], d3.schemeCategory10[1],
     d3.schemeCategory10[0], d3.schemeCategory10[1],
     d3.schemeCategory10[2],
     d3.schemeCategory10[2],
@@ -235,11 +241,11 @@ function make_bar_plot(exp_partitions, metric, max_y){
   ]
 
   const x_labels = [
+    'Value Function', 'PAC Value Function',
     'Friends', 'PAC Friends',
     'Selective Friends', 'PAC Selective Friends',
-    // 'Value Function', 'PAC Value Function',
-    // 'Enemies', 'PAC Enemies',
-    // 'Selective Enemies', 'PAC Selective Enemies',
+    'Selective Enemies', 'PAC Selective Enemies',
+    'Enemies', 'PAC Enemies',
     'Boolean', 'PAC Boolean',
     'k-means (k=10)', 'k-means (k=2)',
     'SBM Geometric', 'SBM Normal'
@@ -256,7 +262,7 @@ function make_bar_plot(exp_partitions, metric, max_y){
   const data = {
     y: x_labels,
     x: y,
-    text: y.map(n => n.toFixed(3)),
+    text: y.map(n => n.toFixed(2)),
     textposition: "outside",
     type: 'bar',
     orientation: 'h',
@@ -271,7 +277,6 @@ function make_bar_plot(exp_partitions, metric, max_y){
     font: { size: 12 },
     xaxis: {
       automargin: true,
-      range: [0, 0.41],
     },
     yaxis: {
       automargin: true,
@@ -293,13 +298,13 @@ function create_sankey_and_bar_el(metric) {
 }
 
 Plotly.d3.json("partition_reps_ami.json", exp_partitions => {
-  // var metric = 'vi'
-  // create_sankey_and_bar_el(metric)
-  // make_sankey_plot(exp_partitions, metric)
-  // make_bar_plot(exp_partitions, metric)
-
-  var metric = 'ami'
+  var metric = 'vi'
   create_sankey_and_bar_el(metric)
   make_sankey_plot(exp_partitions, metric)
   make_bar_plot(exp_partitions, metric)
+
+  // var metric = 'ami'
+  // create_sankey_and_bar_el(metric)
+  // make_sankey_plot(exp_partitions, metric)
+  // make_bar_plot(exp_partitions, metric)
 })
