@@ -151,8 +151,8 @@ directly from sample data, i.e. partial preference relations inferred from
 voting behaviors observed in a subset of all bills.
 
 For each PAC model, we simulate i.i.d. by sampling with replacement
-$\frac{3}{4}$ of all bills; we repeat the run 50 times to evaluate the
-consistency between different runs.
+$\frac{3}{4}$ of all bills (effectively bootstrapping); we repeat the run 50
+times to evaluate the consistency between different runs.
 How do we know whether the resulting outputs are robust?
 We use information theoretic measures to measure the distance among the 50
 partitions.

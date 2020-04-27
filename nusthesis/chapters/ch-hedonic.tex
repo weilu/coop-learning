@@ -83,7 +83,7 @@ to be assigned.
 \end{algorithm}
 
 In Algorithm~\ref{alg:top_covering}, to further specify Step~\ref{top_cover:select}
-we need to define the concept of \textit{connect component}:
+we need to define the concept of \textit{connected component}:
 Let $C^1(i, S) = \ch(i, S)$ for player $i \in S, S \subseteq N$,
 $C^{t + 1}(i, S) = \underset{j \in C^t(i, S)}{\ch(j, S)}$, where $t$ is a positive
 integer; the \textit{connected component} of $i$ with respect to $S$ is
@@ -115,6 +115,26 @@ Due to the definition of appreciation-of-friends preference profile,
 Step~\ref{top_cover:remove} no longer requires scanning through every remaining
 player's preference relation for removed players, making the partition
 equivalently the strongly connected components of the graph induced by $N$.
+
+\begin{algorithm}[htb]
+  \caption{Appreciation-of-friends Algorithm}
+  \label{alg:appreciation-of-friends}
+  \textbf{Input:} A hedonic game satisfying appreciation-of-friends preference profile.
+
+  \begin{algorithmic}[1]
+  \State $R^1 \leftarrow N$; $\pi \leftarrow \emptyset$.
+
+  \For{$k=1$ to $|N|$}
+    \State \label{top_cover:select} Select $S^k\leftarrow \SCC(R^k)$ s.t. $|\SCC(R^k)|$ is the largest among all $\SCC$s induced by $R^k$.
+    \State \label{top_cover:remove} $\pi \leftarrow \pi \cup \lbrace S^k \rbrace$ and $R^{k+1} \leftarrow  R^k \setminus S^k$
+    \If {$R^{k+1} = \emptyset$}
+      \State \Return $\pi$
+    \EndIf
+  \EndFor
+
+  \State \Return $\pi$
+ \end{algorithmic}
+\end{algorithm}
 
 
 \paragraph{PAC Algorithm}
@@ -187,7 +207,7 @@ by replacing the step of finding the smallest $\CC$ with finding the largest
 Strongly Connected Component ($\SCC$).
 We name the resulting algorithm \textit{$\SCC$ based PAC top covering algorithm}.
 Our improvement is based on \citenameyear{Dimitrov2006}'s appreciation-of-friends
-strict core partition discovery algorithm (See \autoref{para:full_pref_algos}).
+strict core partition discovery algorithm (See Algorithm~\ref{alg:appreciation-of-friends}).
 
 We first show that the appreciation-of-friends algorithm generalizes to all top
 responsive games; then we demonstrate that making the same modification to the

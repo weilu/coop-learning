@@ -4,7 +4,7 @@
 \chapter{Preliminaries}
 \label{ch:preliminaries}
 
-Recall the parliament example we open \autoref{ch:intro} with, we assume that each
+Recall the parliament example we open \autoref{ch:intro} with. We assume that each
 parliament member has a preference ranking over various groups they wish to be
 part of; our objective is to identify partitions of parliament members such that
 no member can be any happier by leaving their current group and joining a
@@ -25,7 +25,7 @@ A \textit{hedonic game} is a pair $(N, P)$, where $N$ is a finite set of players
 $\{1, \cdots, n\}$ and $P$ is a \textit{preference profile} consisting of
 preference relations $\succeq_i$ for every player $i \in N$:
 $P = (\succeq_1, \cdots, \succeq_n)$.
-A \textit{preference relation} $\succeq_i$ is a reflective, complete, and
+A \textit{preference relation} $\succeq_i$ is a reflexive, complete, and
 transitive binary relation on $\mathcal{N}_i$, where $\mathcal{N}_i$ is the set
 of all non-empty subset of $N$ that includes player $i$;
 i.e., $\mathcal{N}_i = \{S \subseteq N: i \in S, S \neq \emptyset \}$.
@@ -60,7 +60,7 @@ form.
 We will formally define stability concepts in \autoref{sec:stability_concepts}.
 
 Observe that hedonic games describe a very broad family of games --- it does not
-place any restriction on any preference relation\footnote{``reflective, complete,
+place any restriction on any preference relation\footnote{``reflexive, complete,
 and transitive'' are inherent requirements of the definition of a preference
 relation}.
 Without any restriction, we cannot meaningfully judge if a certain partition
@@ -82,7 +82,8 @@ it is more efficient therefore more preferable.
 
 A player $i$'s most preferred sets of coalitions are called \textit{choice sets}:
 $\Ch(i, S) = \{S' \subseteq S: (i \in S') \wedge (S' \succeq_i S'' \forall S'' \subseteq S)\}$.
-The unique choice set in $\Ch(i, S)$ is denoted as $\ch(i, S)$.
+When there is only one choice set in $\Ch(i, S)$, the unique choice set is
+denoted as $\ch(i, S)$.
 A {\em top responsive} preference profile requires that for any player $i \in N$,
 and any coalition that may contain player $i$: $S, T \in \mathcal{N}_i$:
 \begin{enumerate}
@@ -102,13 +103,13 @@ Now let us look at an example of top responsive games:
 \label{example:top_responsive_pref}
   Consider a similar game of three players with the following choice sets:
 
-  $\ch(1, \{1, 2, 3\}) = \ch(1, \{1, 2\} = \{1, 2\},
+  $\ch(1, \{1, 2, 3\}) = \ch(1, \{1, 2\}) = \{1, 2\},
    \ch(1, \{1, 3\}) = \{1, 3\}, \ch(1, \{1\}) = \{1\}$
 
-  $\ch(2, \{1, 2, 3\}) = \ch(2, \{2, 3\} = \{2, 3\},
+  $\ch(2, \{1, 2, 3\}) = \ch(2, \{2, 3\}) = \{2, 3\},
    \ch(2, \{1, 2\}) = \{1, 2\}, \ch(2, \{2\}) = \{2\}$
 
-  $\ch(3, \{1, 2, 3\}) = \ch(3, \{1, 3\} = \{1, 3\},
+  $\ch(3, \{1, 2, 3\}) = \ch(3, \{1, 3\}) = \{1, 3\},
    \ch(3, \{1, 2\}) = \{1, 2\}, \ch(3, \{3\}) = \{3\}$
 
   Then the resulting preference profile is top responsive:
@@ -173,13 +174,13 @@ Following is an example of bottom responsive games:
   player 2 wants to avoid player 1, and player 3 wants to avoid player 2.
   Their corresponding avoid sets are as follow:
 
-  $\av(1, \{1, 2, 3\}) = \av(1, \{1, 3\} = \{1, 3\},
+  $\av(1, \{1, 2, 3\}) = \av(1, \{1, 3\}) = \{1, 3\},
    \av(1, \{1, 2\}) = \av(1, \{1\}) = \{1\}$
 
-  $\av(2, \{1, 2, 3\}) = \av(2, \{1, 2\} = \{1, 2\},
+  $\av(2, \{1, 2, 3\}) = \av(2, \{1, 2\}) = \{1, 2\},
    \av(2, \{2, 3\}) = \av(2, \{2\}) = \{2\}$
 
-  $\av(3, \{1, 2, 3\}) = \av(3, \{2, 3\} = \{2, 3\},
+  $\av(3, \{1, 2, 3\}) = \av(3, \{2, 3\}) = \{2, 3\},
    \av(3, \{1, 3\}) = \av(3, \{3\}) = \{3\}$
 
   The preference profile is strongly bottom responsive:
@@ -348,7 +349,67 @@ we need such a full preference profile as input.
 PAC stability allows us to trade some uncertainty in output partition stability
 for a partial input preference profile, which is much smaller in size
 (polynomial in the number of players).
+
+
+
+\subsection{PAC Stability in Hedonic Games}\label{subsec:pac-stability}
+
+Assume that we are given a {\em dataset} $S_1,\dots,S_m$ of $m$ observations
+of formed coalitions, where each data entry is a coalition $S_j \subseteq N$,
+and the (cardinal) valuations of players in $S_j$ $(v_i(S_j))_{i \in S}$.
+$S_1,\dots,S_m$ are sampled i.i.d. from some distribution $\cal D$, and that
+future coalitions will be sampled from the same distribution.
+This is a natural assumption in data analysis, where $S_1,\dots,S_m$ are the
+{\em training data} (used to train a model, or in our case, a solution concept),
+and future samples are taken from the {\em test data}.
+Indeed, in our experimental evaluation, we take i.i.d. samples from the Knesset
+voting data, which forms our training data.
+Our algorithms are provably guaranteed to offer {\em probably stable} solutions,
+as described below.
+
+Hedonic core stability can be thought of as capturing a {\em local loss}: given
+a coalition structure $\pi$ and a coalition $S \subseteq N$, let
+$$\lambda(\pi,S) = \begin{cases}1 & \mbox{if }\forall i \in S: v_i(S) > v_i(\pi(i))\\0&\mbox{otherwise.}\end{cases}$$
+In other words, $\lambda(\pi,S)$ incurs a loss of 1 if $\pi$ was not able to
+hedge against the members of $S$ deviating from $\pi$. Given a distribution
+$\cal D$, one can then naturally define the {\em expected loss} of $\pi$ w.r.t.
+$\cal D$ as
+\begin{align}
+    L_{\cal D}(\pi) = \Pr_{S \sim \cal D}\left[\lambda(\pi,S) =1\right]\label{eq:total-loss-D}
+\end{align}
+Equation \eqref{eq:total-loss-D} captures a probabilistic variant of the core
+condition: rather than requiring that $\lambda(\pi,S) = 0$ for all $S \subseteq N$
+(as is the case for the core), we require that it is low, w.r.t. distribution $\cal D$.
+Thus, our objective is to find coalition structures that incur low expected loss.
+More formally, a {\em PAC stabilizing} algorithm takes as input a set of i.i.d.
+samples $S_1,\dots,S_m \sim \cal D^m$, and outputs a coalition structure $\pi^*$
+(which is a function of the samples) with the following guarantee:
+\begin{align}
+    \Pr_{(S_1,\dots,S_m)\sim \cal D^m}[L_{\cal D}(\pi^*) \ge \eps]< \delta \label{eq:pac-stable}
+\end{align}
+Intuitively, $\delta$ captures the probability that the i.i.d. observations given
+to our algorithms are `badly distributed' (e.g., $\cal D$ is a uniform distribution,
+but by sheer coincidence we sampled the same coalition every single time).
+In other words, in a vast majority of the $m$ samples ($\ge 1 - \delta$) the output
+of our PAC stabilizing algorithm incurs $< \eps$ expected loss.
+We require that $m$, the number of samples needed to offer the guarantee in
+\eqref{eq:pac-stable}, is polynomial in $n$, $\frac1\eps$ and $\log\frac1\delta$.
+Note that the above formulation completely sidesteps the need to learn players'
+preferences, directly learning a stable outcome from samples.
+Indeed, a series of recent works \cite{ijcai2017-380,igarashi2019learning,jha2019learning}
+present efficient algorithms for computing PAC stable outcomes.
+In fact, \citenameyear{jha2019learning} show that one only requires {\em consistency}
+with samples in order to ensure PAC stability, using only a number of samples
+linear in $n$: an algorithm is a {\em consistent solver} if given a set of samples
+$S_1,\dots,S_m$ evaluated by a hedonic game $(N,v)$, its output $\pi^*$ satisfies
+$\lambda(\pi^*,S_j) =0$ for all $j \in 1,\dots,m$.
+In other words, a coalition structure that is stable w.r.t. to the observed
+samples is likely to be stable w.r.t. future samples, for a sufficiently large $m$.
+More precisely, the number of samples needed grows linearly in the number of
+players, and polynomially in $\frac1\eps$ and $\log\frac1\delta$.
+
 In our experiments (\autoref{ch:hedonic}), if the full preference profile is
 available for a model, we compute a core stable partition as well as a PAC
 stable partition; we discuss and compare the resulting partitions in
 \autoref{ch:analysis}.
+
